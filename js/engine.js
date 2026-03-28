@@ -309,9 +309,10 @@ function render() {
     ctx.font = '9px "Press Start 2P",monospace';
     ctx.textAlign = 'center';
     ctx.fillStyle = '#000';
-    ctx.fillText('按 E 互动', ex + 1, ey + 1);
+    var hintText = isMobile() ? '点击互动' : '按 E 互动';
+    ctx.fillText(hintText, ex + 1, ey + 1);
     ctx.fillStyle = '#fff';
-    ctx.fillText('按 E 互动', ex, ey);
+    ctx.fillText(hintText, ex, ey);
   }
 
   // HUD
