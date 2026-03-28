@@ -1,35 +1,32 @@
-// ===================== 手机虚拟摇杆 & 交互按钮 =====================
+// ===================== 手机虚拟摇杆 =====================
 (function() {
-  'use strict';
-
   // 检测是否为触屏设备
-  var isTouchDevice = ('ontouchstart' in window) ||
-    (navigator.maxTouchPoints > 0) ||
-    (navigator.msMaxTouchPoints > 0);
+  var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
-  // 也通过屏幕宽度辅助判断（平板/手机）
-  var isSmallScreen = window.innerWidth <= 1024;
+  if (!isTouchDevice) return;
 
-  if (!isTouchDevice && !isSmallScreen) return; // PC 端直接跳过
+  // 显示手机控制界面
+  var controls = document.getElementById('mobile-controls');
+  if (controls) controls.style.display = 'block';
 
-  // 显示控制面板
-  var controlsEl = document.getElementById('mobile-controls');
-  if (!controlsEl) return;
-  controlsEl.style.display = 'block';
-
-  // ============ 摇杆 ============
   var joystickZone = document.getElementById('joystick-zone');
   var joystickBase = document.getElementById('joystick-base');
   var joystickThumb = document.getElementById('joystick-thumb');
   var interactBtn = document.getElementById('mobile-interact-btn');
 
-  var joyActive = false;
-  var joyTouchId = null;
-  var joyCenter = { x: 0, y: 0 };
-  var joyRadius = 50; // 最大偏移距离
-  var joyInput = { x: 0, y: 0 }; // -1 ~ 1
+  if (!joystickZone || !joystickBase || !joystickThumb) {
+    console.warn('虚拟摇杆元素未找到');
+    return;
+  }
 
-  function getJoyCenter() {
+  var baseRadius = 60; // joystick-base 半径
+  var thumbRadius = 24;
+  var deadZone = 10; // 死区，小于这个距离不触发
+  var touchId = null; // 当前触摸ID
+  var centerX = 0, centerY = 0;
+
+  // 获取摇杆中心点坐标
+  function getBaseCenter() {
     var rect = joystickBase.getBoundingClientRect();
     return {
       x: rect.left + rect.width / 2,
@@ -37,23 +34,74 @@
     };
   }
 
+  // 设置 keys（直接操作 engine.js 中的全局 keys 对象）
+  function setDirection(dx, dy) {
+    // 先清除所有方向
+    keys['w'] = false;
+    keys['s'] = false;
+    keys['a'] = false;
+    keys['d'] = false;
+    keys['arrowup'] = false;
+    keys['arrowdown'] = false;
+    keys['arrowleft'] = false;
+    keys['arrowright'] = false;
+
+    if (Math.sqrt(dx * dx + dy * dy) < deadZone) return;
+
+    // 根据偏移设置方向（支持8方向）
+    if (dy < -deadZone) { keys['w'] = true; keys['arrowup'] = true; }
+    if (dy > deadZone)  { keys['s'] = true; keys['arrowdown'] = true; }
+    if (dx < -deadZone) { keys['a'] = true; keys['arrowleft'] = true; }
+    if (dx > deadZone)  { keys['d'] = true; keys['arrowright'] = true; }
+  }
+
+  // 更新摇杆位置
+  function updateThumb(dx, dy) {
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var maxDist = baseRadius - thumbRadius;
+    if (dist > maxDist) {
+      dx = dx / dist * maxDist;
+      dy = dy / dist * maxDist;
+    }
+    joystickThumb.style.transform = 'translate(' + (dx - thumbRadius) + 'px, ' + (dy - thumbRadius) + 'px)';
+    joystickThumb.style.left = '50%';
+    joystickThumb.style.top = '50%';
+    // 更精确的方式：直接用 left/top 绝对定位
+    joystickThumb.style.transform = 'translate(-50%, -50%) translate(' + dx + 'px, ' + dy + 'px)';
+  }
+
+  function resetThumb() {
+    joystickThumb.style.transform = 'translate(-50%, -50%)';
+    joystickThumb.classList.remove('active');
+    setDirection(0, 0);
+  }
+
+  // ---- 触摸事件 ----
   joystickZone.addEventListener('touchstart', function(e) {
     e.preventDefault();
-    if (joyActive) return;
+    if (touchId !== null) return;
     var touch = e.changedTouches[0];
-    joyActive = true;
-    joyTouchId = touch.identifier;
-    joyCenter = getJoyCenter();
+    touchId = touch.identifier;
+    var center = getBaseCenter();
+    centerX = center.x;
+    centerY = center.y;
     joystickThumb.classList.add('active');
-    updateJoystick(touch.clientX, touch.clientY);
+
+    var dx = touch.clientX - centerX;
+    var dy = touch.clientY - centerY;
+    updateThumb(dx, dy);
+    setDirection(dx, dy);
   }, { passive: false });
 
   joystickZone.addEventListener('touchmove', function(e) {
     e.preventDefault();
-    if (!joyActive) return;
     for (var i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === joyTouchId) {
-        updateJoystick(e.changedTouches[i].clientX, e.changedTouches[i].clientY);
+      var touch = e.changedTouches[i];
+      if (touch.identifier === touchId) {
+        var dx = touch.clientX - centerX;
+        var dy = touch.clientY - centerY;
+        updateThumb(dx, dy);
+        setDirection(dx, dy);
         break;
       }
     }
@@ -61,124 +109,43 @@
 
   joystickZone.addEventListener('touchend', function(e) {
     for (var i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === joyTouchId) {
-        resetJoystick();
+      if (e.changedTouches[i].identifier === touchId) {
+        touchId = null;
+        resetThumb();
         break;
       }
     }
   });
 
-  joystickZone.addEventListener('touchcancel', function() {
-    resetJoystick();
+  joystickZone.addEventListener('touchcancel', function(e) {
+    touchId = null;
+    resetThumb();
   });
 
-  function updateJoystick(tx, ty) {
-    var dx = tx - joyCenter.x;
-    var dy = ty - joyCenter.y;
-    var dist = Math.sqrt(dx * dx + dy * dy);
-
-    // 限制在半径内
-    if (dist > joyRadius) {
-      dx = dx / dist * joyRadius;
-      dy = dy / dist * joyRadius;
-      dist = joyRadius;
-    }
-
-    // 更新摇杆视觉位置
-    joystickThumb.style.transform =
-      'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px))';
-
-    // 归一化输入 (-1 ~ 1)
-    joyInput.x = dx / joyRadius;
-    joyInput.y = dy / joyRadius;
-
-    // 设置死区 (避免微小误触)
-    var deadzone = 0.2;
-    if (Math.abs(joyInput.x) < deadzone) joyInput.x = 0;
-    if (Math.abs(joyInput.y) < deadzone) joyInput.y = 0;
-
-    // ★ 写入 engine.js 的 keys 对象
-    applyJoyToKeys();
-  }
-
-  function resetJoystick() {
-    joyActive = false;
-    joyTouchId = null;
-    joyInput.x = 0;
-    joyInput.y = 0;
-    joystickThumb.style.transform = 'translate(-50%, -50%)';
-    joystickThumb.classList.remove('active');
-    applyJoyToKeys();
-  }
-
-  function applyJoyToKeys() {
-    // 清除所有方向键状态（由摇杆控制的部分）
-    keys['_joy_up'] = false;
-    keys['_joy_down'] = false;
-    keys['_joy_left'] = false;
-    keys['_joy_right'] = false;
-
-    if (joyInput.y < -0.2) keys['_joy_up'] = true;
-    if (joyInput.y > 0.2) keys['_joy_down'] = true;
-    if (joyInput.x < -0.2) keys['_joy_left'] = true;
-    if (joyInput.x > 0.2) keys['_joy_right'] = true;
-  }
-
-  // ============ 交互按钮 ============
-  interactBtn.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    // 模拟 E 键按下
-    keys['e'] = true;
-  }, { passive: false });
-
-  interactBtn.addEventListener('touchend', function(e) {
-    e.preventDefault();
-  });
-
-  // ============ 每帧更新按钮状态 ============
-  function updateInteractButton() {
-    // nearEntity 是 engine.js 中的全局变量
-    if (typeof nearEntity !== 'undefined' && nearEntity && !paused) {
-      interactBtn.classList.add('has-target');
-      if (nearEntity.type === 'tombstone') {
-        interactBtn.textContent = '查看';
-      } else if (nearEntity.type === 'npc') {
-        interactBtn.textContent = '对话';
-      } else {
-        interactBtn.textContent = '互动';
-      }
-    } else {
-      interactBtn.classList.remove('has-target');
-      interactBtn.textContent = '互动';
-    }
-    requestAnimationFrame(updateInteractButton);
-  }
-  updateInteractButton();
-
-  // ============ 弹窗时隐藏/显示控制 ============
-  var observer = new MutationObserver(function() {
-    var anyModalOpen = false;
-    document.querySelectorAll('.modal-overlay').forEach(function(m) {
-      if (!m.classList.contains('hidden')) anyModalOpen = true;
-    });
-    if (anyModalOpen) {
-      controlsEl.style.display = 'none';
-    } else {
-      controlsEl.style.display = 'block';
-    }
-  });
-
-  document.querySelectorAll('.modal-overlay').forEach(function(m) {
-    observer.observe(m, { attributes: true, attributeFilter: ['class'] });
-  });
-
-  // ============ 防止 canvas 上的默认触摸行为 ============
-  var gameCanvas = document.getElementById('game');
-  if (gameCanvas) {
-    gameCanvas.style.touchAction = 'none';
-    gameCanvas.addEventListener('touchmove', function(e) {
+  // ---- 互动按钮 ----
+  if (interactBtn) {
+    interactBtn.addEventListener('touchstart', function(e) {
       e.preventDefault();
+      keys['e'] = true;
+      keys[' '] = true;
     }, { passive: false });
+
+    interactBtn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      // 延迟释放，确保 engine 能捕获到
+      setTimeout(function() {
+        keys['e'] = false;
+        keys[' '] = false;
+      }, 100);
+    });
+  }
+
+  // ---- 点击墓碑直接交互（备用） ----
+  if (typeof canvas !== 'undefined') {
+    document.getElementById('game').addEventListener('touchstart', function(e) {
+      // 如果触摸的不是摇杆区域或按钮，检查是否点击了墓碑附近
+      // 这里不做处理，避免和摇杆冲突
+    });
   }
 
 })();
