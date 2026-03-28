@@ -28,29 +28,32 @@ function showTombstoneModal(game) {
   document.getElementById('tb-desc').textContent = game.description || '';
   document.getElementById('tb-epitaph').textContent = game.epitaph ? '"' + game.epitaph + '"' : '';
 
+  // ★ 重建按钮内容（防止 textContent 销毁 span）
+  var btn = document.getElementById('tb-mourn-btn');
+  btn.innerHTML = '🕯️ 献花悼念 (<span id="tb-mourn-count">...</span>)';
+  btn.classList.remove('mourned');
+
   // 悼念数
-  document.getElementById('tb-mourn-count').textContent = '...';
-  document.getElementById('tb-mourn-btn').classList.remove('mourned');
   getMourns(game.id).then(function(data) {
-    document.getElementById('tb-mourn-count').textContent = (data && data.count) || 0;
+    var countEl = document.getElementById('tb-mourn-count');
+    if (countEl) countEl.textContent = (data && data.count) || 0;
   });
 
   // 留言
   var msgEl = document.getElementById('tb-messages');
   msgEl.innerHTML = '<p style="color:#555">加载中...</p>';
   getMessages(game.id).then(function(data) {
-      // data 现在直接是数组（不是 {gameId, messages} 了）
-      if (!data || !data.length) {
-        msgEl.innerHTML = '<p style="color:#555">暂无留言，成为第一个吧。</p>';
-        return;
-      }
-      msgEl.innerHTML = data.map(function(m) {
-        return '<div class="msg-item">' +
-          '<span class="msg-nick">' + esc(m.nickname || '匿名玩家') + '</span>' +
-          '<span class="msg-time">' + (m.time || '') + '</span>' +
-          '<div class="msg-body">' + esc(m.text || '') + '</div></div>';
-      }).join('');
-    });
+    if (!data || !data.length) {
+      msgEl.innerHTML = '<p style="color:#555">暂无留言，成为第一个吧。</p>';
+      return;
+    }
+    msgEl.innerHTML = data.map(function(m) {
+      return '<div class="msg-item">' +
+        '<span class="msg-nick">' + esc(m.nickname || '匿名玩家') + '</span>' +
+        '<span class="msg-time">' + (m.time || '') + '</span>' +
+        '<div class="msg-body">' + esc(m.text || '') + '</div></div>';
+    }).join('');
+  });
 
   document.getElementById('modal-tombstone').classList.remove('hidden');
 }
@@ -59,9 +62,11 @@ function doMourn() {
   if (!currentGame) return;
   var btn = document.getElementById('tb-mourn-btn');
   btn.classList.add('mourned');
-  btn.textContent = '🕯️ 已献花';
+  // ★ 用 innerHTML 而不是 textContent，保留 span 结构
+  btn.innerHTML = '🕯️ 已献花 (<span id="tb-mourn-count">...</span>)';
   sendMourn(currentGame.id).then(function(data) {
-    if (data) btn.textContent = '🕯️ 已献花 (' + data.count + ')';
+    var countEl = document.getElementById('tb-mourn-count');
+    if (data && countEl) countEl.textContent = data.count;
   });
 }
 
@@ -80,7 +85,6 @@ function postMessage() {
 function showSearchModal() {
   pauseEngine();
 
-  // 填充类型下拉
   var genres = [];
   var games = getGames();
   games.forEach(function(g) {
