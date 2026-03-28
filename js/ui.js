@@ -39,17 +39,18 @@ function showTombstoneModal(game) {
   var msgEl = document.getElementById('tb-messages');
   msgEl.innerHTML = '<p style="color:#555">加载中...</p>';
   getMessages(game.id).then(function(data) {
-    if (!data || !data.length) {
-      msgEl.innerHTML = '<p style="color:#555">暂无留言，成为第一个吧。</p>';
-      return;
-    }
-    msgEl.innerHTML = data.map(function(m) {
-      return '<div class="msg-item">' +
-        '<span class="msg-nick">' + esc(m.nickname) + '</span>' +
-        '<span class="msg-time">' + m.time + '</span>' +
-        '<div class="msg-body">' + esc(m.text) + '</div></div>';
-    }).join('');
-  });
+      // data 现在直接是数组（不是 {gameId, messages} 了）
+      if (!data || !data.length) {
+        msgEl.innerHTML = '<p style="color:#555">暂无留言，成为第一个吧。</p>';
+        return;
+      }
+      msgEl.innerHTML = data.map(function(m) {
+        return '<div class="msg-item">' +
+          '<span class="msg-nick">' + esc(m.nickname || '匿名玩家') + '</span>' +
+          '<span class="msg-time">' + (m.time || '') + '</span>' +
+          '<div class="msg-body">' + esc(m.text || '') + '</div></div>';
+      }).join('');
+    });
 
   document.getElementById('modal-tombstone').classList.remove('hidden');
 }
