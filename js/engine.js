@@ -322,7 +322,9 @@ function render() {
   ctx.font = '8px "Press Start 2P",monospace';
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(255,255,255,.3)';
+  if (!isMobile()) {
   ctx.fillText('WASD 移动 · E 互动 · ESC 关闭', 10, h - 10);
+}
 }
 
 // ========= 瓦片绘制 =========
