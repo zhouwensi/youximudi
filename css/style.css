@@ -128,3 +128,94 @@ canvas { display:block; cursor:crosshair; }
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:#0a0a12; }
 ::-webkit-scrollbar-thumb { background:#2a2a55; border-radius:3px; }
+
+
+/* ============ 手机虚拟控制 ============ */
+#mobile-controls {
+  display: none; /* 默认隐藏，JS检测触屏后显示 */
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none; /* 整体不拦截事件 */
+}
+
+#joystick-zone {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 140px;
+  height: 140px;
+  pointer-events: auto; /* 摇杆区域可交互 */
+  touch-action: none;   /* 阻止浏览器默认触摸行为 */
+}
+
+#joystick-base {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+#joystick-thumb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  transition: background 0.1s;
+}
+
+#joystick-thumb.active {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+#mobile-interact-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 40px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(100, 80, 200, 0.3);
+  border: 2px solid rgba(150, 130, 255, 0.4);
+  color: #ccc;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+
+#mobile-interact-btn:active {
+  background: rgba(100, 80, 200, 0.6);
+  border-color: rgba(180, 160, 255, 0.7);
+}
+
+#mobile-interact-btn.has-target {
+  background: rgba(255, 200, 50, 0.3);
+  border-color: rgba(255, 220, 100, 0.5);
+  color: #ffdd66;
+  animation: pulse-btn 1.5s infinite;
+}
+
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 200, 50, 0); }
+  50% { box-shadow: 0 0 20px 4px rgba(255, 200, 50, 0.25); }
+}
+
+/* 弹窗打开时隐藏控制 */
+.modal-overlay:not(.hidden) ~ #mobile-controls,
+#mobile-controls.modal-open {
+  display: none !important;
+}
