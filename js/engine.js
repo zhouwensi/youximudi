@@ -54,6 +54,7 @@ window.addEventListener('DOMContentLoaded', function() {
 function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  canvas.style.touchAction = 'none'; // ★ 添加这行
 }
 
 // 引擎控制（供 ui.js 调用）
