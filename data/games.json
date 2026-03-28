@@ -1,0 +1,80 @@
+[
+  {
+    "id": "dragon-nest-cn",
+    "name": "龙之谷（国服）",
+    "status": "已停服",
+    "platform": "PC",
+    "genre": "MMORPG",
+    "developer": "Eyedentity Games",
+    "publisher": "盛趣游戏",
+    "born": "2010-10-26",
+    "died": "2024-02-29",
+    "description": "经典无锁定ACT网游，以爽快打击感著称。国服运营近14年后停服。",
+    "epitaph": "不会消散的，是龙之谷冒险家们的羁绊。"
+  },
+  {
+    "id": "silent-hills",
+    "name": "Silent Hills",
+    "status": "已取消",
+    "platform": "主机",
+    "genre": "恐怖",
+    "developer": "Kojima Productions",
+    "publisher": "Konami",
+    "born": "2014-08-12",
+    "died": "2015-04-27",
+    "description": "小岛秀夫与伊藤润二联手打造，仅留下一个可玩demo(P.T.)便被Konami腰斩。",
+    "epitaph": "走不完的走廊，等不到的续作。"
+  },
+  {
+    "id": "nosgoth",
+    "name": "Nosgoth",
+    "status": "已停服",
+    "platform": "PC",
+    "genre": "射击",
+    "developer": "Psyonix",
+    "publisher": "Square Enix",
+    "born": "2015-01-21",
+    "died": "2016-05-31",
+    "description": "凯恩的遗产系列衍生非对称PVP游戏，吸血鬼vs人类。",
+    "epitaph": "诺斯高斯的战火，终究熄灭在无人问津的服务器中。"
+  },
+  {
+    "id": "qq-tang",
+    "name": "QQ堂",
+    "status": "已停服",
+    "platform": "PC",
+    "genre": "休闲",
+    "developer": "腾讯",
+    "publisher": "腾讯",
+    "born": "2004-12-28",
+    "died": "2022-04-20",
+    "description": "腾讯经典休闲竞技游戏，泡泡堂式玩法，承载无数人的童年。",
+    "epitaph": "糖果色的战场，再也不会响起倒计时。"
+  },
+  {
+    "id": "starcraft-ghost",
+    "name": "星际争霸：幽灵",
+    "status": "已取消",
+    "platform": "主机",
+    "genre": "动作",
+    "developer": "Blizzard",
+    "publisher": "Blizzard",
+    "born": "2002-01-01",
+    "died": "2014-01-01",
+    "description": "以星际争霸为背景的第三人称动作射击游戏，开发多年后被取消。",
+    "epitaph": "幽灵特工Nova的任务，永远停留在了简报画面。"
+  },
+  {
+    "id": "maplestory-old",
+    "name": "冒险岛（旧版）",
+    "status": "名存实亡",
+    "platform": "PC",
+    "genre": "MMORPG",
+    "developer": "Wizet",
+    "publisher": "Nexon",
+    "born": "2003-04-29",
+    "died": "2012-01-01",
+    "description": "经典2D横版MMORPG。虽然游戏仍在运营，但大改版后的冒险岛已非当年模样。",
+    "epitaph": "蘑菇仔还在，但那个世界已经变了。"
+  }
+]
