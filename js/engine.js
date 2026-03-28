@@ -1,4 +1,7 @@
 // ===================== 常量 =====================
+function isMobile() {
+  return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 1024);
+}
 var T = 32; // tile size
 var GRASS = 0, PATH = 1, FENCE = 2, TOMBSTONE = 3, TREE = 4, GATE = 5;
 var SOLID = [FENCE, TOMBSTONE, TREE];
