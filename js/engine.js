@@ -206,10 +206,10 @@ function update() {
   tick++;
 
   var spd = 2.5, dx = 0, dy = 0;
-  if (keys['w'] || keys['arrowup'])    { dy = -spd; player.dir = 1; }
-  if (keys['s'] || keys['arrowdown'])  { dy =  spd; player.dir = 0; }
-  if (keys['a'] || keys['arrowleft'])  { dx = -spd; player.dir = 2; }
-  if (keys['d'] || keys['arrowright']) { dx =  spd; player.dir = 3; }
+  if (keys['w'] || keys['arrowup']    || keys['_joy_up'])    { dy = -spd; player.dir = 1; }
+  if (keys['s'] || keys['arrowdown']  || keys['_joy_down'])  { dy =  spd; player.dir = 0; }
+  if (keys['a'] || keys['arrowleft']  || keys['_joy_left'])  { dx = -spd; player.dir = 2; }
+  if (keys['d'] || keys['arrowright'] || keys['_joy_right']) { dx =  spd; player.dir = 3; }
 
   player.moving = (dx !== 0 || dy !== 0);
   if (dx && canMove(player.x + dx, player.y)) player.x += dx;
