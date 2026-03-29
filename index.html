@@ -39,7 +39,13 @@
       <p class="desc" id="tb-desc"></p>
       <p class="epitaph" id="tb-epitaph"></p>
       <div class="mourn-section">
-        <button id="tb-mourn-btn" class="btn-mourn" onclick="doMourn()">🕯️ 献花悼念 (<span id="tb-mourn-count">0</span>)</button>
+        <p class="offering-label">选择祭奠方式</p>
+        <div class="offering-row">
+          <button type="button" class="btn-offering selected" data-offering="daisy" onclick="selectOffering(this)" title="白花">🌼</button>
+          <button type="button" class="btn-offering" data-offering="rose" onclick="selectOffering(this)" title="红玫瑰">🌹</button>
+          <button type="button" class="btn-offering" data-offering="candle" onclick="selectOffering(this)" title="蜡烛">🕯️</button>
+        </div>
+        <button id="tb-mourn-btn" class="btn-mourn" onclick="doMourn()"><span id="tb-mourn-label">献出悼念</span> (<span id="tb-mourn-count">0</span>)</button>
       </div>
       <div class="msg-section">
         <h3>💬 墓前留言</h3>

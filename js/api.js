@@ -44,3 +44,34 @@ function sendMessage(gameId, nickname, text) {
 function sendSubmit(data) {
   return apiPost('/submit', data);
 }
+
+// ============ 访客会话 / 世界状态（足迹、幽灵、在线） ============
+function getSessionId() {
+  var k = 'yxm_sid';
+  try {
+    var s = sessionStorage.getItem(k);
+    if (!s) {
+      s = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 14);
+      sessionStorage.setItem(k, s);
+    }
+    return s;
+  } catch (e) {
+    return 'fb' + Math.random().toString(36).slice(2, 14);
+  }
+}
+
+function sendPresencePing() {
+  return apiPost('/presence', { sessionId: getSessionId() }).catch(function() {});
+}
+
+function sendFootprintTile(gx, gy) {
+  return apiPost('/footprint', { sessionId: getSessionId(), gx: gx, gy: gy }).catch(function() {});
+}
+
+function sendGhostPathPoints(points) {
+  return apiPost('/ghost-path', { sessionId: getSessionId(), points: points }).catch(function() {});
+}
+
+function fetchWorldState() {
+  return apiGet('/world-state');
+}

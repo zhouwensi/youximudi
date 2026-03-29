@@ -62,6 +62,19 @@ canvas { display:block; cursor:crosshair; }
   padding-left:12px; margin:12px 0;
 }
 .mourn-section { text-align:center; margin:16px 0; }
+.offering-label { color:#666; font-size:7px; margin-bottom:8px; }
+.offering-row {
+  display:flex; justify-content:center; gap:10px; margin-bottom:12px;
+}
+.btn-offering {
+  font-size:18px; line-height:1;
+  width:44px; height:44px;
+  border:2px solid #333; border-radius:4px;
+  background:#0a0a18; cursor:pointer;
+  transition:border-color .15s, background .15s;
+}
+.btn-offering:hover { border-color:#558; background:#12122a; }
+.btn-offering.selected { border-color:#6af; box-shadow:0 0 12px rgba(100,160,255,.25); }
 .btn-mourn {
   background:#2a1a0a; border:2px solid #664; color:#fc8;
   padding:8px 20px; font-family:inherit; font-size:10px;

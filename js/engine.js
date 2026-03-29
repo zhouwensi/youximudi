@@ -27,6 +27,16 @@ var paused = false;
 var tick = 0;
 var nearEntity = null;
 var stars = [], fogParticles = [];
+var recentVisitorCount = 0;
+var worldFootprints = [];
+var worldGhostPaths = [];
+var FP_TTL_MS = 2 * 60 * 60 * 1000;
+var lastFpTick = 0;
+var lastFpGx = -99999, lastFpGy = -99999;
+var lastGhostSampleTick = 0;
+var ghostSampleBuf = [];
+var ghostSegStartMs = 0;
+var lastGhostFlushTick = 0;
 
 // ===================== 初始化 =====================
 window.addEventListener('DOMContentLoaded', function() {
@@ -47,9 +57,30 @@ window.addEventListener('DOMContentLoaded', function() {
     buildMap(data);
     initParticles();
     document.getElementById('loading').classList.add('done');
+    startWorldSync();
     loop();
   });
 });
+
+function startWorldSync() {
+  setTimeout(function() {
+    if (typeof sendPresencePing === 'function') sendPresencePing();
+  }, 1200);
+  setInterval(function() {
+    if (typeof sendPresencePing === 'function') sendPresencePing();
+  }, 28000);
+  function pull() {
+    if (typeof fetchWorldState !== 'function') return;
+    fetchWorldState().then(function(d) {
+      if (!d || typeof d.recentCount !== 'number') return;
+      recentVisitorCount = d.recentCount;
+      worldFootprints = Array.isArray(d.footprints) ? d.footprints : [];
+      worldGhostPaths = Array.isArray(d.ghosts) ? d.ghosts : [];
+    });
+  }
+  pull();
+  setInterval(pull, 5000);
+}
 
 function resize() {
   canvas.width = window.innerWidth;
@@ -233,6 +264,44 @@ function update() {
     if (f.x < -f.size) f.x = mapW * T;
   });
 
+  // 足迹：换格立即上报；同一格内持续移动则间歇上报
+  if (!paused) {
+    var tgx = Math.floor(player.x / T);
+    var tgy = Math.floor(player.y / T);
+    var tileChanged = tgx !== lastFpGx || tgy !== lastFpGy;
+    if (tileChanged) {
+      lastFpGx = tgx;
+      lastFpGy = tgy;
+      lastFpTick = tick;
+      if (typeof sendFootprintTile === 'function') sendFootprintTile(tgx, tgy);
+    } else if (player.moving && tick - lastFpTick >= 48) {
+      lastFpTick = tick;
+      if (typeof sendFootprintTile === 'function') sendFootprintTile(tgx, tgy);
+    }
+  }
+
+  // 幽灵轨迹采样与批量上报
+  if (!paused && player.moving) {
+    if (tick - lastGhostSampleTick >= 36) {
+      lastGhostSampleTick = tick;
+      var gNow = performance.now();
+      if (!ghostSegStartMs) ghostSegStartMs = gNow;
+      ghostSampleBuf.push({
+        gx: Math.floor(player.x / T),
+        gy: Math.floor(player.y / T),
+        t: Math.round(gNow - ghostSegStartMs)
+      });
+      if (ghostSampleBuf.length > 52) ghostSampleBuf.shift();
+    }
+  }
+  if (!paused && tick - lastGhostFlushTick >= 1200 && ghostSampleBuf.length >= 10) {
+    var toSend = ghostSampleBuf.slice();
+    ghostSampleBuf = [];
+    ghostSegStartMs = 0;
+    lastGhostFlushTick = tick;
+    if (typeof sendGhostPathPoints === 'function') sendGhostPathPoints(toSend);
+  }
+
   // 检测附近可交互实体
   nearEntity = null;
   var px = player.x + T / 2, py = player.y + T / 2;
@@ -280,12 +349,24 @@ function render() {
     }
   }
 
-  // Y-排序绘制（实体+玩家）
+  drawFootprints();
+
+  // Y-排序绘制（实体+幽灵+玩家）
   var drawList = [];
   entities.forEach(function(e) {
     var sx = e.x - cam.x, sy = e.y - cam.y;
     if (sx < -T * 2 || sy < -T * 2 || sx > w + T * 2 || sy > h + T * 2) return;
     drawList.push({ e: e, sx: sx, sy: sy, zy: e.y + T });
+  });
+  worldGhostPaths.forEach(function(pathObj, gi) {
+    var pos = ghostPositionAlong(pathObj, Date.now() + gi * 4000);
+    if (!pos) return;
+    var gsx = pos.px - cam.x, gsy = pos.py - cam.y;
+    if (gsx < -T * 2 || gsy < -T * 2 || gsx > w + T * 2 || gsy > h + T * 2) return;
+    drawList.push({
+      e: { type: 'ghost', dir: pos.dir, alpha: pos.alpha },
+      sx: gsx, sy: gsy, zy: pos.py + T
+    });
   });
   drawList.push({ e: { type: 'player' }, sx: player.x - cam.x, sy: player.y - cam.y, zy: player.y + T });
   drawList.sort(function(a, b) { return a.zy - b.zy; });
@@ -293,6 +374,7 @@ function render() {
   drawList.forEach(function(d) {
     var t = d.e.type;
     if (t === 'player') drawPlayer(d.sx, d.sy);
+    else if (t === 'ghost') drawGhost(d.sx, d.sy, d.e.dir, d.e.alpha);
     else if (t === 'tombstone') drawTombstoneSprite(d.sx, d.sy, d.e.game, d.e === nearEntity);
     else if (t === 'npc') drawNPC(d.sx, d.sy, d.e === nearEntity);
     else if (t === 'sign') drawSign(d.sx, d.sy, d.e.text);
@@ -320,12 +402,15 @@ function render() {
   }
 
   // HUD
-  ctx.font = '8px "Press Start 2P",monospace';
+  ctx.font = '7px "Press Start 2P",monospace';
   ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(160,190,255,.42)';
+  ctx.fillText('最近约15分钟：' + recentVisitorCount + ' 位访客', 10, 14);
+  ctx.font = '8px "Press Start 2P",monospace';
   ctx.fillStyle = 'rgba(255,255,255,.3)';
   if (!isMobile()) {
-  ctx.fillText('WASD 移动 · E 互动 · ESC 关闭', 10, h - 10);
-}
+    ctx.fillText('WASD 移动 · E 互动 · ESC 关闭', 10, h - 10);
+  }
 }
 
 // ========= 瓦片绘制 =========
@@ -414,6 +499,98 @@ function drawTombstoneSprite(x, y, game, hl) {
     ctx.fillStyle = '#ffdd66';
     ctx.fillText(game.name, x + 16, y - 6);
   }
+}
+
+function drawFootprints() {
+  var w = canvas.width, h = canvas.height;
+  var now = Date.now();
+  worldFootprints.forEach(function(f) {
+    var fts = typeof f.ts === 'number' ? f.ts : 0;
+    var age = now - fts;
+    if (age > FP_TTL_MS || age < 0) return;
+    var cx = f.gx * T + T / 2 - cam.x;
+    var cy = f.gy * T + T / 2 - cam.y;
+    if (cx < -10 || cy < -10 || cx > w + 10 || cy > h + 10) return;
+    var breath = 0.22 + 0.42 * Math.sin(tick * 0.07 + f.gx * 0.8 + f.gy * 0.6);
+    var fade = 1 - age / FP_TTL_MS;
+    var alp = breath * fade * 0.88;
+    ctx.fillStyle = 'rgba(120,185,255,' + alp + ')';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(210,235,255,' + (alp * 0.4) + ')';
+    ctx.beginPath();
+    ctx.arc(cx - 1, cy - 1, 1.3, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function ghostPositionAlong(pathObj, wallMs) {
+  var pts = pathObj.points;
+  if (!pts || pts.length < 2) return null;
+  var endT = pts[pts.length - 1].t;
+  var dur = Math.max(endT + 2800, 12000);
+  var u = wallMs % dur;
+  var last = pts[pts.length - 1];
+  var prev = pts[pts.length - 2];
+  if (u >= endT) {
+    var dir0 = last.gx > prev.gx ? 3 : last.gx < prev.gx ? 2 : last.gy > prev.gy ? 0 : 1;
+    return {
+      px: last.gx * T,
+      py: last.gy * T,
+      dir: dir0,
+      alpha: 0.24 + 0.1 * Math.sin(wallMs * 0.0022)
+    };
+  }
+  var i = 0;
+  for (var k = 0; k < pts.length - 1; k++) {
+    if (u < pts[k + 1].t) {
+      i = k;
+      break;
+    }
+    i = k;
+  }
+  if (i >= pts.length - 1) i = pts.length - 2;
+  var a = pts[i], b = pts[i + 1];
+  var span = Math.max(1, b.t - a.t);
+  var lerp = (u - a.t) / span;
+  lerp = Math.max(0, Math.min(1, lerp));
+  var gx = a.gx + (b.gx - a.gx) * lerp;
+  var gy = a.gy + (b.gy - a.gy) * lerp;
+  var dir = b.gx > a.gx ? 3 : b.gx < a.gx ? 2 : b.gy > a.gy ? 0 : 1;
+  return {
+    px: gx * T,
+    py: gy * T,
+    dir: dir,
+    alpha: 0.26 + 0.14 * Math.sin(wallMs * 0.0025 + i)
+  };
+}
+
+function drawGhost(x, y, dir, alpha) {
+  var a = typeof alpha === 'number' ? alpha : 0.3;
+  ctx.fillStyle = 'rgba(0,35,70,' + (a * 0.45) + ')';
+  ctx.fillRect(x + 8, y + 28, 16, 4);
+  ctx.fillStyle = 'rgba(70,130,210,' + a + ')';
+  ctx.fillRect(x + 8, y + 14, 16, 14);
+  ctx.fillStyle = 'rgba(150,200,255,' + (a * 0.9) + ')';
+  ctx.fillRect(x + 10, y + 4, 12, 10);
+  ctx.fillStyle = 'rgba(45,95,185,' + a + ')';
+  ctx.fillRect(x + 10, y + 2, 12, 5);
+  ctx.fillStyle = 'rgba(25,70,140,' + a + ')';
+  if (dir === 0) {
+    ctx.fillRect(x + 12, y + 8, 2, 2);
+    ctx.fillRect(x + 18, y + 8, 2, 2);
+  } else if (dir === 1) {
+    ctx.fillRect(x + 10, y + 4, 12, 10);
+  } else if (dir === 2) {
+    ctx.fillRect(x + 11, y + 8, 2, 2);
+  } else {
+    ctx.fillRect(x + 19, y + 8, 2, 2);
+  }
+  ctx.fillStyle = 'rgba(35,85,165,' + a + ')';
+  var anim = Math.sin(tick * 0.22) * 2;
+  ctx.fillRect(x + 10, y + 28 + anim, 5, 4);
+  ctx.fillRect(x + 17, y + 28 - anim, 5, 4);
 }
 
 function drawPlayer(x, y) {

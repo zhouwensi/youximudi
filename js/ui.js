@@ -28,10 +28,15 @@ function showTombstoneModal(game) {
   document.getElementById('tb-desc').textContent = game.description || '';
   document.getElementById('tb-epitaph').textContent = game.epitaph ? '"' + game.epitaph + '"' : '';
 
-  // ★ 重建按钮内容（防止 textContent 销毁 span）
+  document.querySelectorAll('.btn-offering').forEach(function(b) {
+    b.classList.toggle('selected', b.getAttribute('data-offering') === 'daisy');
+  });
   var btn = document.getElementById('tb-mourn-btn');
-  btn.innerHTML = '🕯️ 献花悼念 (<span id="tb-mourn-count">...</span>)';
+  var lbl = document.getElementById('tb-mourn-label');
+  if (lbl) lbl.textContent = '献出悼念';
   btn.classList.remove('mourned');
+  var countEl0 = document.getElementById('tb-mourn-count');
+  if (countEl0) countEl0.textContent = '...';
 
   // 悼念数
   getMourns(game.id).then(function(data) {
@@ -58,12 +63,27 @@ function showTombstoneModal(game) {
   document.getElementById('modal-tombstone').classList.remove('hidden');
 }
 
+function selectOffering(el) {
+  document.querySelectorAll('.btn-offering').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  if (el) el.classList.add('selected');
+}
+
+function getSelectedOffering() {
+  var sel = document.querySelector('.btn-offering.selected');
+  return sel ? sel.getAttribute('data-offering') : 'daisy';
+}
+
+var OFFERING_DONE_LABEL = { daisy: '🌼 已献花', rose: '🌹 已献花', candle: '🕯️ 已悼念' };
+
 function doMourn() {
   if (!currentGame) return;
   var btn = document.getElementById('tb-mourn-btn');
+  var off = getSelectedOffering();
   btn.classList.add('mourned');
-  // ★ 用 innerHTML 而不是 textContent，保留 span 结构
-  btn.innerHTML = '🕯️ 已献花 (<span id="tb-mourn-count">...</span>)';
+  var lbl = document.getElementById('tb-mourn-label');
+  if (lbl) lbl.textContent = OFFERING_DONE_LABEL[off] || '已悼念';
   sendMourn(currentGame.id).then(function(data) {
     var countEl = document.getElementById('tb-mourn-count');
     if (data && countEl) countEl.textContent = data.count;
