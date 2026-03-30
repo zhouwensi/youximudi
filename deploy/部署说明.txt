@@ -1,0 +1,31 @@
+游戏墓地 youximudi.com — 自建部署（静态 + API 同机）
+
+【你只需确认 / 做一次的事】
+1) DNS：youximudi.com（及 www）A 记录 → 服务器公网 IP。
+2) Cloudflare 控制台：Workers 路由里删除「youximudi.com/api/*」，否则请求仍进 Worker。
+3) 服务器上已安装：Nginx、Node.js 18+、（建议）certbot 已为本域申请证书。
+4) GitHub Actions 自动部署（可选）：按 .github/workflows/deploy-selfhosted.yml 内注释配置 Secrets；服务器上为部署用户配置 sudo 免密执行 systemctl restart youximudi-api。
+
+【服务器一键安装】（在克隆的仓库根目录）
+  sudo bash deploy/install-server.sh --yes
+  可选环境变量：WEB_ROOT、DOMAIN、API_PORT、API_USER
+
+【仅起 API（Docker）】若不想用 systemd：
+  cd deploy && docker compose -f docker-compose.api.yml up -d
+  Nginx 仍按 install 脚本生成的 /api/ 反代到 127.0.0.1:8788。
+
+【从 Cloudflare KV 迁数据】（在你本机，仓库 server 目录）
+  设置 CLOUDFLARE_API_TOKEN，可选 CLOUDFLARE_ACCOUNT_ID、KV_NAMESPACE_ID
+  node migrate-from-cloudflare.mjs
+  将生成的 server/data/kv.json 上传到服务器 WEB_ROOT/server/data/，再
+  sudo systemctl restart youximudi-api
+
+【Windows 本机（与 youxijia 同机、80 口优先给 youxijia）】
+  墓地默认监听 0.0.0.0:59871：
+    powershell -ExecutionPolicy Bypass -File deploy\install-windows.ps1
+  youxijia（D:\g\youxijia\server.js）已按 Host: youximudi.com / www 反代到 127.0.0.1:59871；改端口时在 youxijia 环境变量设 YOUXIMUDI_UPSTREAM=http://127.0.0.1:新端口
+  修改 youxijia 代码后需重启 youxijia 的 node 进程。
+  计划任务名：youximudi-fullsite；直连墓地测：curl http://127.0.0.1:59871/api/health
+  走 youxijia 测：curl -H "Host: youximudi.com" http://127.0.0.1/api/health
+
+【说明】Linux 方案仍用 Nginx 虚拟主机；Windows 与游戏家共用 80 时用上述反代。

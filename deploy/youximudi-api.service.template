@@ -1,0 +1,16 @@
+[Unit]
+Description=youximudi.com API (Node)
+After=network.target
+
+[Service]
+Type=simple
+User=__API_USER__
+WorkingDirectory=__WEB_ROOT__/server
+Environment=NODE_ENV=production
+Environment=PORT=__API_PORT__
+ExecStart=__NODE_BIN__ server.mjs
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+# 仅启动本机 API（不占用 80/443，由宿主机 Nginx 反代到 127.0.0.1:8788）
+# 在 deploy 目录执行：docker compose -f docker-compose.api.yml up -d
+services:
+  youximudi-api:
+    image: node:22-alpine
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../server:/app
+    command: ["node", "server.mjs"]
+    environment:
+      PORT: "8788"
+      LISTEN_HOST: "0.0.0.0"
+    ports:
+      - "127.0.0.1:8788:8788"

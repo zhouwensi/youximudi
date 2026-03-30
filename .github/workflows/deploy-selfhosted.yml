@@ -1,0 +1,43 @@
+# 推送到 main 后 rsync 到自建服务器并重启 API。
+# 在 GitHub 仓库 Settings → Secrets 添加：
+#   DEPLOY_HOST      服务器 IP 或域名
+#   DEPLOY_USER      SSH 用户名（建议专用 deploy 用户）
+#   DEPLOY_PATH      远端目录，与 install-server.sh 的 WEB_ROOT 一致，如 /var/www/youximudi
+#   DEPLOY_SSH_KEY   私钥全文（含 -----BEGIN ...）
+# 服务器上需配置无密码 sudo，例如：
+#   deployer ALL=(ALL) NOPASSWD:/bin/systemctl restart youximudi-api
+#
+name: Deploy self-hosted
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Rsync
+        run: |
+          rsync -avz --delete \
+            -e ssh \
+            --exclude=.git \
+            --exclude=server/data \
+            --exclude=node_modules \
+            ./ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Restart youximudi-api
+        run: |
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "sudo -n systemctl restart youximudi-api"
