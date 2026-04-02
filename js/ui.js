@@ -4,8 +4,16 @@ function closeAllModals() {
   document.querySelectorAll('.modal-overlay').forEach(function(m) {
     m.classList.add('hidden');
   });
+  document.body.classList.remove('modal-open');
   resumeEngine();
 }
+
+// 点击遮罩空白处关闭（不点到 .modal-box 内容）
+document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeAllModals();
+  });
+});
 
 // ESC 关闭
 document.addEventListener('keydown', function(e) {
@@ -60,6 +68,7 @@ function showTombstoneModal(game) {
     }).join('');
   });
 
+  document.body.classList.add('modal-open');
   document.getElementById('modal-tombstone').classList.remove('hidden');
 }
 
@@ -101,6 +110,48 @@ function postMessage() {
   });
 }
 
+// ===================== 全站留言墙 =====================
+function showWallModal() {
+  pauseEngine();
+  var hint = document.getElementById('wall-post-hint');
+  if (hint) hint.textContent = '';
+  var msgEl = document.getElementById('wall-messages');
+  msgEl.innerHTML = '<p style="color:#555">加载中...</p>';
+  getWallMessages().then(function(data) {
+    if (data === null) {
+      msgEl.innerHTML = '<p style="color:#a66">无法加载留言（静态打开或未连上接口时会出现）。</p>';
+      return;
+    }
+    if (!data.length) {
+      msgEl.innerHTML = '<p style="color:#555">暂无留言，贴第一条吧。</p>';
+      return;
+    }
+    msgEl.innerHTML = data.map(function(m) {
+      return '<div class="msg-item">' +
+        '<span class="msg-nick">' + esc(m.nickname || '匿名玩家') + '</span>' +
+        '<span class="msg-time">' + esc(m.time || '') + '</span>' +
+        '<div class="msg-body">' + esc(m.text || '') + '</div></div>';
+    }).join('');
+  });
+  document.body.classList.add('modal-open');
+  document.getElementById('modal-wall').classList.remove('hidden');
+}
+
+function postWallMessage() {
+  var nick = document.getElementById('wall-nick').value.trim() || '匿名访客';
+  var text = document.getElementById('wall-text').value.trim();
+  if (!text) return;
+  sendWallMessage(nick, text).then(function(res) {
+    if (res && res.success) {
+      document.getElementById('wall-text').value = '';
+      showWallModal();
+      return;
+    }
+    var hint = document.getElementById('wall-post-hint');
+    if (hint) hint.textContent = '发送失败，请稍后再试或检查是否已部署 /api。';
+  });
+}
+
 // ===================== 搜索弹窗 =====================
 function showSearchModal() {
   pauseEngine();
@@ -119,9 +170,12 @@ function showSearchModal() {
   document.getElementById('s-query').value = '';
   document.getElementById('s-status').value = '';
   doSearch();
+  document.body.classList.add('modal-open');
   document.getElementById('modal-search').classList.remove('hidden');
   document.getElementById('s-query').focus();
 }
+
+var SR_CHUNK = 55;
 
 function doSearch() {
   var q = document.getElementById('s-query').value.toLowerCase();
@@ -136,17 +190,76 @@ function doSearch() {
     return true;
   });
 
+  window._srFiltered = results;
+  window._srShown = 0;
+  renderSearchChunk(true);
+}
+
+function renderSearchChunk(replace) {
+  var results = window._srFiltered || [];
   var el = document.getElementById('s-results');
+  var moreEl = document.getElementById('s-more');
+  if (!el) return;
+
   if (!results.length) {
-    el.innerHTML = '<p style="color:#555;text-align:center;">无结果</p>';
+    el.innerHTML = '<p style="color:#555;text-align:center;padding:12px;">无结果</p>';
+    if (moreEl) moreEl.innerHTML = '';
     return;
   }
-  el.innerHTML = results.map(function(g) {
-    return '<div class="sr-item" onclick="goToGrave(\'' + g.id + '\')">' +
-      '<div class="sr-name">' + esc(g.name) + '</div>' +
-      '<div class="sr-meta">' + g.status + ' · ' + g.genre + ' · ' + (g.platform || '') + '</div>' +
-      '</div>';
-  }).join('');
+
+  if (replace) {
+    window._srShown = 0;
+    el.innerHTML = '';
+  }
+
+  var start = window._srShown;
+  var end = Math.min(results.length, start + SR_CHUNK);
+  var slice = results.slice(start, end);
+  window._srShown = end;
+
+  var html = slice
+    .map(function(g) {
+      return (
+        '<div class="sr-item" onclick="goToGrave(\'' +
+        escJs(g.id) +
+        '\')">' +
+        '<div class="sr-name">' +
+        esc(g.name) +
+        '</div>' +
+        '<div class="sr-meta">' +
+        esc(g.status) +
+        ' · ' +
+        esc(g.genre) +
+        ' · ' +
+        esc(g.platform || '') +
+        '</div>' +
+        '</div>'
+      );
+    })
+    .join('');
+  el.innerHTML += html;
+
+  if (moreEl) {
+    var left = results.length - window._srShown;
+    if (left > 0) {
+      moreEl.innerHTML =
+        '<button type="button" class="btn-load-more" onclick="loadMoreSearch()">加载更多（还剩 ' +
+        left +
+        ' 条）</button>' +
+        '<p class="sr-count-hint">共 ' +
+        results.length +
+        ' 条匹配</p>';
+    } else {
+      moreEl.innerHTML =
+        results.length > SR_CHUNK
+          ? '<p class="sr-count-hint">已显示全部 ' + results.length + ' 条</p>'
+          : '<p class="sr-count-hint">共 ' + results.length + ' 条</p>';
+    }
+  }
+}
+
+function loadMoreSearch() {
+  renderSearchChunk(false);
 }
 
 function goToGrave(gameId) {
@@ -159,6 +272,7 @@ function switchToSubmit() {
   document.getElementById('modal-search').classList.add('hidden');
   document.getElementById('submit-msg').textContent = '';
   document.getElementById('submit-form').reset();
+  document.body.classList.add('modal-open');
   document.getElementById('modal-submit').classList.remove('hidden');
 }
 
@@ -168,6 +282,7 @@ function doSubmit(e) {
   var data = {};
   new FormData(form).forEach(function(v, k) { data[k] = v; });
   document.getElementById('submit-msg').textContent = '提交中...';
+  document.body.classList.add('modal-open');
   sendSubmit(data).then(function(res) {
     document.getElementById('submit-msg').textContent =
       (res && res.ok) ? '✅ 投稿成功！等待审核。' : '❌ 提交失败，请稍后再试。';
@@ -179,4 +294,10 @@ function esc(s) {
   var d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
+}
+
+function escJs(s) {
+  return String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'");
 }

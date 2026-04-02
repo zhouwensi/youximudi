@@ -40,6 +40,15 @@ function sendMessage(gameId, nickname, text) {
   });
 }
 
+// 全站留言墙（与单游戏墓碑留言独立）
+function getWallMessages() {
+  return apiGet('/wall-messages');
+}
+
+function sendWallMessage(nickname, text) {
+  return apiPost('/wall-messages', { nickname: nickname, text: text });
+}
+
 // 投稿
 function sendSubmit(data) {
   return apiPost('/submit', data);

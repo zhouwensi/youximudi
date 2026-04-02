@@ -107,7 +107,89 @@ canvas { display:block; cursor:crosshair; }
   flex:1; min-width:120px; background:#0a0a18; border:1px solid #222;
   color:#ccc; padding:6px; font-family:inherit; font-size:8px;
 }
-.search-results { max-height:300px; overflow-y:auto; }
+/* 寻墓弹窗：可滚动列表（flex 子项须 min-height:0 才能在移动端正确滚动） */
+.modal-search-layout {
+  display: flex;
+  flex-direction: column;
+  max-height: 88vh;
+}
+.modal-search-layout > .modal-close { flex-shrink: 0; }
+.modal-search-layout > h2 { flex-shrink: 0; }
+.modal-search-layout .search-filters { flex-shrink: 0; }
+.modal-search-layout .submit-link { flex-shrink: 0; margin-top: 8px; }
+.search-results-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+.search-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: min(52vh, 420px);
+}
+.search-more {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 6px 0 2px;
+}
+.btn-load-more {
+  background: #1a1a3a;
+  border: 1px solid #446;
+  color: #9af;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 8px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+.btn-load-more:hover { background: #2a2a4a; }
+.sr-count-hint { color: #555; font-size: 7px; margin: 0; }
+
+.tb-messages-scroll {
+  max-height: min(36vh, 220px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 8px;
+}
+
+#hud-fabs {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+#hud-fabs .fab-btn {
+  pointer-events: auto;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 10px 12px;
+  border: 2px solid #446;
+  background: rgba(18, 18, 42, 0.92);
+  color: #aad;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+#hud-fabs .fab-btn:hover {
+  border-color: #88f;
+  color: #fff;
+}
+#hud-fabs .fab-secondary {
+  font-size: 7px;
+  padding: 8px 10px;
+  color: #99aacc;
+}
+
+body.modal-open #hud-fabs { display: none; }
+body.modal-open #mobile-controls { display: none !important; }
 .sr-item {
   padding:8px; margin:4px 0; background:#0a0a18;
   cursor:pointer; border-left:3px solid #333;
@@ -137,36 +219,47 @@ canvas { display:block; cursor:crosshair; }
 .btn-submit:hover { background:#3a2a4a; }
 #submit-msg { text-align:center; margin-top:8px; color:#8f8; }
 
+.wall-intro { color:#666; font-size:8px; line-height:1.8; margin-bottom:12px; }
+.wall-post-hint { color:#a66; font-size:7px; margin-top:8px; text-align:center; min-height:1em; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:#0a0a12; }
 ::-webkit-scrollbar-thumb { background:#2a2a55; border-radius:3px; }
 
 
-/* ============ 手机虚拟控制 ============ */
+/* ============ 手机虚拟控制（浮动摇杆 + 互动键）============ */
 #mobile-controls {
-  display: none; /* 默认隐藏，JS检测触屏后显示 */
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 50;
-  pointer-events: none; /* 整体不拦截事件 */
+  pointer-events: none;
 }
 
-#joystick-zone {
+/* 触点为中心显示，由 JS 设置 anchor 的 left/top */
+.joystick-float {
+  position: fixed;
+  inset: 0;
+  z-index: 54;
+  pointer-events: none;
+}
+.joystick-float.hidden {
+  display: none !important;
+}
+
+#joystick-float-anchor {
   position: absolute;
-  left: 20px;
-  bottom: 20px;
-  width: 140px;
-  height: 140px;
-  pointer-events: auto; /* 摇杆区域可交互 */
-  touch-action: none;   /* 阻止浏览器默认触摸行为 */
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 #joystick-base {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: -60px;
+  top: -60px;
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -227,8 +320,3 @@ canvas { display:block; cursor:crosshair; }
   50% { box-shadow: 0 0 20px 4px rgba(255, 200, 50, 0.25); }
 }
 
-/* 弹窗打开时隐藏控制 */
-.modal-overlay:not(.hidden) ~ #mobile-controls,
-#mobile-controls.modal-open {
-  display: none !important;
-}

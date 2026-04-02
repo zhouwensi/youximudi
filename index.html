@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
   <title>游戏墓地 — 每一款消逝的游戏，都值得一块墓碑</title>
   <meta name="description" content="一座收录已停服、已取消、被遗忘游戏的像素墓园。来献上你的悼念。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,14 +11,20 @@
 </head>
 <body>
   <canvas id="game"></canvas>
-<!-- 手机虚拟控制 -->
+  <div id="hud-fabs" aria-label="快捷操作">
+    <button type="button" id="fab-search" class="fab-btn">寻墓</button>
+    <button type="button" id="fab-map" class="fab-btn fab-secondary" onclick="toggleMinimap()">地图</button>
+  </div>
+<!-- 手机虚拟控制：浮动摇杆在触点出现，全屏可拖移 -->
 <div id="mobile-controls">
-  <div id="joystick-zone">
-    <div id="joystick-base">
-      <div id="joystick-thumb"></div>
+  <div id="joystick-float" class="joystick-float hidden" aria-hidden="true">
+    <div id="joystick-float-anchor">
+      <div id="joystick-base">
+        <div id="joystick-thumb"></div>
+      </div>
     </div>
   </div>
-  <button id="mobile-interact-btn">互动</button>
+  <button type="button" id="mobile-interact-btn">互动</button>
 </div>
   <div id="loading">
     <p>🪦 正在挖掘墓地...</p>
@@ -49,7 +55,7 @@
       </div>
       <div class="msg-section">
         <h3>💬 墓前留言</h3>
-        <div id="tb-messages"></div>
+        <div id="tb-messages" class="tb-messages-scroll"></div>
         <div class="msg-form">
           <input id="msg-nick" placeholder="你的名字" maxlength="20">
           <textarea id="msg-text" placeholder="写下你想说的话..." maxlength="200" rows="2"></textarea>
@@ -61,7 +67,7 @@
 
   <!-- 搜索弹窗 -->
   <div id="modal-search" class="modal-overlay hidden">
-    <div class="modal-box modal-wide">
+    <div class="modal-box modal-wide modal-search-layout">
       <button class="modal-close" onclick="closeAllModals()">✕</button>
       <h2>🔍 寻墓人</h2>
       <div class="search-filters">
@@ -75,9 +81,28 @@
           <option>被遗忘的佳作</option>
         </select>
       </div>
-      <div id="s-results" class="search-results"></div>
+      <div class="search-results-wrap">
+        <div id="s-results" class="search-results"></div>
+        <div id="s-more" class="search-more"></div>
+      </div>
       <div class="submit-link">
         找不到？<a href="#" onclick="switchToSubmit();return false;">点此投稿新游戏 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全站留言墙 -->
+  <div id="modal-wall" class="modal-overlay hidden">
+    <div class="modal-box modal-wall-box">
+      <button type="button" class="modal-close" onclick="closeAllModals()">✕</button>
+      <h2>📋 全站留言墙</h2>
+      <p class="wall-intro">与整座墓园无关、只想说句话？贴在这里。与墓碑前的留言相互独立。</p>
+      <div id="wall-messages" class="tb-messages-scroll"></div>
+      <div class="msg-form">
+        <input type="text" id="wall-nick" placeholder="你的名字" maxlength="20" autocomplete="nickname">
+        <textarea id="wall-text" placeholder="写点什么…" maxlength="200" rows="3"></textarea>
+        <button type="button" class="btn-send" onclick="postWallMessage()">贴上墙</button>
+        <p id="wall-post-hint" class="wall-post-hint"></p>
       </div>
     </div>
   </div>
@@ -111,6 +136,11 @@
 
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
+  <script>
+    document.getElementById('fab-search').addEventListener('click', function() {
+      if (typeof showSearchModal === 'function') showSearchModal();
+    });
+  </script>
   <script src="js/engine.js"></script>
   <script src="js/mobile.js"></script>  <!-- ★ 新增 -->
 </body>

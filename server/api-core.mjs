@@ -12,6 +12,7 @@ const STORE_FILE = path.join(DATA_DIR, 'kv.json');
 const PRESENCE_KEY = 'sys:presence';
 const FOOTPRINTS_KEY = 'sys:footprints';
 const GHOST_PATHS_KEY = 'sys:ghost_paths';
+const WALL_MESSAGES_KEY = 'sys:wall_messages';
 const PRESENCE_WINDOW_MS = 15 * 60 * 1000;
 const FOOTPRINT_TTL_MS = 2 * 60 * 60 * 1000;
 const MAX_FOOTPRINTS = 500;
@@ -225,6 +226,57 @@ export async function handle(req, res) {
         messages.unshift(newMessage);
         if (messages.length > 200) messages.length = 200;
         await kvPut(key, JSON.stringify(messages));
+        return json(res, { success: true, message: newMessage }, 200);
+      }
+    }
+
+    if (pathname === '/api/wall-messages') {
+      if (method === 'GET') {
+        const data = await kvGet(WALL_MESSAGES_KEY);
+        const messages = data ? JSON.parse(data) : [];
+        const formatted = messages.map(function (m) {
+          return {
+            id: m.id,
+            nickname: m.nickname || m.author || '匿名玩家',
+            text: m.text || m.content || '',
+            time: m.time || m.timestamp || '',
+          };
+        });
+        return json(res, formatted, 200);
+      }
+      if (method === 'POST') {
+        let body;
+        try {
+          body = await readBody(req);
+        } catch {
+          return json(res, { error: 'invalid json' }, 400);
+        }
+        const nickname = (body && (body.nickname || body.author)) || '匿名玩家';
+        const text = (body && (body.text || body.content)) || '';
+        if (!String(text).trim()) return json(res, { error: 'text is required' }, 400);
+
+        const raw = await kvGet(WALL_MESSAGES_KEY);
+        const messages = raw ? JSON.parse(raw) : [];
+        const now = new Date();
+        const timeStr =
+          now.getFullYear() +
+          '-' +
+          String(now.getMonth() + 1).padStart(2, '0') +
+          '-' +
+          String(now.getDate()).padStart(2, '0') +
+          ' ' +
+          String(now.getHours()).padStart(2, '0') +
+          ':' +
+          String(now.getMinutes()).padStart(2, '0');
+        const newMessage = {
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          nickname: String(nickname).slice(0, 20),
+          text: String(text).slice(0, 500),
+          time: timeStr,
+        };
+        messages.unshift(newMessage);
+        if (messages.length > 200) messages.length = 200;
+        await kvPut(WALL_MESSAGES_KEY, JSON.stringify(messages));
         return json(res, { success: true, message: newMessage }, 200);
       }
     }

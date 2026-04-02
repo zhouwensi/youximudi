@@ -30,6 +30,10 @@ var stars = [], fogParticles = [];
 var recentVisitorCount = 0;
 var worldFootprints = [];
 var worldGhostPaths = [];
+var minimapCanvas = null;
+var showMinimap = true;
+var mapRowMeta = [];
+var lastMinimapRect = { valid: false };
 var FP_TTL_MS = 2 * 60 * 60 * 1000;
 var lastFpTick = 0;
 var lastFpGx = -99999, lastFpGy = -99999;
@@ -52,6 +56,47 @@ window.addEventListener('DOMContentLoaded', function() {
   });
   window.addEventListener('keyup', function(e) { keys[e.key.toLowerCase()] = false; });
 
+  window.addEventListener('keydown', function(e) {
+    if (e.key !== 'm' && e.key !== 'M') return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
+    showMinimap = !showMinimap;
+    e.preventDefault();
+  });
+
+  canvas.addEventListener('click', function(e) {
+    if (paused) return;
+    var p = canvasPointFromClient(e.clientX, e.clientY);
+    if (teleportToMinimapPoint(p.cx, p.cy)) {
+      e.preventDefault();
+      return;
+    }
+    tryOpenEntityAtCanvasPixels(p.cx, p.cy);
+  });
+
+  canvas.addEventListener('touchend', function(e) {
+    if (paused || e.changedTouches.length !== 1) return;
+    var tch = e.changedTouches[0];
+    var p = canvasPointFromClient(tch.clientX, tch.clientY);
+    if (teleportToMinimapPoint(p.cx, p.cy)) {
+      e.preventDefault();
+      return;
+    }
+    if (window.__yxmJoystickUsedThisTouch) return;
+    if (tryOpenEntityAtCanvasPixels(p.cx, p.cy)) e.preventDefault();
+  }, { passive: false });
+
+  window.__gameUi = window.__gameUi || {};
+  window.__gameUi.isClientOnMinimap = function(clientX, clientY) {
+    var p = canvasPointFromClient(clientX, clientY);
+    var rect = lastMinimapRect;
+    if (!rect || !rect.valid || !showMinimap) return false;
+    var pad = 2;
+    return p.cx >= rect.ox + pad && p.cy >= rect.oy + pad &&
+      p.cx <= rect.ox + rect.bw - pad && p.cy <= rect.oy + rect.bh - pad;
+  };
+  window.__yxmJoystickUsedThisTouch = false;
+
   fetch('data/games.json').then(function(r) { return r.json(); }).then(function(data) {
     games = data;
     buildMap(data);
@@ -61,6 +106,62 @@ window.addEventListener('DOMContentLoaded', function() {
     loop();
   });
 });
+
+function canvasPointFromClient(clientX, clientY) {
+  var r = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / Math.max(1, r.width);
+  var scaleY = canvas.height / Math.max(1, r.height);
+  return {
+    cx: (clientX - r.left) * scaleX,
+    cy: (clientY - r.top) * scaleY
+  };
+}
+
+function isTileWalkable(tx, ty) {
+  if (tx < 0 || ty < 0 || tx >= mapW || ty >= mapH) return false;
+  var t = map[ty][tx];
+  return t === GRASS || t === PATH || t === GATE;
+}
+
+function findNearestWalkableTile(tx, ty, maxR) {
+  maxR = maxR || 56;
+  var best = null;
+  var bestD = 1e9;
+  for (var dy = -maxR; dy <= maxR; dy++) {
+    for (var dx = -maxR; dx <= maxR; dx++) {
+      var nx = tx + dx, ny = ty + dy;
+      if (!isTileWalkable(nx, ny)) continue;
+      var d = dx * dx + dy * dy;
+      if (d < bestD) {
+        bestD = d;
+        best = { tx: nx, ty: ny };
+      }
+    }
+  }
+  return best;
+}
+
+function teleportToMinimapPoint(cx, cy) {
+  var rect = lastMinimapRect;
+  if (!rect || !rect.valid || !showMinimap) return false;
+  var pad = 2;
+  if (cx < rect.ox + pad || cy < rect.oy + pad ||
+      cx > rect.ox + rect.bw - pad || cy > rect.oy + rect.bh - pad) {
+    return false;
+  }
+  var u = (cx - rect.ox) / rect.bw;
+  var v = (cy - rect.oy) / rect.bh;
+  var worldX = u * rect.mw;
+  var worldY = v * rect.mh;
+  var tx = Math.floor(worldX / T);
+  var ty = Math.floor(worldY / T);
+  var spot = findNearestWalkableTile(tx, ty, 64);
+  if (!spot) return false;
+  player.x = spot.tx * T + 8;
+  player.y = spot.ty * T + 8;
+  player.dir = 0;
+  return true;
+}
 
 function startWorldSync() {
   setTimeout(function() {
@@ -93,26 +194,187 @@ function pauseEngine() { paused = true; }
 function resumeEngine() { paused = false; }
 function getGames() { return games; }
 
+window.toggleMinimap = function() {
+  showMinimap = !showMinimap;
+};
+
 function jumpToTombstone(gameId) {
   for (var i = 0; i < entities.length; i++) {
     var e = entities[i];
     if (e.type === 'tombstone' && e.game && e.game.id === gameId) {
-      player.x = e.x;
-      player.y = e.y + T;
-      player.dir = 1; // face up
+      var tx = Math.floor(e.x / T), ty = Math.floor((e.y + T) / T);
+      var spot = findNearestWalkableTile(tx, ty, 64);
+      if (spot) {
+        player.x = spot.tx * T + 8;
+        player.y = spot.ty * T + 8;
+      } else {
+        player.x = e.x;
+        player.y = e.y + T;
+      }
+      player.dir = 1;
       return;
     }
   }
+}
+
+/** 画布像素坐标 → 打开可点实体上的弹窗（墓碑 / 寻墓人 / 留言墙） */
+function pickInteractableAtWorld(wx, wy) {
+  var list = [];
+  for (var i = 0; i < entities.length; i++) {
+    var e = entities[i];
+    if (e.type !== 'tombstone' && e.type !== 'npc' && e.type !== 'board') continue;
+    var x0 = e.x, y0 = e.y, tw = T, th = T;
+    if (e.type === 'tombstone') th = 48;
+    else if (e.type === 'npc') th = 36;
+    if (wx >= x0 && wx <= x0 + tw && wy >= y0 && wy <= y0 + th) {
+      list.push({ e: e, zy: y0 + th });
+    }
+  }
+  if (!list.length) return null;
+  list.sort(function(a, b) { return b.zy - a.zy; });
+  return list[0].e;
+}
+
+function tryOpenEntityAtCanvasPixels(cx, cy) {
+  if (paused) return false;
+  var wx = cx + cam.x, wy = cy + cam.y;
+  var ent = pickInteractableAtWorld(wx, wy);
+  if (!ent) return false;
+  if (ent.type === 'tombstone' && ent.game) showTombstoneModal(ent.game);
+  else if (ent.type === 'npc') showSearchModal();
+  else if (ent.type === 'board') showWallModal();
+  else return false;
+  return true;
+}
+
+// ---------- 年代 / 平台分区换肤 ----------
+function parseYearFromGame(g) {
+  var s = (g && (g.died || g.born)) || '';
+  var m = String(s).match(/^(\d{4})/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+function getEraKey(y) {
+  if (y == null || isNaN(y)) return 'unknown';
+  if (y < 2000) return 'pre2000';
+  if (y < 2010) return 'y2000s';
+  if (y < 2020) return 'y2010s';
+  return 'y2020s';
+}
+
+function normalizePlatform(g) {
+  var p = String((g && g.platform) || '').toLowerCase();
+  if (/手|ios|android|ipad|移动|鸿蒙/i.test(p)) return 'mobile';
+  if (/主|ps|xbox|switch|任天堂|掌机|\bns\b/i.test(p)) return 'console';
+  if (/页|web|flash|h5|浏览器/i.test(p)) return 'web';
+  return 'pc';
+}
+
+function zoneLabelForGame(g) {
+  var ek = getEraKey(parseYearFromGame(g));
+  var pk = normalizePlatform(g);
+  var el = { pre2000: '20世纪', y2000s: '00年代', y2010s: '10年代', y2020s: '20年代', unknown: '年代不详' };
+  var pl = { pc: 'PC', console: '主机', mobile: '手游', web: '页游' };
+  return (el[ek] || el.unknown) + '·' + (pl[pk] || 'PC');
+}
+
+function sortGamesForZone(list) {
+  var order = { pc: 0, console: 1, mobile: 2, web: 3 };
+  list.sort(function(a, b) {
+    var ya = parseYearFromGame(a), yb = parseYearFromGame(b);
+    if (ya != null && yb != null && ya !== yb) return ya - yb;
+    if (ya == null && yb != null) return 1;
+    if (ya != null && yb == null) return -1;
+    var pa = normalizePlatform(a), pb = normalizePlatform(b);
+    return (order[pa] || 0) - (order[pb] || 0) ||
+      String(a.name || '').localeCompare(String(b.name || ''), 'zh-CN');
+  });
+}
+
+var ENTRANCE_ROW_THEME = {
+  grass: ['#1a2430', '#1c2634', '#162028'],
+  path: '#2e3038',
+  fogMul: 1.05,
+  miniG: '#1c2832',
+  miniP: '#353840'
+};
+
+var DEFAULT_ROW_THEME = {
+  grass: COLORS.grass,
+  path: COLORS.path,
+  fogMul: 1,
+  miniG: '#1e321e',
+  miniP: '#3d362c'
+};
+
+var ERA_THEMES = {
+  pre2000: {
+    grass: ['#1c2436', '#1e2840', '#182030'],
+    path: '#353848',
+    fogMul: 1.14,
+    miniG: '#1e3044',
+    miniP: '#3a3a4a',
+    signBg: '#4a5562',
+    signEdge: '#3a4552'
+  },
+  y2000s: {
+    grass: ['#1a321c', '#1e361c', '#163018'],
+    path: '#304028',
+    fogMul: 0.96,
+    miniG: '#1a321e',
+    miniP: '#384030'
+  },
+  y2010s: {
+    grass: ['#1a2e22', '#1c3224', '#182a1e'],
+    path: '#2c3828',
+    fogMul: 1.02,
+    miniG: '#1c361f',
+    miniP: '#344036'
+  },
+  y2020s: {
+    grass: ['#14282e', '#162c32', '#12262a'],
+    path: '#283840',
+    fogMul: 1.08,
+    miniG: '#16343c',
+    miniP: '#304450'
+  },
+  unknown: {
+    grass: ['#242428', '#26262c', '#202024'],
+    path: '#383840',
+    fogMul: 1.1,
+    miniG: '#2a2a32',
+    miniP: '#404048',
+    signBg: '#484850',
+    signEdge: '#383840'
+  }
+};
+
+var PLATFORM_STONE = {
+  pc: ['#555566', '#606070', '#505060'],
+  console: ['#625248', '#6c5c52', '#584840'],
+  mobile: ['#56586a', '#606274', '#505264'],
+  web: ['#4e6052', '#586a5c', '#465648']
+};
+
+function eraThemeForGame(g) {
+  var ek = getEraKey(parseYearFromGame(g));
+  return ERA_THEMES[ek] || ERA_THEMES.unknown;
+}
+
+function rowMetaAt(row) {
+  return (row >= 0 && row < mapRowMeta.length && mapRowMeta[row]) ? mapRowMeta[row] : DEFAULT_ROW_THEME;
 }
 
 // ===================== 地图生成 =====================
 function buildMap(gamesData) {
   var COLS = 21;
   var PC1 = 9, PC2 = 10;
-  var TC = [2, 5, 8, 12, 15, 18]; // tombstone columns per row
+  var TC = [];
+  for (var ci = 1; ci < COLS - 1; ci++) {
+    if (ci !== PC1 && ci !== PC2) TC.push(ci);
+  }
   var STATUS_ORDER = ['已停服', '已取消', '名存实亡', '被遗忘的佳作'];
 
-  // 按状态分组
   var groups = {};
   STATUS_ORDER.forEach(function(s) { groups[s] = []; });
   gamesData.forEach(function(g) {
@@ -121,9 +383,14 @@ function buildMap(gamesData) {
   });
 
   map = [];
+  mapRowMeta = [];
   entities = [];
 
-  function addRow() {
+  var rowThemeCarry = ENTRANCE_ROW_THEME;
+
+  function addRow(theme) {
+    var th = theme !== undefined && theme !== null ? theme : rowThemeCarry;
+    rowThemeCarry = th;
     var r = [];
     for (var c = 0; c < COLS; c++) {
       if (c === 0 || c === COLS - 1) r.push(FENCE);
@@ -131,58 +398,86 @@ function buildMap(gamesData) {
       else r.push(GRASS);
     }
     map.push(r);
+    mapRowMeta.push(th);
     return map.length - 1;
   }
 
-  // 顶部围栏
   var topRow = [];
   for (var c = 0; c < COLS; c++) topRow.push(FENCE);
   topRow[PC1] = GATE; topRow[PC2] = GATE;
   map.push(topRow);
+  mapRowMeta.push(ENTRANCE_ROW_THEME);
+  rowThemeCarry = ENTRANCE_ROW_THEME;
 
-  // 入口区
-  addRow();
-  var npcRow = addRow();
+  addRow(ENTRANCE_ROW_THEME);
+  var npcRow = addRow(ENTRANCE_ROW_THEME);
   entities.push({ type: 'npc', tileX: 7, tileY: npcRow, x: 7 * T, y: npcRow * T });
-
-  // 留言墙
   entities.push({ type: 'board', tileX: 13, tileY: npcRow, x: 13 * T, y: npcRow * T });
 
-  addRow();
+  addRow(ENTRANCE_ROW_THEME);
 
-  // 各区域
   STATUS_ORDER.forEach(function(status) {
     var list = groups[status];
     if (!list.length) return;
 
-    addRow(); // 间隔
-    var sr = addRow();
-    entities.push({ type: 'sign', x: (PC1 - 3) * T, y: sr * T, text: status });
-    addRow();
+    sortGamesForZone(list);
+
+    addRow(DEFAULT_ROW_THEME);
+    var sr = addRow(DEFAULT_ROW_THEME);
+    entities.push({
+      type: 'sign',
+      x: (PC1 - 3) * T,
+      y: sr * T,
+      text: status,
+      sub: false
+    });
+    addRow(DEFAULT_ROW_THEME);
 
     var gi = 0;
+    var lastZoneLabel = null;
+
     while (gi < list.length) {
-      var tr = addRow(); // 墓碑行
+      var g0 = list[gi];
+      var zlab = zoneLabelForGame(g0);
+      if (lastZoneLabel !== null && zlab !== lastZoneLabel) {
+        addRow(DEFAULT_ROW_THEME);
+        var zr = addRow(eraThemeForGame(g0));
+        entities.push({
+          type: 'sign',
+          x: (PC1 - 3) * T,
+          y: zr * T,
+          text: zlab,
+          sub: true
+        });
+        addRow(eraThemeForGame(g0));
+      }
+      lastZoneLabel = zlab;
+
+      var rowTh = eraThemeForGame(g0);
+      var tr = addRow(rowTh);
       TC.forEach(function(col) {
         if (gi >= list.length) return;
         map[tr][col] = TOMBSTONE;
         entities.push({
-          type: 'tombstone', tileX: col, tileY: tr,
-          x: col * T, y: tr * T, game: list[gi]
+          type: 'tombstone',
+          tileX: col,
+          tileY: tr,
+          x: col * T,
+          y: tr * T,
+          game: list[gi]
         });
         gi++;
       });
-      addRow(); // 间隔行
+      addRow(rowTh);
     }
   });
 
-  addRow();
-  // 底部围栏
+  addRow(DEFAULT_ROW_THEME);
   var botRow = [];
   for (var c = 0; c < COLS; c++) botRow.push(FENCE);
   map.push(botRow);
+  mapRowMeta.push(DEFAULT_ROW_THEME);
 
-  // 装饰树
   var treeSlots = [1, 3, 5, 11, 13, 17, 19];
   treeSlots.forEach(function(c) {
     if (map[1] && map[1][c] === GRASS) map[1][c] = TREE;
@@ -196,6 +491,28 @@ function buildMap(gamesData) {
   mapH = map.length;
   player.x = PC1 * T;
   player.y = 1.5 * T;
+
+  buildMinimapCache();
+}
+
+function buildMinimapCache() {
+  minimapCanvas = document.createElement('canvas');
+  minimapCanvas.width = mapW;
+  minimapCanvas.height = mapH;
+  var mctx = minimapCanvas.getContext('2d');
+  if (!mctx) return;
+  for (var r = 0; r < mapH; r++) {
+    var meta = rowMetaAt(r);
+    for (var c = 0; c < mapW; c++) {
+      var t = map[r][c];
+      if (t === PATH || t === GATE) mctx.fillStyle = meta.miniP || '#3d362c';
+      else if (t === TOMBSTONE) mctx.fillStyle = '#5a5a6e';
+      else if (t === FENCE) mctx.fillStyle = '#2a2418';
+      else if (t === TREE) mctx.fillStyle = '#1a3d1a';
+      else mctx.fillStyle = meta.miniG || '#1e321e';
+      mctx.fillRect(c, r, 1, 1);
+    }
+  }
 }
 
 // ===================== 粒子 =====================
@@ -251,11 +568,13 @@ function update() {
   if (dy && canMove(player.x, player.y + dy)) player.y += dy;
   if (player.moving && tick % 8 === 0) player.frame = (player.frame + 1) % 4;
 
-  // 相机
+  // 相机（地图小于视口时避免负边界）
   cam.x = player.x - canvas.width / 2 + T / 2;
   cam.y = player.y - canvas.height / 2 + T / 2;
-  cam.x = Math.max(0, Math.min(cam.x, mapW * T - canvas.width));
-  cam.y = Math.max(0, Math.min(cam.y, mapH * T - canvas.height));
+  var maxCamX = Math.max(0, mapW * T - canvas.width);
+  var maxCamY = Math.max(0, mapH * T - canvas.height);
+  cam.x = Math.max(0, Math.min(cam.x, maxCamX));
+  cam.y = Math.max(0, Math.min(cam.y, maxCamY));
 
   // 雾
   fogParticles.forEach(function(f) {
@@ -302,14 +621,18 @@ function update() {
     if (typeof sendGhostPathPoints === 'function') sendGhostPathPoints(toSend);
   }
 
-  // 检测附近可交互实体
+  // 检测附近可交互实体（粗筛再算距，墓碑很多时更省）
   nearEntity = null;
   var px = player.x + T / 2, py = player.y + T / 2;
+  var bestD = T * 1.6;
   for (var i = 0; i < entities.length; i++) {
     var e = entities[i];
-    if (e.type !== 'tombstone' && e.type !== 'npc') continue;
-    var d = Math.sqrt(Math.pow(e.x + T / 2 - px, 2) + Math.pow(e.y + T / 2 - py, 2));
-    if (d < T * 1.6) { nearEntity = e; break; }
+    if (e.type !== 'tombstone' && e.type !== 'npc' && e.type !== 'board') continue;
+    var cx = e.x + T / 2, cy = e.y + T / 2;
+    var adx = Math.abs(cx - px), ady = Math.abs(cy - py);
+    if (adx >= bestD || ady >= bestD) continue;
+    var d = Math.sqrt(adx * adx + ady * ady);
+    if (d < bestD) { bestD = d; nearEntity = e; }
   }
 
   // E 键交互
@@ -318,6 +641,7 @@ function update() {
     if (nearEntity) {
       if (nearEntity.type === 'tombstone') showTombstoneModal(nearEntity.game);
       else if (nearEntity.type === 'npc') showSearchModal();
+      else if (nearEntity.type === 'board') showWallModal();
     }
   }
 }
@@ -345,7 +669,7 @@ function render() {
 
   for (var r = sr; r < er; r++) {
     for (var c = sc; c < ec; c++) {
-      drawTile(c * T - cam.x, r * T - cam.y, map[r][c], r, c);
+      drawTile(c * T - cam.x, r * T - cam.y, map[r][c], r, c, rowMetaAt(r));
     }
   }
 
@@ -377,13 +701,15 @@ function render() {
     else if (t === 'ghost') drawGhost(d.sx, d.sy, d.e.dir, d.e.alpha);
     else if (t === 'tombstone') drawTombstoneSprite(d.sx, d.sy, d.e.game, d.e === nearEntity);
     else if (t === 'npc') drawNPC(d.sx, d.sy, d.e === nearEntity);
-    else if (t === 'sign') drawSign(d.sx, d.sy, d.e.text);
-    else if (t === 'board') drawBoard(d.sx, d.sy);
+    else if (t === 'sign') drawSign(d.sx, d.sy, d.e);
+    else if (t === 'board') drawBoard(d.sx, d.sy, d.e === nearEntity);
   });
 
-  // 雾
+  // 雾（浓度随所在行年代主题略变）
   fogParticles.forEach(function(f) {
-    ctx.fillStyle = 'rgba(180,180,200,' + f.a + ')';
+    var fr = Math.max(0, Math.min(mapH - 1, Math.floor(f.y / T)));
+    var mul = rowMetaAt(fr).fogMul || 1;
+    ctx.fillStyle = 'rgba(180,180,200,' + (f.a * mul) + ')';
     ctx.beginPath();
     ctx.arc(f.x - cam.x, f.y - cam.y, f.size, 0, 6.28);
     ctx.fill();
@@ -396,6 +722,7 @@ function render() {
     ctx.textAlign = 'center';
     ctx.fillStyle = '#000';
     var hintText = isMobile() ? '点击互动' : '按 E 互动';
+    if (nearEntity.type === 'board') hintText = isMobile() ? '点留言墙' : 'E 留言墙';
     ctx.fillText(hintText, ex + 1, ey + 1);
     ctx.fillStyle = '#fff';
     ctx.fillText(hintText, ex, ey);
@@ -406,18 +733,52 @@ function render() {
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(160,190,255,.42)';
   ctx.fillText('最近约15分钟：' + recentVisitorCount + ' 位访客', 10, 14);
+  if (isMobile()) {
+    ctx.font = '6px "Press Start 2P",monospace';
+    ctx.fillStyle = 'rgba(255,255,255,.22)';
+    ctx.fillText('点右下角地图可传送', 10, 26);
+  }
   ctx.font = '8px "Press Start 2P",monospace';
   ctx.fillStyle = 'rgba(255,255,255,.3)';
   if (!isMobile()) {
-    ctx.fillText('WASD 移动 · E 互动 · ESC 关闭', 10, h - 10);
+    ctx.fillText('WASD 移动 · E 互动 · M 小地图 · 点地图传送 · ESC 关闭', 10, h - 10);
+  }
+
+  if (showMinimap && minimapCanvas && minimapCanvas.width > 0) {
+    var mw = mapW * T, mh = mapH * T;
+    var maxW = Math.min(260, w * 0.55), maxH = Math.min(180, h * 0.38);
+    var scale = Math.min(maxW / mw, maxH / mh);
+    var bw = mw * scale, bh = mh * scale;
+    var ox = w - bw - 10, oy = h - bh - 10;
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.strokeStyle = 'rgba(100,130,200,0.35)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(ox - 3, oy - 3, bw + 6, bh + 6);
+    ctx.strokeRect(ox - 3, oy - 3, bw + 6, bh + 6);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(minimapCanvas, 0, 0, mapW, mapH, ox, oy, bw, bh);
+    var pmx = ox + (player.x / mw) * bw;
+    var pmy = oy + (player.y / mh) * bh;
+    ctx.fillStyle = '#ff6666';
+    ctx.fillRect(pmx - 2, pmy - 2, 4, 4);
+    ctx.font = '6px "Press Start 2P",monospace';
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(200,210,255,.55)';
+    ctx.fillText('点图传送', ox + bw, oy - 5);
+    ctx.textAlign = 'left';
+    lastMinimapRect = { ox: ox, oy: oy, bw: bw, bh: bh, mw: mw, mh: mh, valid: true };
+  } else {
+    lastMinimapRect = { valid: false };
   }
 }
 
 // ========= 瓦片绘制 =========
-function drawTile(x, y, tile, row, col) {
+function drawTile(x, y, tile, row, col, meta) {
+  var m = meta || DEFAULT_ROW_THEME;
   switch (tile) {
     case GRASS:
-      ctx.fillStyle = COLORS.grass[(row + col) % 3];
+      var g = m.grass || COLORS.grass;
+      ctx.fillStyle = g[(row + col) % 3];
       ctx.fillRect(x, y, T, T);
       if ((row * 7 + col * 13) % 5 === 0) {
         ctx.fillStyle = '#1e341e';
@@ -426,12 +787,12 @@ function drawTile(x, y, tile, row, col) {
       }
       break;
     case PATH:
-      ctx.fillStyle = COLORS.path;
+      ctx.fillStyle = m.path || COLORS.path;
       ctx.fillRect(x, y, T, T);
       if ((row + col) % 3 === 0) { ctx.fillStyle = '#342e24'; ctx.fillRect(x + 10, y + 14, 4, 3); }
       break;
     case FENCE:
-      ctx.fillStyle = COLORS.grass[0];
+      ctx.fillStyle = (m.grass || COLORS.grass)[0];
       ctx.fillRect(x, y, T, T);
       ctx.fillStyle = COLORS.fence;
       ctx.fillRect(x, y + 10, T, 4);
@@ -442,11 +803,12 @@ function drawTile(x, y, tile, row, col) {
       ctx.fillRect(x + 21, y + 2, 6, 4);
       break;
     case TOMBSTONE:
-      ctx.fillStyle = COLORS.grass[(row + col) % 3];
+      var gt = m.grass || COLORS.grass;
+      ctx.fillStyle = gt[(row + col) % 3];
       ctx.fillRect(x, y, T, T);
       break;
     case TREE:
-      ctx.fillStyle = COLORS.grass[0];
+      ctx.fillStyle = (m.grass || COLORS.grass)[0];
       ctx.fillRect(x, y, T, T);
       ctx.fillStyle = COLORS.treeTrunk;
       ctx.fillRect(x + 12, y + 18, 8, 14);
@@ -456,7 +818,7 @@ function drawTile(x, y, tile, row, col) {
       ctx.fillRect(x + 6, y, 20, 8);
       break;
     case GATE:
-      ctx.fillStyle = COLORS.path;
+      ctx.fillStyle = m.path || COLORS.path;
       ctx.fillRect(x, y, T, T);
       ctx.fillStyle = COLORS.gate;
       ctx.fillRect(x, y, T, 3);
@@ -469,8 +831,10 @@ function drawTombstoneSprite(x, y, game, hl) {
   ctx.fillStyle = 'rgba(0,0,0,.3)';
   ctx.fillRect(x + 4, y + 24, 24, 6);
 
-  var ci = game.id.length % 3;
-  ctx.fillStyle = COLORS.stone[ci];
+  var pk = normalizePlatform(game);
+  var stones = PLATFORM_STONE[pk] || PLATFORM_STONE.pc;
+  var ci = String(game.id || '').length % 3;
+  ctx.fillStyle = stones[ci];
   ctx.fillRect(x + 6, y + 6, 20, 20);
   ctx.fillRect(x + 8, y + 2, 16, 6);
   ctx.fillRect(x + 10, y, 12, 4);
@@ -657,20 +1021,32 @@ function drawNPC(x, y, hl) {
   }
 }
 
-function drawSign(x, y, text) {
+function drawSign(sx, sy, e) {
+  var text = e.text || '';
+  var row = Math.max(0, Math.min(mapH - 1, Math.floor((e.y || 0) / T)));
+  var meta = rowMetaAt(row);
+  var board = meta.signBg || '#5a4a30';
+  var edge = meta.signEdge || '#4a3a20';
   ctx.fillStyle = '#3a2a1a';
-  ctx.fillRect(x + 14, y + 16, 4, 16);
-  ctx.fillStyle = '#5a4a30';
-  ctx.fillRect(x - 12, y + 4, 56, 14);
-  ctx.fillStyle = '#4a3a20';
-  ctx.fillRect(x - 12, y + 4, 56, 2);
-  ctx.font = '8px "Press Start 2P",monospace';
+  ctx.fillRect(sx + 14, sy + 16, 4, 16);
+  ctx.fillStyle = board;
+  ctx.fillRect(sx - 12, sy + 4, 56, 14);
+  ctx.fillStyle = edge;
+  ctx.fillRect(sx - 12, sy + 4, 56, 2);
+  var fs = e.sub ? 5 : 8;
+  if (e.sub && text.length > 11) text = text.slice(0, 10) + '..';
+  ctx.font = fs + 'px "Press Start 2P",monospace';
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ddd';
-  ctx.fillText(text, x + 16, y + 15);
+  ctx.fillText(text, sx + 16, sy + (e.sub ? 13 : 15));
 }
 
-function drawBoard(x, y) {
+function drawBoard(x, y, hl) {
+  if (hl) {
+    ctx.strokeStyle = 'rgba(255, 220, 100, 0.45)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x - 1, y + 2, T + 2, T - 2);
+  }
   ctx.fillStyle = '#3a2a1a';
   ctx.fillRect(x + 4, y + 20, 4, 12);
   ctx.fillRect(x + 24, y + 20, 4, 12);
