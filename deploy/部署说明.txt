@@ -29,3 +29,24 @@
   走 youxijia 测：curl -H "Host: youximudi.com" http://127.0.0.1/api/health
 
 【说明】Linux 方案仍用 Nginx 虚拟主机；Windows 与游戏家共用 80 时用上述反代。
+
+【访问整站出现 502 Bad Gateway 时】（已外网实测 youximudi.com）
+实测响应头含：Server: cloudflare，正文为「error code: 502」。说明 502 由 Cloudflare 边缘节点返回，
+即：Cloudflare 作为代理，未能从你配置的「源站」拿到正常 HTTP 响应（源站宕机、端口不通、防火墙、
+SSL 模式与源站证书不匹配、源 IP 填错等）。不是小程序或仓库静态文件本身的问题。
+处理方向：登录 Cloudflare 控制台检查该域名的 A/AAAA 源 IP、SSL/TLS 模式、源站服务与防火墙；
+必要时把对应记录临时改为「仅 DNS」（灰云）直连源站 IP 用浏览器测，区分是源站问题还是 Cloudflare 配置问题。
+
+含义（通用）：最前面的反代（Nginx / Cloudflare / 游戏家）连不上后面的站点或 API 进程。
+1) Linux：ssh 上机后执行
+   sudo systemctl status youximudi-api
+   sudo systemctl restart youximudi-api
+   curl -sS http://127.0.0.1:8788/api/health
+   sudo nginx -t && sudo systemctl reload nginx
+2) Windows（与游戏家同机）：确认「youximudi-fullsite」计划任务或对应 Node 在跑；
+   浏览器打不开时在本机 PowerShell 测：
+   curl http://127.0.0.1:59871/
+   curl http://127.0.0.1:59871/api/health
+   再重启游戏家（反代 80 的进程）与墓地 Node。
+3) 使用 Cloudflare：控制台看源站是否在线；SSL 若选 Full(strict) 而源站证书无效也会异常；可暂时改为 Full 排查。
+4) 若暂时不想维护服务器：可把 DNS 改到 GitHub Pages（仅静态页，献花/留言等 /api 功能不可用，墓地地图仍可读 data/games.json）。
