@@ -1,0 +1,45 @@
+<page-loading show="{{loading}}" />
+<scroll-view scroll-y class="page" enhanced show-scrollbar="{{false}}">
+  <view class="hero">
+    <view class="hero-inner card-shadow">
+      <text class="hero-title">被遗忘的游戏时光</text>
+      <text class="hero-sub">存档那些陪我们走过青春，却已落幕的经典游戏</text>
+    </view>
+  </view>
+
+  <view class="section row2">
+    <view class="entry card-shadow" bindtap="goList">
+      <text class="entry-title">全部游戏档案</text>
+      <text class="entry-desc">浏览停服与绝版游戏记录</text>
+    </view>
+    <view class="entry card-shadow" bindtap="goCollect">
+      <text class="entry-title">我的收藏</text>
+      <text class="entry-desc">保存你重温过的回忆</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">随机邂逅一款被遗忘的游戏</text>
+    <view wx:if="{{randomGame}}" class="random-wrap card-shadow">
+      <game-card game="{{randomGame}}" bind:select="onCardSelect" />
+      <view class="random-btns">
+        <button class="btn-outline" bindtap="shuffleRandom">换一款</button>
+        <button class="btn-primary" bindtap="goRandomDetail">查看详情</button>
+      </view>
+    </view>
+    <empty-state
+      wx:elif="{{!loading && loadErr}}"
+      message="暂时无法加载推荐，请检查网络与云开发配置"
+      show-button="{{true}}"
+      button-text="重试"
+      bind:go="shuffleRandom"
+    />
+    <empty-state
+      wx:elif="{{!loading && !randomGame}}"
+      message="还没有游戏档案，请先在云数据库中录入数据"
+    />
+  </view>
+
+  <view class="footer-note">本小程序仅用于怀旧记录，不提供任何游戏安装或分发服务</view>
+  <view class="safe-bottom spacer" />
+</scroll-view>

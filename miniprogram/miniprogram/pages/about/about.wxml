@@ -1,0 +1,29 @@
+<scroll-view scroll-y class="page" enhanced show-scrollbar="{{false}}">
+  <view class="block card-shadow">
+    <text class="h1">被遗忘的游戏时光</text>
+    <text class="p">
+      本小程序是一款纯怀旧向的游戏档案存档工具，致力于收录那些已经停服、下架、绝版的经典老游戏，为玩家留存青春里的游戏回忆。本小程序不提供任何游戏安装包、充值或商业服务，仅做内容展示与记录。
+    </text>
+  </view>
+
+  <view class="block card-shadow">
+    <text class="h2">合规声明</text>
+    <text class="p">
+      1. 本小程序所有内容均来自公开网络，仅用于怀旧分享，不做任何商业用途，相关版权归原游戏发行方所有。
+    </text>
+    <text class="p">
+      2. 如有内容侵权、不实信息，请通过以下渠道联系我们，我们将在24小时内删除处理。
+    </text>
+    <text class="p">
+      3. 本小程序不提供任何游戏安装、引流服务，无任何违规内容。
+    </text>
+  </view>
+
+  <view class="block card-shadow">
+    <text class="h2">联系与更新</text>
+    <text class="p">投诉联系邮箱：n11290mars@163.com</text>
+    <text class="p">小程序版本：V1.0.0</text>
+    <text class="p">更新时间：2026年04月02日</text>
+  </view>
+  <view class="safe-bottom bottom-space" />
+</scroll-view>

@@ -1,0 +1,51 @@
+<page-loading show="{{loading}}" />
+<scroll-view wx:if="{{game}}" scroll-y class="page" enhanced show-scrollbar="{{false}}">
+  <view class="cover-wrap">
+    <image class="cover" src="{{coverSrc}}" mode="aspectFill" />
+    <view class="star-fab" bindtap="toggleCollect">{{starText}}</view>
+  </view>
+
+  <view class="card card-shadow base">
+    <text class="name">{{game.game_name}}</text>
+    <view class="row"><text class="k">发行时间</text><text class="v">{{game.release_time}}</text></view>
+    <view class="row"><text class="k">停服/下架</text><text class="v">{{game.stop_time}}</text></view>
+    <view class="row" wx:if="{{game.publisher}}">
+      <text class="k">发行商</text><text class="v">{{game.publisher}}</text>
+    </view>
+    <view class="row">
+      <text class="k">平台</text>
+      <text class="v">{{platformText}}</text>
+    </view>
+    <view class="tag-row">
+      <text class="d-tag" wx:for="{{game.game_tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="section card-shadow">
+    <text class="h2">游戏档案</text>
+    <text class="body-text">{{game.game_intro}}</text>
+  </view>
+
+  <view wx:if="{{game.game_screenshots && game.game_screenshots.length}}" class="section card-shadow">
+    <text class="h2">游戏时光截图</text>
+    <scroll-view scroll-x class="shots" enhanced show-scrollbar="{{false}}">
+      <image
+        wx:for="{{game.game_screenshots}}"
+        wx:key="*this"
+        class="shot"
+        src="{{item}}"
+        mode="aspectFill"
+        data-urls="{{game.game_screenshots}}"
+        data-current="{{item}}"
+        bindtap="previewShot"
+      />
+    </scroll-view>
+  </view>
+
+  <view class="view-line">已有 {{viewCount}} 人重温过这段时光</view>
+  <view class="safe-bottom bottom-pad" />
+</scroll-view>
+
+<view wx:if="{{game}}" class="bar safe-bottom">
+  <button class="btn-primary bar-btn" bindtap="toggleCollect">{{collectBtnText}}</button>
+</view>

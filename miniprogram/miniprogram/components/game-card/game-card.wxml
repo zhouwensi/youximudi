@@ -1,0 +1,22 @@
+<view class="card card-shadow" bindtap="onCardTap">
+  <image
+    class="cover"
+    src="{{coverSrc}}"
+    mode="aspectFill"
+    lazy-load
+  />
+  <view class="body">
+    <text class="title">{{game.game_name}}</text>
+    <text class="time">{{game.release_time}} · {{game.stop_time}}</text>
+    <view class="tags" wx:if="{{game.game_tags && game.game_tags.length}}">
+      <text class="tag" wx:for="{{game.game_tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <text class="intro" wx:if="{{game.one_line}}">{{game.one_line}}</text>
+    <text class="intro" wx:elif="{{shortIntro}}">{{shortIntro}}</text>
+  </view>
+  <view
+    wx:if="{{showRemove}}"
+    class="remove"
+    catchtap="onRemoveTap"
+  >取消收藏</view>
+</view>

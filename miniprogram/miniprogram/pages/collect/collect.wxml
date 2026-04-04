@@ -1,0 +1,18 @@
+<page-loading show="{{loading}}" />
+<view class="page">
+  <game-card
+    wx:for="{{list}}"
+    wx:key="_id"
+    game="{{item}}"
+    show-remove="{{true}}"
+    bind:select="onCardSelect"
+    bind:remove="onRemove"
+  />
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    message="还没有收藏的游戏，去邂逅那些被遗忘的时光吧"
+    show-button="{{true}}"
+    button-text="去看看全部游戏"
+    bind:go="goList"
+  />
+</view>

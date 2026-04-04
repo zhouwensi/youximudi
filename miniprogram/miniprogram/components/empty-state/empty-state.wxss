@@ -1,0 +1,16 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  min-height: 320rpx;
+}
+
+.msg {
+  font-size: 28rpx;
+  color: #888888;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 40rpx;
+}

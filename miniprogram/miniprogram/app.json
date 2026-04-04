@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/list/list",
+    "pages/detail/detail",
+    "pages/collect/collect",
+    "pages/about/about"
+  ],
+  "window": {
+    "backgroundColor": "#F5F0E6",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F5F0E6",
+    "navigationBarTitleText": "游戏时光",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#888888",
+    "selectedColor": "#8B5A2B",
+    "backgroundColor": "#F5F0E6",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home_cur.png"
+      },
+      {
+        "pagePath": "pages/list/list",
+        "text": "档案",
+        "iconPath": "images/tab/list.png",
+        "selectedIconPath": "images/tab/list_cur.png"
+      },
+      {
+        "pagePath": "pages/collect/collect",
+        "text": "收藏",
+        "iconPath": "images/tab/collect.png",
+        "selectedIconPath": "images/tab/collect_cur.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "关于",
+        "iconPath": "images/tab/about.png",
+        "selectedIconPath": "images/tab/about_cur.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

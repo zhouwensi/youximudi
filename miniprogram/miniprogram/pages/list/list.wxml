@@ -1,0 +1,55 @@
+<page-loading show="{{loading && page === 1}}" />
+<view class="page">
+  <view class="search-bar card-shadow">
+    <input
+      class="search-input"
+      placeholder="搜索你记忆里的那款游戏"
+      placeholder-class="ph"
+      confirm-type="search"
+      value="{{keyword}}"
+      bindinput="onKeywordInput"
+      bindconfirm="onSearchConfirm"
+    />
+    <text class="search-btn" bindtap="onSearchConfirm">搜索</text>
+  </view>
+
+  <view class="filter-block">
+    <text class="filter-label">平台</text>
+    <view class="chips">
+      <tag-chip
+        wx:for="{{platformOptions}}"
+        wx:key="name"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onPlatformToggle"
+      />
+    </view>
+    <text class="filter-label">类型</text>
+    <view class="chips">
+      <tag-chip
+        wx:for="{{tagOptions}}"
+        wx:key="name"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onTagToggle"
+      />
+    </view>
+  </view>
+
+  <view class="list-wrap">
+    <game-card
+      wx:for="{{list}}"
+      wx:key="_id"
+      game="{{item}}"
+      bind:select="onCardSelect"
+    />
+    <empty-state
+      wx:if="{{!loading && list.length === 0}}"
+      message="没有找到对应的游戏，去看看其他被遗忘的时光吧"
+    />
+    <view wx:if="{{loadingMore}}" class="more">加载更多…</view>
+    <view wx:if="{{!hasMore && list.length > 0}}" class="end">已经到底啦</view>
+  </view>
+</view>

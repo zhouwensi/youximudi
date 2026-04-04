@@ -1,0 +1,3 @@
+<view wx:if="{{show}}" class="mask">
+  <view class="box">加载中…</view>
+</view>

@@ -1,0 +1,4 @@
+<view class="wrap">
+  <text class="msg">{{message}}</text>
+  <button wx:if="{{showButton}}" class="btn-primary" bindtap="onGo">{{buttonText}}</button>
+</view>

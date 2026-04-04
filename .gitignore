@@ -1,0 +1,21 @@
+# 依赖（勿提交 lock 以外的二进制依赖树）
+node_modules/
+**/node_modules/
+
+# 密钥与本地配置（公开仓库禁止提交）
+.env
+.env.*
+*.pem
+*.p12
+*_rsa
+*_ed25519
+id_rsa
+id_ed25519
+
+# 操作系统与编辑器
+.DS_Store
+Thumbs.db
+*.log
+
+# 微信开发者工具私有配置（可能含本机路径；按需保留时可从 ignore 中移除）
+# project.private.config.json

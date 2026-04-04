@@ -1,0 +1,17 @@
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(245, 240, 230, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.box {
+  font-size: 28rpx;
+  color: #8b5a2b;
+}

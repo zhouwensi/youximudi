@@ -1,0 +1,17 @@
+在微信开发者工具 → 云开发 → 数据库 中创建集合并设置权限：
+
+【集合 game_list】
+- 建议权限：「所有用户可读，仅创建者可写」或自定义：read true；write 仅管理员（个人主体可在控制台手动维护数据，不在客户端写 game_list）
+- 说明：游戏档案只通过云函数读取时，也可设为「无权限」并在云函数中用管理员权限查询（需在云函数内使用云开发安全规则配合）。本项目云函数使用默认用户身份读库，请保持「所有用户可读」。
+
+【集合 user_collect】
+- 权限：「仅创建者可读写」
+- 说明：云函数 userCollectOperate / getUserCollectList 使用 OPENID 写入与查询，需与「仅创建者可读写」一致；确保在云函数中仅用 wxContext.OPENID 作为 openid 字段，不信任客户端传入的 openid。
+
+【索引建议】
+- user_collect：字段 openid 升序 + create_time 降序（列表排序）
+
+导入示例数据：
+- 控制台仅允许文件名以 .json 或 .csv 结尾，且内容为 JSON Lines（每行一条 JSON 对象，不要最外层的 [ ]）。
+- 请使用本目录下 game_list.import.json 做导入（与 game_list.seed.jsonl 内容相同，仅为满足扩展名限制）。
+- game_list.seed.array.json 为带 [] 的 JSON 数组，仅供阅读，导入会报错。
