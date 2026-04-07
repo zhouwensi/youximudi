@@ -44,6 +44,7 @@ var lastGhostFlushTick = 0;
 
 // ===================== 初始化 =====================
 window.addEventListener('DOMContentLoaded', function() {
+  if (typeof ensureWorldApiProbe === 'function') ensureWorldApiProbe();
   canvas = document.getElementById('game');
   ctx = canvas.getContext('2d');
   resize();
@@ -164,23 +165,27 @@ function teleportToMinimapPoint(cx, cy) {
 }
 
 function startWorldSync() {
-  setTimeout(function() {
-    if (typeof sendPresencePing === 'function') sendPresencePing();
-  }, 1200);
-  setInterval(function() {
-    if (typeof sendPresencePing === 'function') sendPresencePing();
-  }, 28000);
-  function pull() {
-    if (typeof fetchWorldState !== 'function') return;
-    fetchWorldState().then(function(d) {
-      if (!d || typeof d.recentCount !== 'number') return;
-      recentVisitorCount = d.recentCount;
-      worldFootprints = Array.isArray(d.footprints) ? d.footprints : [];
-      worldGhostPaths = Array.isArray(d.ghosts) ? d.ghosts : [];
-    });
-  }
-  pull();
-  setInterval(pull, 5000);
+  if (typeof ensureWorldApiProbe !== 'function') return;
+  ensureWorldApiProbe().then(function(ok) {
+    if (!ok) return;
+    setTimeout(function() {
+      if (typeof sendPresencePing === 'function') sendPresencePing();
+    }, 1200);
+    setInterval(function() {
+      if (typeof sendPresencePing === 'function') sendPresencePing();
+    }, 28000);
+    function pull() {
+      if (typeof fetchWorldState !== 'function') return;
+      fetchWorldState().then(function(d) {
+        if (!d || typeof d.recentCount !== 'number') return;
+        recentVisitorCount = d.recentCount;
+        worldFootprints = Array.isArray(d.footprints) ? d.footprints : [];
+        worldGhostPaths = Array.isArray(d.ghosts) ? d.ghosts : [];
+      });
+    }
+    pull();
+    setInterval(pull, 5000);
+  });
 }
 
 function resize() {

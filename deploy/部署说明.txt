@@ -1,8 +1,21 @@
-游戏墓地 youximudi.com — 自建部署（静态 + API 同机）
+游戏墓地 youximudi.com — 部署说明（主方案 + 纯静态）
 
-【你只需确认 / 做一次的事】
+■ 方案 A：GitHub Pages + Cloudflare Worker + KV（推荐，无 VPS）
+  - 静态：README「一、GitHub Pages」；API：README「零」与 workers/api/README.md。
+  - 域名在 Cloudflare 橙云时，务必为「youximudi.com/api/*」绑定本仓库提供的 Worker（workers/api），
+    不要用只转发 GET 的旧 Worker，否则 POST 会 405。
+  - 可选：仓库 Secrets 配好后由 .github/workflows/cloudflare-worker.yml 自动部署 Worker。
+  - 若有历史 server/data/kv.json：server 目录执行 node migrate-to-cloudflare-kv.mjs（见文件头环境变量）。
+
+■ 方案 B：自建服务器（静态 + Node API 同机，见下文「你只需确认」）
+
+■ 方案 C：仅 GitHub Pages、不配 Worker — 无 /api，前端会探测 /api/health 后关闭世界同步等（见 README 说明）。
+
+────────────────────────────────────────
+【方案 B：你只需确认 / 做一次的事】
 1) DNS：youximudi.com（及 www）A 记录 → 服务器公网 IP。
-2) Cloudflare 控制台：Workers 路由里删除「youximudi.com/api/*」，否则请求仍进 Worker。
+2) 若域名在 Cloudflare 且要走本机 Node API：Workers 路由里删除或改掉「youximudi.com/api/*」，
+   否则请求仍进 Worker、到不了本机。（若采用方案 A 的 Worker，则应保留该路由，不要删。）
 3) 服务器上已安装：Nginx、Node.js 18+、（建议）certbot 已为本域申请证书。
 4) GitHub Actions 自动部署（可选）：按 .github/workflows/deploy-selfhosted.yml 内注释配置 Secrets；服务器上为部署用户配置 sudo 免密执行 systemctl restart youximudi-api。
 
@@ -49,4 +62,4 @@ SSL 模式与源站证书不匹配、源 IP 填错等）。不是小程序或仓
    curl http://127.0.0.1:59871/api/health
    再重启游戏家（反代 80 的进程）与墓地 Node。
 3) 使用 Cloudflare：控制台看源站是否在线；SSL 若选 Full(strict) 而源站证书无效也会异常；可暂时改为 Full 排查。
-4) 若暂时不想维护服务器：可把 DNS 改到 GitHub Pages（仅静态页，献花/留言等 /api 功能不可用，墓地地图仍可读 data/games.json）。
+4) 若不想维护服务器：DNS 指向 GitHub Pages，并配 Cloudflare Worker + KV（方案 A），献花/留言/足迹等 /api 仍可用；不配 Worker 时地图仍可读 data/games.json，但 /api 会降级。

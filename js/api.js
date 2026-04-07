@@ -1,6 +1,27 @@
 // API 配置
 var API_BASE = '/api';
 
+/** 世界同步（足迹/在线/幽灵）是否可用；null 表示尚未探测 */
+var _worldApiOk = null;
+var _worldApiProbePromise = null;
+
+/** 探测 /api 是否在线（纯静态 Pages 会失败；配好 Worker 后 /api/health 应 200） */
+function ensureWorldApiProbe() {
+  if (_worldApiOk !== null) return Promise.resolve(_worldApiOk);
+  if (!_worldApiProbePromise) {
+    _worldApiProbePromise = fetch(API_BASE + '/health')
+      .then(function(r) {
+        _worldApiOk = r.ok;
+        return _worldApiOk;
+      })
+      .catch(function() {
+        _worldApiOk = false;
+        return false;
+      });
+  }
+  return _worldApiProbePromise;
+}
+
 function apiGet(path) {
   return fetch(API_BASE + path)
     .then(function(r) { return r.json(); })
@@ -70,15 +91,33 @@ function getSessionId() {
 }
 
 function sendPresencePing() {
-  return apiPost('/presence', { sessionId: getSessionId() }).catch(function() {});
+  if (_worldApiOk === false) return Promise.resolve();
+  return ensureWorldApiProbe()
+    .then(function(ok) {
+      if (!ok) return;
+      return apiPost('/presence', { sessionId: getSessionId() });
+    })
+    .catch(function() {});
 }
 
 function sendFootprintTile(gx, gy) {
-  return apiPost('/footprint', { sessionId: getSessionId(), gx: gx, gy: gy }).catch(function() {});
+  if (_worldApiOk === false) return Promise.resolve();
+  return ensureWorldApiProbe()
+    .then(function(ok) {
+      if (!ok) return;
+      return apiPost('/footprint', { sessionId: getSessionId(), gx: gx, gy: gy });
+    })
+    .catch(function() {});
 }
 
 function sendGhostPathPoints(points) {
-  return apiPost('/ghost-path', { sessionId: getSessionId(), points: points }).catch(function() {});
+  if (_worldApiOk === false) return Promise.resolve();
+  return ensureWorldApiProbe()
+    .then(function(ok) {
+      if (!ok) return;
+      return apiPost('/ghost-path', { sessionId: getSessionId(), points: points });
+    })
+    .catch(function() {});
 }
 
 function fetchWorldState() {

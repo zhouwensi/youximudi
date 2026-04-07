@@ -1,5 +1,6 @@
 /**
  * 从 Cloudflare KV 拉取全部键值，写入 server/data/kv.json（覆盖）。
+ * 反向写入 KV 见同目录 migrate-to-cloudflare-kv.mjs。
  * 需 Node 18+。在 server 目录执行（PowerShell 示例）：
  *   $env:CLOUDFLARE_API_TOKEN="你的令牌"
  *   $env:KV_NAMESPACE_ID="f63490f9427a47528eccdbfdab966dd0"
@@ -18,7 +19,7 @@ const OUT = path.join(DATA_DIR, 'kv.json');
 
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 let ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
-const NS_ID = process.env.KV_NAMESPACE_ID || 'f63490f9427a47528eccdbfdab966dd0';
+const NS_ID = process.env.KV_NAMESPACE_ID;
 
 const BASE = 'https://api.cloudflare.com/client/v4';
 
@@ -58,6 +59,11 @@ async function getValue(keyName) {
 async function main() {
   if (!TOKEN) {
     console.error('缺少环境变量 CLOUDFLARE_API_TOKEN');
+    process.exit(1);
+  }
+
+  if (!NS_ID) {
+    console.error('缺少环境变量 KV_NAMESPACE_ID（Cloudflare KV 命名空间 id）');
     process.exit(1);
   }
 

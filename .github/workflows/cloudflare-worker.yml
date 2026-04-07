@@ -1,0 +1,61 @@
+# 将 workers/api 部署到 Cloudflare Workers（与 GitHub Pages 静态站同域名下的 /api/*）。
+# 未配置 Secrets 时本 job 会成功退出并打 notice，不阻断 CI。
+#
+# 需在仓库 Settings → Secrets and variables → Actions 中配置：
+#   CLOUDFLARE_API_TOKEN  — API 令牌（Workers Scripts:Edit、Workers KV Storage:Edit）
+#   CLOUDFLARE_ACCOUNT_ID — 账户 ID（Dashboard 右侧或 wrangler whoami）
+#   CLOUDFLARE_KV_NAMESPACE_ID — 可选：仅当 wrangler.toml 里仍是占位符 REPLACE_WITH_YOUR_KV_NAMESPACE_ID 时必填
+#
+# 路由：可在 wrangler.toml 取消注释 routes，或在 Cloudflare 控制台 Worker → Triggers 添加 youximudi.com/api/*
+name: Cloudflare Worker API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/api/**'
+      - '.github/workflows/cloudflare-worker.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-worker-api
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: workers/api/package-lock.json
+
+      - name: Deploy Worker (or skip if secrets unset)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::已跳过 Worker 部署：请配置 Secrets CLOUDFLARE_API_TOKEN 与 CLOUDFLARE_ACCOUNT_ID 后推送 workers/api 或手动 Run workflow。"
+            exit 0
+          fi
+          npm ci
+          if grep -q 'REPLACE_WITH_YOUR_KV_NAMESPACE_ID' wrangler.toml; then
+            if [ -z "$CLOUDFLARE_KV_NAMESPACE_ID" ]; then
+              echo "::error::wrangler.toml 仍含 KV 占位符，请设置 Secret CLOUDFLARE_KV_NAMESPACE_ID 或提交真实 KV id。"
+              exit 1
+            fi
+            sed -i.bak "s/REPLACE_WITH_YOUR_KV_NAMESPACE_ID/${CLOUDFLARE_KV_NAMESPACE_ID}/" wrangler.toml
+            rm -f wrangler.toml.bak
+          fi
+          npx wrangler deploy

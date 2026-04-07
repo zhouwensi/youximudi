@@ -5,6 +5,8 @@ node_modules/
 # 密钥与本地配置（公开仓库禁止提交）
 .env
 .env.*
+workers/api/.dev.vars
+**/.wrangler/
 *.pem
 *.p12
 *_rsa

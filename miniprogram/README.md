@@ -13,7 +13,7 @@
    根目录 `project.config.json` 中的 `appid` 若与你不一致，请改为你的小程序 AppID。
 
 3. **关于页邮箱**  
-   已填写为 `n11290mars@163.com`（见 `pages/about/about.wxml`），如需更换可自行修改。
+   默认展示为站点域名邮箱（见 `miniprogram/pages/about/about.wxml`）。**公开 fork 时请勿写入个人私人邮箱**；可改为你的对外客服/运营邮箱。
 
 4. **云函数依赖（本机已执行过可跳过）**  
    每个云函数目录下需有 `node_modules`（本仓库已在各目录执行过 `npm install`）。若你换了电脑或删了依赖，在对应目录再执行一次 `npm install`。
