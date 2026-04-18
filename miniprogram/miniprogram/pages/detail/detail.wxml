@@ -1,8 +1,24 @@
-<page-loading show="{{loading}}" />
 <scroll-view wx:if="{{game}}" scroll-y class="page" enhanced show-scrollbar="{{false}}">
-  <view class="cover-wrap">
-    <image class="cover" src="{{coverSrc}}" mode="aspectFill" />
+  <view class="hero-swiper-wrap">
+    <swiper
+      class="hero-swiper"
+      indicator-dots="{{swiperUrls.length > 1}}"
+      circular="{{swiperUrls.length > 1}}"
+      autoplay="{{swiperUrls.length > 1}}"
+      interval="4200"
+      duration="400"
+    >
+      <swiper-item wx:for="{{swiperUrls}}" wx:key="*this">
+        <image class="hero-slide" src="{{item}}" mode="aspectFill" lazy-load bindtap="previewShot" data-urls="{{swiperUrls}}" data-current="{{item}}" />
+      </swiper-item>
+    </swiper>
     <view class="star-fab" bindtap="toggleCollect">{{starText}}</view>
+  </view>
+
+  <view class="card card-shadow hero-stats">
+    <text class="stop-big" wx:if="{{stopDaysLabel}}">{{stopDaysLabel}}</text>
+    <text class="op-big" wx:if="{{opSpanText}}">{{opSpanText}}</text>
+    <text class="anniv-hint" wx:if="{{annivLine}}">{{annivLine}}</text>
   </view>
 
   <view class="card card-shadow base">
@@ -19,33 +35,137 @@
     <view class="tag-row">
       <text class="d-tag" wx:for="{{game.game_tags}}" wx:key="*this">{{item}}</text>
     </view>
+    <text class="hint" wx:if="{{memorialLine}}">{{memorialLine}}</text>
+  </view>
+
+  <view class="section card-shadow" wx:if="{{introSec.intro}}">
+    <text class="h2">游戏简介</text>
+    <view class="divider" />
+    <text class="body-text">{{introSec.intro}}</text>
+  </view>
+  <view class="section card-shadow" wx:if="{{introSec.gameplay}}">
+    <text class="h2">经典玩法回顾</text>
+    <view class="divider" />
+    <text class="body-text">{{introSec.gameplay}}</text>
+  </view>
+  <view class="section card-shadow" wx:if="{{introSec.legacy}}">
+    <text class="h2">时代意义</text>
+    <view class="divider" />
+    <text class="body-text">{{introSec.legacy}}</text>
   </view>
 
   <view class="section card-shadow">
-    <text class="h2">游戏档案</text>
-    <text class="body-text">{{game.game_intro}}</text>
+    <text class="h2">开服与停服档案对照</text>
+    <text class="body-text small">以下为同一档案内的节选对照，纯文本怀旧展示，无外链跳转。</text>
+    <view class="compare-grid">
+      <view class="compare-col">
+        <text class="compare-h">时光前半</text>
+        <text class="body-text">{{compareOpen}}</text>
+      </view>
+      <view class="compare-col">
+        <text class="compare-h">落幕余音</text>
+        <text class="body-text">{{compareStop}}</text>
+      </view>
+    </view>
   </view>
 
-  <view wx:if="{{game.game_screenshots && game.game_screenshots.length}}" class="section card-shadow">
-    <text class="h2">游戏时光截图</text>
-    <scroll-view scroll-x class="shots" enhanced show-scrollbar="{{false}}">
-      <image
-        wx:for="{{game.game_screenshots}}"
-        wx:key="*this"
-        class="shot"
-        src="{{item}}"
-        mode="aspectFill"
-        data-urls="{{game.game_screenshots}}"
-        data-current="{{item}}"
-        bindtap="previewShot"
-      />
-    </scroll-view>
+  <view class="section card-shadow">
+    <text class="h2">老玩家集体回忆</text>
+    <text class="body-text small">以下为守档文案整理，非用户投稿评论区。</text>
+    <view class="divider" />
+    <block wx:for="{{memoryLines}}" wx:key="*this">
+      <text class="memory-line">· {{item}}</text>
+    </block>
   </view>
 
-  <view class="view-line">已有 {{viewCount}} 人重温过这段时光</view>
+  <view class="section card-shadow">
+    <text class="h2">历史存档</text>
+    <text class="body-text muted" wx:if="{{historyUrl}}">以下为档案中记录的官方历史域名（仅作纪念展示，无外链跳转）：</text>
+    <text class="url-line" wx:if="{{historyUrl}}">{{historyUrl}}</text>
+    <text class="body-text muted" wx:else>暂无结构化域名记录；若简介内含有历史信息，请以正文为准，仅供怀旧阅读。</text>
+    <view wx:if="{{game.game_screenshots && game.game_screenshots.length}}" class="shots-block">
+      <text class="h3">历史宣传截图</text>
+      <scroll-view scroll-x class="shots" enhanced show-scrollbar="{{false}}">
+        <image
+          wx:for="{{game.game_screenshots}}"
+          wx:key="*this"
+          class="shot"
+          src="{{item}}"
+          mode="aspectFill"
+          lazy-load
+          data-urls="{{game.game_screenshots}}"
+          data-current="{{item}}"
+          bindtap="previewShot"
+        />
+      </scroll-view>
+    </view>
+  </view>
+
+  <view class="section card-shadow interact">
+    <text class="h2">青春献花 · 纪念悼念</text>
+    <text class="body-text small">仅本机计数，不上传、不展示给他人。</text>
+    <text class="flower-count">你已为这款游戏献上 {{flowerCount}} 朵纪念花</text>
+    <button class="btn-primary btn-wide" bindtap="onFlowerTap">献上一束纪念花</button>
+  </view>
+
+  <view class="section card-shadow interact">
+    <text class="h2">青春请愿 · 我盼它回来</text>
+    <text class="body-text small">{{petitionRankText}}。请愿仅保存在本机；海报无二维码，可自愿保存分享。</text>
+    <button class="btn-primary btn-wide" disabled="{{petitioned}}" bindtap="onPetitionTap">{{petitionBtnText}}</button>
+  </view>
+
+  <view class="section card-shadow interact">
+    <text class="h2">我的青春时光胶囊</text>
+    <text class="body-text small">私人记事，仅存本机，可随时改写。</text>
+    <textarea
+      class="capsule-area"
+      maxlength="800"
+      placeholder="写下你和这款游戏的故事…"
+      value="{{capsuleText}}"
+      bindinput="onCapsuleInput"
+    />
+    <view class="btn-row">
+      <button class="btn-primary btn-half" bindtap="onCapsuleSave">封存回忆</button>
+      <button class="btn-outline btn-half" bindtap="onCapsulePoster">生成回忆海报</button>
+    </view>
+  </view>
+
+  <view class="section card-shadow">
+    <text class="h2">称呼（用于证书海报）</text>
+    <input class="nick-input" maxlength="16" placeholder="可选，如「阿明」" bindblur="onNickSave" />
+  </view>
+
+  <view class="compliance card-shadow">
+    <text class="compliance-text">
+      本内容仅用于怀旧分享，版权归原游戏发行方所有。如有侵权请联系邮箱 n11290mars@163.com，我们将在 24 小时内删除相关展示内容。
+    </text>
+    <text class="compliance-text small">本小程序不提供游戏安装、下载、充值或任何引流服务。</text>
+  </view>
   <view class="safe-bottom bottom-pad" />
 </scroll-view>
 
-<view wx:if="{{game}}" class="bar safe-bottom">
+<view wx:if="{{!loading && !game}}" class="empty-tip">未找到该游戏的本地档案</view>
+
+<view wx:if="{{game}}" class="bar safe-bottom bar-col">
+  <button class="btn-outline bar-btn" bindtap="onCertPoster">生成守档人证书</button>
   <button class="btn-primary bar-btn" bindtap="toggleCollect">{{collectBtnText}}</button>
+</view>
+
+<canvas canvas-id="yxmPosterCanvas" class="poster-canvas-hidden" />
+
+<view wx:if="{{showAnnivModal}}" class="modal-mask">
+  <view class="modal-box">
+    <text class="modal-title">停服周年纪念日</text>
+    <text class="modal-body">今天是《{{game.game_name}}》的停服周年。愿这段青春，永远有人记得。</text>
+    <button class="btn-primary modal-btn" bindtap="closeAnnivModal">收下这份纪念</button>
+  </view>
+</view>
+
+<view wx:if="{{showPetitionOk}}" class="modal-mask">
+  <view class="modal-box">
+    <text class="modal-title">请愿已记录</text>
+    <text class="modal-body">你的请愿已保存在本机。愿青春不散，我们静候佳音。</text>
+    <button class="btn-primary modal-btn" bindtap="onPetitionPoster">生成请愿海报</button>
+    <button class="btn-outline modal-btn2" bindtap="closePetitionOk">稍后再说</button>
+  </view>
 </view>

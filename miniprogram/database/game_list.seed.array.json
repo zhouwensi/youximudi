@@ -1,196 +1,1657 @@
 [
   {
-    "_id": "game_qqtang",
-    "game_name": "QQ堂",
+    "_id": "game-cn-001",
+    "game_name": "天堂（初代国服）",
     "game_cover": "",
-    "release_time": "2004年12月",
-    "stop_time": "2022年04月",
-    "publisher": "腾讯",
-    "game_platform": ["PC"],
-    "game_tags": ["休闲"],
-    "game_intro": "腾讯推出的经典休闲对战作品，玩法轻松活泼，陪伴许多人度过童年与课余时光。国服在运营多年后告别玩家，但那些糖果色场景与简单快乐仍留在记忆里。",
+    "release_time": "2003年8月",
+    "stop_time": "2017年10月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国NCSoft开发的殿堂级网游，是全球MMORPG的里程碑式作品，国服上线后成为国内早期顶流网游，开创了血盟、攻城战等经典玩法，陪伴玩家14年后正式停服 开发商：韩国NCSoft。 官方历史域名：https://lineage.sdo.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_dragon_nest_cn",
-    "game_name": "龙之谷（国服）",
+    "_id": "game-cn-002",
+    "game_name": "传奇3（初代国服）",
     "game_cover": "",
-    "release_time": "2010年10月",
-    "stop_time": "2024年02月",
-    "publisher": "盛趣游戏",
-    "game_platform": ["PC"],
-    "game_tags": ["MMORPG", "竞技"],
-    "game_intro": "以无锁定战斗与爽快连招著称的大型多人在线角色扮演游戏。国服历经多年运营后停服，许多冒险家的故事在阿尔特里亚大陆画上了句号。",
+    "release_time": "2003年5月",
+    "stop_time": "2009年2月",
+    "publisher": "光通通信",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "热血传奇正统续作，延续了传奇系列的核心玩法，新增了影魅之刃、诺玛大陆等经典内容，是国内网吧时代的顶流网游，初代国服因版权纠纷、外挂泛滥正式停服 开发商：韩国娱美德（Wemade）。 官方历史域名：https://mir3.gtgame.com.cn/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_maplestory_classic",
-    "game_name": "冒险岛（旧版形态）",
+    "_id": "game-cn-003",
+    "game_name": "惊天动地（初代国服）",
     "game_cover": "",
-    "release_time": "2003年04月",
-    "stop_time": "2012年01月",
-    "publisher": "Nexon",
-    "game_platform": ["PC"],
-    "game_tags": ["MMORPG", "像素"],
-    "game_intro": "横版卷轴与可爱画风结合的经典网游，曾定义一代人的青春。随着版本更迭，许多老玩家心中「最初的冒险岛」已成为难以复刻的时光。",
+    "release_time": "2006年12月",
+    "stop_time": "2016年5月",
+    "publisher": "上海摩力游",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国经典动作网游，凭借极致的连招战斗、华丽的技能特效和丰富的副本玩法风靡全网，是国内动作网游的启蒙之作，初代国服运营近10年后正式停服 开发商：韩国ESTsoft。 官方历史域名：https://cabal.moliyo.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_nosgoth",
-    "game_name": "Nosgoth",
+    "_id": "game-cn-004",
+    "game_name": "神泣（初代国服）",
     "game_cover": "",
-    "release_time": "2015年01月",
-    "stop_time": "2016年05月",
-    "publisher": "Square Enix",
-    "game_platform": ["PC"],
-    "game_tags": ["竞技"],
-    "game_intro": "源自《凯恩的遗产》世界观的非对称对战游戏，人类与吸血鬼阵营交锋。运营时间不长，却在玩家心中留下独特印记。",
+    "release_time": "2006年11月",
+    "stop_time": "2019年1月",
+    "publisher": "光通通信",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国现象级网游，以光明与黑暗两大阵营对抗为核心，首创困难/死亡模式高难度玩法，凭借极致的职业平衡和阵营战玩法成为当年顶流网游，国服运营12年后停服 开发商：韩国Sonov。 官方历史域名：https://shaiya.gtgame.com.cn/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_starcraft_ghost",
-    "game_name": "星际争霸：幽灵",
+    "_id": "game-cn-005",
+    "game_name": "卓越之剑（初代国服）",
     "game_cover": "",
-    "release_time": "2002年01月",
-    "stop_time": "2014年01月",
-    "publisher": "Blizzard",
-    "game_platform": ["主机"],
-    "game_tags": ["策略"],
-    "game_intro": "以星际争霸宇宙为背景的第三人称动作射击企划，经历多年开发后未能面世。许多玩家仍记得当年预告中那位幽灵特工的身影。",
+    "release_time": "2007年10月",
+    "stop_time": "2020年12月",
+    "publisher": "第九城市",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国《仙境传说》制作人金学圭领衔开发的创新型网游，首创多角色操控玩法，拥有庞大的世界观和海量可收集NPC角色，国服运营13年后正式停服 开发商：韩国IMC Games。 官方历史域名：https://ge.the9.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_anthem",
-    "game_name": "Anthem",
+    "_id": "game-cn-006",
+    "game_name": "奇迹世界（初代国服）",
     "game_cover": "",
-    "release_time": "2019年02月",
-    "stop_time": "2026年01月",
-    "publisher": "Electronic Arts",
-    "game_platform": ["PC", "主机"],
-    "game_tags": ["竞技"],
-    "game_intro": "以机甲与开放世界为卖点的在线合作射击游戏，开发方宣布停止后续内容更新后，服务器亦按计划关闭，一段关于天空与机甲的冒险告一段落。",
+    "release_time": "2007年4月",
+    "stop_time": "2013年5月",
+    "publisher": "第九城市",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国网禅《奇迹MU》正统续作，上线初期与《魔兽世界》分庭抗礼，凭借顶级的画面表现、流畅的连招战斗和大型阵营战玩法风靡全网，国服运营6年后停服 开发商：韩国网禅（Webzen）。 官方历史域名：https://sun.the9.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_groove_coaster",
-    "game_name": "Groove Coaster 2: Original Style",
+    "_id": "game-cn-007",
+    "game_name": "龙与地下城OL（国服）",
     "game_cover": "",
-    "release_time": "2015年06月",
-    "stop_time": "2025年03月",
-    "publisher": "Taito Corporation",
-    "game_platform": ["移动端"],
-    "game_tags": ["休闲"],
-    "game_intro": "节奏街机系列在移动平台上的作品，以霓虹线条与音乐结合为特色。官方服务结束后，仍有爱好者以各自方式延续对它的喜爱。",
+    "release_time": "2006年8月",
+    "stop_time": "2008年7月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "全球顶级IP《龙与地下城》正版授权网游，完美还原了桌游的职业体系、骰子判定和副本玩法，是欧美硬核RPG的代表作品，国服因用户体量不足运营2年便停服 开发商：美国Turbine。 官方历史域名：https://ddo.sdo.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_pac_man_mobile",
-    "game_name": "Pac-Man Mobile",
+    "_id": "game-cn-008",
+    "game_name": "指环王OL（国服）",
     "game_cover": "",
-    "release_time": "2013年03月",
-    "stop_time": "2025年05月",
-    "publisher": "Bandai Namco Entertainment America Inc.",
-    "game_platform": ["移动端"],
-    "game_tags": ["休闲", "像素"],
-    "game_intro": "经典吃豆人在智能手机时代的作品之一，延续了简单却上瘾的玩法。停服后，黄色小圆球的回忆仍与许多通勤路上的碎片时间相连。",
+    "release_time": "2009年11月",
+    "stop_time": "2012年1月",
+    "publisher": "光通通信",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "《魔戒》原著正版授权网游，完美还原了中土世界的宏大世界观，拥有电影级的剧情表现和极致的沉浸式玩法，被誉为“最还原原著的网游”，国服因代理问题停服 开发商：美国Turbine。 官方历史域名：https://lotro.gtgame.com.cn/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_urban_dead",
-    "game_name": "Urban Dead",
+    "_id": "game-cn-009",
+    "game_name": "激战（初代国服）",
     "game_cover": "",
-    "release_time": "2005年07月",
-    "stop_time": "2025年03月",
-    "publisher": "Kevan Davis",
-    "game_platform": ["页游"],
-    "game_tags": ["策略"],
-    "game_intro": "长期以网页形式运营的生存题材文字策略游戏，依靠捐赠维持多年。在法规与运营成本变化背景下结束服务，一段独特的社区协作史被写入回忆。",
+    "release_time": "2007年3月",
+    "stop_time": "2008年3月",
+    "publisher": "第九城市",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "《激战2》前作，首创无等级、无职业锁定的创新玩法，以PVP竞技为核心，拥有全球顶级的赛事体系，是欧美竞技网游的标杆之作，国服因水土不服运营1年便停服 开发商：韩国NCSoft/ArenaNet。 官方历史域名：https://gw.the9.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_rock_band_4",
-    "game_name": "Rock Band 4",
+    "_id": "game-cn-010",
+    "game_name": "万王之王3",
+    "game_cover": "",
+    "release_time": "2010年4月",
+    "stop_time": "2020年6月",
+    "publisher": "巨人网络",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "国内网游开山鼻祖《万王之王》正统续作，是国产魔幻网游的代表作品，拥有丰富的职业体系和城邦战玩法，运营10年后因用户流失正式停服 开发商：台湾雷爵网络。 官方历史域名：https://kok3.ztgame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-011",
+    "game_name": "巨人（端游）",
+    "game_cover": "",
+    "release_time": "2008年3月",
+    "stop_time": "2022年12月",
+    "publisher": "巨人网络",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "史玉柱领衔研发的国民级网游，以现代战争为背景，首创多职业体系、军团战玩法，凭借免费模式+道具付费的创新运营风靡全网，运营14年后正式停服 开发商：巨人网络。 官方历史域名：https://jr.ztgame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-012",
+    "game_name": "口袋西游",
+    "game_cover": "",
+    "release_time": "2008年10月",
+    "stop_time": "2022年12月",
+    "publisher": "完美世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "完美世界自研的经典西游题材网游，以Q版画风、宠物捕捉养成、七十二变玩法为核心，是国内早期最火的Q版网游之一，运营14年后正式停服 开发商：完美世界。 官方历史域名：https://kdxy.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-013",
+    "game_name": "热舞派对",
+    "game_cover": "",
+    "release_time": "2008年3月",
+    "stop_time": "2023年12月",
+    "publisher": "完美世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "完美世界自研的音乐舞蹈网游，是当年唯一能与《劲舞团》分庭抗礼的同类型作品，拥有海量正版曲库、高自由度服装定制和多人竞技玩法，运营15年后停服 开发商：完美世界。 官方历史域名：https://rwpd.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-014",
+    "game_name": "赤壁（端游）",
+    "game_cover": "",
+    "release_time": "2008年1月",
+    "stop_time": "2024年3月",
+    "publisher": "完美世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "完美世界自研的三国题材顶级网游，以《三国志》为蓝本还原了三国乱世，拥有国战、军团战等经典玩法，是国产三国网游的代表作品，运营16年后正式停服 开发商：完美世界。 官方历史域名：https://cb.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-015",
+    "game_name": "鹿鼎记（端游）",
+    "game_cover": "",
+    "release_time": "2011年7月",
+    "stop_time": "2025年3月",
+    "publisher": "搜狐畅游",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "金庸《鹿鼎记》正版授权网游，畅游重金研发的旗舰级作品，凭借开放式剧情、跨服江湖玩法和顶级的美术表现上线即爆火，运营14年后正式停服 开发商：搜狐畅游。 官方历史域名：https://ldj.changyou.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-016",
+    "game_name": "梦幻国度",
+    "game_cover": "",
+    "release_time": "2005年4月",
+    "stop_time": "2022年12月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "盛大自研的女性向国民级网游，以可爱的画风、轻松的休闲玩法和丰富的社交体系为核心，是国内早期最受女性玩家欢迎的网游，运营17年后正式停服 开发商：盛大游戏。 官方历史域名：https://mland.sdo.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-017",
+    "game_name": "英雄年代",
+    "game_cover": "",
+    "release_time": "2004年7月",
+    "stop_time": "2023年12月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "盛大自研的首款国战网游，开创了国产网游国战玩法的先河，以战国乱世为背景，拥有万人同屏国战、自由职业体系等经典内容，运营19年后正式停服 开发商：盛大游戏。 官方历史域名：https://yxnd.sdo.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-018",
+    "game_name": "超级舞者",
+    "game_cover": "",
+    "release_time": "2005年12月",
+    "stop_time": "2022年12月",
+    "publisher": "久游网",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "久游网继《劲舞团》后推出的顶流音乐网游，首创键盘+体感双模式玩法，拥有海量正版曲库和丰富的竞技模式，是国内音乐网游黄金时代的代表作品，运营17年后停服 开发商：久游网。 官方历史域名：https://sdo.9you.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-019",
+    "game_name": "战地之王（AVA 国服）",
+    "game_cover": "",
+    "release_time": "2010年1月",
+    "stop_time": "2019年9月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "韩国顶级FPS网游，采用虚幻3引擎开发，拥有极致的画面表现和真实的枪械手感，是国内首款采用虚幻3引擎的FPS网游，当年与《穿越火线》分庭抗礼，运营9年后停服 开发商：韩国Redduck。 官方历史域名：https://ava.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-020",
+    "game_name": "风暴战区",
+    "game_cover": "",
+    "release_time": "2012年6月",
+    "stop_time": "2023年12月",
+    "publisher": "世纪天成",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "韩国顶级FPS网游，使命召唤原班人马参与研发，完美还原了现代战争的真实战斗体验，拥有顶级的枪械物理系统和竞技模式，运营11年后正式停服 开发商：韩国Dragonfly。 官方历史域名：https://tf.tiancity.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-021",
+    "game_name": "怪物猎人OL（国服）",
+    "game_cover": "",
+    "release_time": "2015年12月",
+    "stop_time": "2019年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "CAPCOM正版授权、腾讯天美联合研发的怪物猎人系列正统网游，完美还原了系列经典的狩猎玩法、怪物生态和武器操作体系，是国内唯一正版怪物猎人端游，运营4年后停服 开发商：日本CAPCOM/腾讯天美工作室群。 官方历史域名：https://mho.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-022",
+    "game_name": "怪物猎人：世界（WeGame国服）",
+    "game_cover": "",
+    "release_time": "2018年8月",
+    "stop_time": "2018年8月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "怪物猎人系列全球销量冠军作品，WeGame国服上线仅5天便因合规问题紧急下架，成为国内游戏史上最具标志性的下架事件，至今未重新上架 开发商：日本CAPCOM。 官方历史域名：https://mhw.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-023",
+    "game_name": "大航海时代OL（国服）",
+    "game_cover": "",
+    "release_time": "2007年1月",
+    "stop_time": "2019年7月",
+    "publisher": "天戏互娱",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "光荣特库摩《大航海时代》系列正统网游，完美还原了大航海时代的全球贸易、探险、海战玩法，拥有庞大的世界地图和真实的历史剧情，国服运营12年后正式停服 开发商：日本光荣特库摩。 官方历史域名：https://dahanghai.tciplay.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-024",
+    "game_name": "真三国无双OL（初代国服）",
+    "game_cover": "",
+    "release_time": "2008年4月",
+    "stop_time": "2024年7月",
+    "publisher": "天戏互娱",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "光荣特库摩《真三国无双》系列正统网游，完美还原了系列经典的“一骑当千”割草玩法、武将操作体系和多人联机对战，是国内主机玩家的经典网游回忆，运营16年后停服 开发商：日本光荣特库摩。 官方历史域名：https://ws.woniu.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-025",
+    "game_name": "扩散性百万亚瑟王（国服）",
+    "game_cover": "",
+    "release_time": "2013年7月",
+    "stop_time": "2016年1月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内二次元手游的启蒙之作，SE顶级IP打造，凭借顶级的美术立绘、豪华的声优阵容和创新的卡牌玩法上线即引爆二次元圈，是国内二次元手游赛道的里程碑作品 开发商：日本史克威尔艾尼克斯（SE）。 官方历史域名：https://ma.sdo.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-026",
+    "game_name": "乖离性百万亚瑟王（国服）",
+    "game_cover": "",
+    "release_time": "2015年8月",
+    "stop_time": "2020年3月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "百万亚瑟王系列巅峰之作，首创四人联机协作卡牌玩法，凭借顶级的IP内容、豪华的声优阵容和持续的版本更新，成为国内二次元圈顶流手游，运营4年半后停服 开发商：日本史克威尔艾尼克斯（SE）。 官方历史域名：https://ma.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-027",
+    "game_name": "公主连结Re:Dive（国服）",
+    "game_cover": "",
+    "release_time": "2020年4月",
+    "stop_time": "2025年3月",
+    "publisher": "bilibili游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "Cygames开发的现象级二次元手游，国服由B站代理，凭借顶级的美术动画、豪华的声优阵容和轻松的养成玩法，上线即成为B站顶流手游，运营5年后因代理协议到期停服 开发商：日本Cygames。 官方历史域名：https://pcr.biligame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-028",
+    "game_name": "影之诗（国服）",
+    "game_cover": "",
+    "release_time": "2017年5月",
+    "stop_time": "2024年12月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "PC",
+      "移动端"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "Cygames开发的顶级卡牌手游，被誉为“二次元炉石传说”，拥有丰富的卡组构筑体系和全球同步的赛事体系，国服运营7年半后因研发运营策略调整正式停服 开发商：日本Cygames。 官方历史域名：https://sv.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-029",
+    "game_name": "巫师之昆特牌（国服）",
+    "game_cover": "",
+    "release_time": "2017年12月",
+    "stop_time": "2024年6月",
+    "publisher": "盖娅互娱",
+    "game_platform": [
+      "PC",
+      "移动端"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "《巫师3》衍生的顶级卡牌游戏，凭借创新的三局两胜玩法、忠于原著的卡牌设计和顶级的赛事体系风靡全球，国服运营6年半后正式停服 开发商：波兰CD Projekt Red。 官方历史域名：https://playgwent.cn/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-030",
+    "game_name": "荒野乱斗（国服）",
+    "game_cover": "",
+    "release_time": "2020年6月",
+    "stop_time": "2025年3月",
+    "publisher": "腾讯游戏/游族网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲",
+      "竞技"
+    ],
+    "game_intro": "Supercell开发的现象级休闲竞技手游，国服上线首日登顶iOS免费榜，最高跻身畅销榜TOP3，凭借3分钟一局的轻量化竞技玩法风靡全网，运营5年后因代理协议到期停服 开发商：芬兰Supercell。 官方历史域名：https://bs.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-031",
+    "game_name": "Apex英雄（国服手游）",
+    "game_cover": "",
+    "release_time": "2022年5月",
+    "stop_time": "2023年5月",
+    "publisher": "腾讯光子工作室群",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "全球顶流战术竞技端游《Apex英雄》正版手游，腾讯光子联合研发，完美还原了端游的英雄技能、枪械体系和大逃杀玩法，上线仅1年便因全球运营策略调整正式停服 开发商：美国EA/重生娱乐。 官方历史域名：https://apexm.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-032",
+    "game_name": "食物语",
+    "game_cover": "",
+    "release_time": "2019年9月",
+    "stop_time": "2024年11月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内顶级女性向手游，将中华传统美食拟人化，拥有顶级的美术立绘、豪华的声优阵容和丰富的剧情养成玩法，凭借独特的国风题材收获海量女性玩家，运营5年后停服 开发商：广州天梯互娱。 官方历史域名：https://swy.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-033",
+    "game_name": "少女前线：云图计划",
+    "game_cover": "",
+    "release_time": "2021年9月",
+    "stop_time": "2024年12月",
+    "publisher": "上海散爆网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "现象级二次元手游《少女前线》正统IP衍生作品，凭借独特的Roguelike策略玩法、顶级的美术设计和忠于原作的世界观，收获了大量核心玩家，运营3年多后正式停服 开发商：上海散爆网络。 官方历史域名：https://gf-game.cn/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-034",
+    "game_name": "花亦山心之月",
+    "game_cover": "",
+    "release_time": "2021年11月",
+    "stop_time": "2025年3月",
+    "publisher": "字节跳动朝夕光年",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "朝夕光年自研的旗舰级古风手游，以古代书院为背景，拥有精致的国风美术、丰富的剧情养成和策略卡牌玩法，上线即成为爆款，运营3年多后因研发运营策略调整停服 开发商：广州诗悦网络。 官方历史域名：https://hysxzy.oasgames.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-035",
+    "game_name": "灵猫传",
+    "game_cover": "",
+    "release_time": "2020年12月",
+    "stop_time": "2024年12月",
+    "publisher": "北京游心互娱",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内经典古风乙女手游，以古代轻悬疑探案为背景，拥有5位可攻略男主、顶级的声优阵容和细腻的剧情内容，是乙女游戏赛道的代表作品，运营4年后正式停服 开发商：北京游心互娱。 官方历史域名：https://lmcq.61.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-036",
+    "game_name": "掌门太忙",
+    "game_cover": "",
+    "release_time": "2020年8月",
+    "stop_time": "2023年11月",
+    "publisher": "北京华清飞扬",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内古风乙女手游代表作品，以武侠江湖为背景，首创反套路甜宠剧情，拥有5位性格迥异的可攻略男主，凭借轻松搞笑的剧情风格收获大量玩家，运营3年多后停服 开发商：北京华清飞扬。 官方历史域名：https://zmbl.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-037",
+    "game_name": "Re:从零开始的异世界生活-INFINITY（国服）",
+    "game_cover": "",
+    "release_time": "2020年1月",
+    "stop_time": "2023年3月",
+    "publisher": "bilibili游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "超人气动漫《Re:从零开始的异世界生活》正版授权手游，完美还原了动漫的剧情、角色和世界观，拥有顶级的美术立绘和豪华的声优阵容，运营3年后正式停服 开发商：成都天象互动。 官方历史域名：https://re0.biligame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-038",
+    "game_name": "魔法少女小圆（国服手游）",
+    "game_cover": "",
+    "release_time": "2019年10月",
+    "stop_time": "2021年10月",
+    "publisher": "bilibili游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "神级动漫《魔法少女小圆》正版授权手游，完美还原了原作的暗黑剧情和角色设定，由原作原班人马全程监修，国服运营2年后因代理协议到期正式停服 开发商：日本Aniplex。 官方历史域名：https://mado.magireco.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-039",
+    "game_name": "关于我转生变成史莱姆这档事（国服手游）",
+    "game_cover": "",
+    "release_time": "2022年3月",
+    "stop_time": "2024年3月",
+    "publisher": "bilibili游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "超人气动漫《关于我转生变成史莱姆这档事》正版授权手游，完美还原了原作的剧情、角色和世界观，上线即成为二次元爆款手游，运营2年后正式停服 开发商：成都龙渊网络。 官方历史域名：https://slime.biligame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-040",
+    "game_name": "天天飞车",
+    "game_cover": "",
+    "release_time": "2013年12月",
+    "stop_time": "2020年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "微信/QQ早期国民级爆款手游，上线首日登顶iOS免费榜与畅销榜，开创了移动端赛车竞速玩法的先河，是国内首款月流水破10亿的手游，运营7年后正式停服 开发商：腾讯天美工作室群。 官方历史域名：https://rc.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-041",
+    "game_name": "天天炫斗",
+    "game_cover": "",
+    "release_time": "2014年5月",
+    "stop_time": "2024年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "腾讯自研的旗舰级横版动作手游，微信/QQ天天系列顶流作品，完美还原了街机格斗的连招玩法和打击感，上线即成为国民级爆款，运营10年半后正式停服 开发商：腾讯天美工作室群。 官方历史域名：https://xd.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-042",
+    "game_name": "天天风之旅",
+    "game_cover": "",
+    "release_time": "2014年10月",
+    "stop_time": "2020年2月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "微信/QQ天天系列爆款手游，开创了移动端3D跑酷玩法的先河，凭借精致的画面、流畅的操作和丰富的角色养成玩法风靡全网，上线首月流水破5亿，运营5年后停服 开发商：腾讯天美工作室群。 官方历史域名：https://feng.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-043",
+    "game_name": "全民突击",
+    "game_cover": "",
+    "release_time": "2015年1月",
+    "stop_time": "2024年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "腾讯自研的首款FPS手游，微信/QQ全民系列顶流作品，上线首日登顶iOS双榜，开创了移动端FPS竞技玩法的先河，是国内早期最火的射击手游，运营10年后正式停服 开发商：腾讯光子工作室群。 官方历史域名：https://fire.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-044",
+    "game_name": "全民小镇",
+    "game_cover": "",
+    "release_time": "2014年3月",
+    "stop_time": "2023年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "微信/QQ全民系列爆款手游，凭借轻松的农场建造、模拟经营玩法和丰富的社交互动体系风靡全网，是国内早期最火的模拟经营手游，运营近10年后正式停服 开发商：腾讯光子工作室群。 官方历史域名：https://xc.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-045",
+    "game_name": "我叫MT（初代手游）",
+    "game_cover": "",
+    "release_time": "2013年1月",
+    "stop_time": "2022年12月",
+    "publisher": "北京乐动卓越",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内卡牌手游的开山鼻祖，改编自国民级魔兽同人动画《我叫MT》，凭借经典的角色、创新的卡牌玩法和亲民的运营模式，上线即成为现象级爆款，运营近10年后停服 开发商：北京乐动卓越。 官方历史域名：https://mt.locojoy.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-046",
+    "game_name": "大掌门（初代手游）",
+    "game_cover": "",
+    "release_time": "2012年10月",
+    "stop_time": "2023年12月",
+    "publisher": "北京玩蟹科技",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内武侠卡牌手游的启蒙之作，以金庸武侠世界观为背景，还原了数百位经典武侠角色，开创了武侠卡牌养成玩法的先河，是国内早期手游赛道的里程碑作品，运营11年后停服 开发商：北京玩蟹科技。 官方历史域名：https://dazhangmen.playcrab.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-047",
+    "game_name": "全民奇迹MU",
+    "game_cover": "",
+    "release_time": "2014年12月",
+    "stop_time": "2024年12月",
+    "publisher": "上海恺英网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "经典网游《奇迹MU》正版授权手游，上线首月流水破3亿，凭借极致的画面、华丽的技能特效和经典的刷宝玩法，成为国内ARPG手游赛道的标杆作品，运营10年后正式停服 开发商：北京天马时空。 官方历史域名：https://mu.xy.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-048",
+    "game_name": "真三国无双霸",
+    "game_cover": "",
+    "release_time": "2021年8月",
+    "stop_time": "2024年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "光荣特库摩《真三国无双》系列正版授权手游，完美还原了系列经典的“一骑当千”割草玩法、武将操作体系和剧情内容，是国内唯一正版真三国无双手游，运营3年多后停服 开发商：日本光荣特库摩/腾讯天美工作室群。 官方历史域名：https://wsba.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-049",
+    "game_name": "最终幻想：勇气启示录（国服）",
+    "game_cover": "",
+    "release_time": "2019年3月",
+    "stop_time": "2022年10月",
+    "publisher": "西山居",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "SE《最终幻想》系列正版授权手游，完美还原了系列经典的水晶世界观、角色和玩法，拥有豪华的声优阵容和顶级的剧情内容，国服运营3年半后正式停服 开发商：日本史克威尔艾尼克斯（SE）。 官方历史域名：https://ffbe.xoyo.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-050",
+    "game_name": "最终幻想：勇气启示录 幻影战争（国服）",
+    "game_cover": "",
+    "release_time": "2021年6月",
+    "stop_time": "2024年3月",
+    "publisher": "金山世游",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "SE《最终幻想》系列正版授权战棋手游，完美还原了系列经典的战棋玩法、职业体系和剧情内容，是全球顶级的日式战棋手游，国服运营近3年后正式停服 开发商：日本史克威尔艾尼克斯（SE）。 官方历史域名：https://ffbewar.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-051",
+    "game_name": "热血三国（页游原版）",
+    "game_cover": "",
+    "release_time": "2008年6月",
+    "stop_time": "2024年12月",
+    "publisher": "杭州乐港科技",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "国内三国策略页游的开山鼻祖，开创了页游SLG玩法的先河，以三国乱世为背景，拥有城池建造、军队养成、万人国战等经典玩法，是页游黄金时代的标杆作品，运营16年后停服 开发商：杭州乐港科技。 官方历史域名：https://sg.uuyx.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-052",
+    "game_name": "天书奇谈（页游原版）",
+    "game_cover": "",
+    "release_time": "2008年12月",
+    "stop_time": "2024年10月",
+    "publisher": "猫扑网",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内回合制页游的天花板，是95后、00后的童年集体记忆，以仙侠世界观为背景，拥有宠物捕捉养成、回合制战斗、剧情冒险等丰富玩法，运营16年后正式停服 开发商：猫扑网/千橡游戏。 官方历史域名：https://t.mop.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-053",
+    "game_name": "街机三国（页游原版）",
+    "game_cover": "",
+    "release_time": "2012年1月",
+    "stop_time": "2024年12月",
+    "publisher": "91wan",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "国内横版街机页游的里程碑作品，完美还原了街机三国的连招战斗和打击感，上线即成为网吧爆款，是页游时代流水最高的横版动作游戏，运营13年后正式停服 开发商：上海江游科技。 官方历史域名：https://jjsg.91wan.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-054",
+    "game_name": "生死狙击（页游原版）",
+    "game_cover": "",
+    "release_time": "2013年9月",
+    "stop_time": "2024年12月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "国内FPS页游的天花板，完美还原了端游FPS的枪械手感和竞技玩法，拥有海量地图、模式和枪械，是当年网吧最火的页游之一，运营11年后原版正式停服 开发商：浙江无端科技。 官方历史域名：https://ssjj.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-055",
+    "game_name": "功夫派（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年7月",
+    "stop_time": "2024年12月",
+    "publisher": "淘米网络",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "淘米网络开发的经典功夫题材页游，是00后的童年集体记忆，以中华武侠为背景，拥有丰富的职业体系、连招玩法和副本内容，运营14年后正式停服 开发商：上海淘米网络。 官方历史域名：https://gf.61.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-056",
+    "game_name": "摩尔勇士（页游原版）",
+    "game_cover": "",
+    "release_time": "2011年1月",
+    "stop_time": "2021年1月",
+    "publisher": "淘米网络",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "淘米网络《摩尔庄园》IP正统衍生作品，是00后的童年集体记忆，以摩尔王国为背景，拥有职业转职、宠物养成、回合制战斗等经典玩法，运营10年后正式停服 开发商：上海淘米网络。 官方历史域名：https://hero.61.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-057",
+    "game_name": "约瑟传说（赛尔号2 页游原版）",
+    "game_cover": "",
+    "release_time": "2011年7月",
+    "stop_time": "2024年12月",
+    "publisher": "淘米网络",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "淘米网络《赛尔号》正统续作，是00后的童年集体记忆，拥有全新的精灵世界观、养成体系和回合制玩法，凭借精致的画面和丰富的内容收获海量玩家，运营13年后停服 开发商：上海淘米网络。 官方历史域名：https://seer2.61.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-058",
+    "game_name": "龙斗士（页游原版）",
+    "game_cover": "",
+    "release_time": "2011年4月",
+    "stop_time": "2024年12月",
+    "publisher": "百田信息",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "百田网开发的经典横版动作页游，是00后的童年集体记忆，以阿斯兰世界为背景，拥有丰富的职业体系、宠物养成和副本玩法，运营13年后正式停服 开发商：广州百田信息。 官方历史域名：https://lds.100bt.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-059",
+    "game_name": "七雄争霸（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年8月",
+    "stop_time": "2025年3月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "腾讯旗下顶流策略页游，QQ空间爆款游戏，以战国乱世为背景，拥有城池建造、军队养成、七雄争霸等经典玩法，是国内SLG页游的代表作品，运营15年后正式停服 开发商：北京游戏谷。 官方历史域名：https://7.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-060",
+    "game_name": "烽火战国（页游原版）",
+    "game_cover": "",
+    "release_time": "2009年7月",
+    "stop_time": "2024年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "腾讯自研的经典策略页游，QQ空间爆款游戏，与《丝路英雄》并称腾讯策略页游双雄，以战国乱世为背景，拥有城池建造、资源掠夺、灭国战等玩法，运营15年半后停服 开发商：腾讯游戏。 官方历史域名：https://zg.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-061",
+    "game_name": "丝路英雄（页游原版）",
+    "game_cover": "",
+    "release_time": "2009年3月",
+    "stop_time": "2024年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "腾讯自研的首款策略页游，QQ空间爆款游戏，以古丝绸之路为背景，首创了英雄养成、殖民地扩张等经典玩法，是国内早期策略页游的代表作品，运营15年半后停服 开发商：腾讯游戏。 官方历史域名：https://sl.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-062",
+    "game_name": "神仙道（页游原版）",
+    "game_cover": "",
+    "release_time": "2011年4月",
+    "stop_time": "2024年12月",
+    "publisher": "心动网络",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内仙侠页游的标杆作品，页游黄金时代的顶流游戏，以仙侠世界观为背景，拥有伙伴养成、回合制战斗、副本冒险等经典玩法，运营13年后原版正式停服 开发商：上海心动网络。 官方历史域名：https://sxd.xd.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-063",
+    "game_name": "凡人修真（页游原版）",
+    "game_cover": "",
+    "release_time": "2009年12月",
+    "stop_time": "2024年6月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内修仙页游的开山鼻祖，开创了仙侠页游的核心玩法体系，以修真世界观为背景，拥有境界突破、灵根养成、副本刷宝等经典玩法，运营14年半后正式停服 开发商：广州菲音信息。 官方历史域名：https://frxz.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-064",
+    "game_name": "梦幻修仙（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年1月",
+    "stop_time": "2024年12月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内修仙页游的顶流作品，与《凡人修真》并称修仙页游双雄，以仙侠世界观为背景，拥有门派职业、宠物养成、回合制战斗等玩法，运营15年后正式停服 开发商：广州菲音信息。 官方历史域名：https://mhxx.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-065",
+    "game_name": "斗破苍穹（页游原版）",
+    "game_cover": "",
+    "release_time": "2012年3月",
+    "stop_time": "2024年12月",
+    "publisher": "搜狐畅游",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "天蚕土豆顶级IP《斗破苍穹》正版授权页游，完美还原了原著的剧情、角色和世界观，上线即成为现象级爆款，是网文IP改编页游的标杆作品，运营12年后正式停服 开发商：搜狐畅游。 官方历史域名：https://dpcq.changyou.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-066",
+    "game_name": "武林三国（页游原版）",
+    "game_cover": "",
+    "release_time": "2008年4月",
+    "stop_time": "2023年12月",
+    "publisher": "九维网",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "国内早期策略页游的代表作品，与《热血三国》并称三国SLG页游双雄，以三国乱世为背景，拥有城池建造、资源经营、联盟战争等经典玩法，运营15年半后正式停服 开发商：上海九维网。 官方历史域名：https://sg.9wee.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-067",
+    "game_name": "英雄之城（页游原版）",
+    "game_cover": "",
+    "release_time": "2009年3月",
+    "stop_time": "2022年12月",
+    "publisher": "蜗牛游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "蜗牛游戏开发的经典策略页游，以英雄无敌世界观为蓝本，还原了战棋战斗、城堡建造、英雄养成等经典玩法，是欧美魔幻SLG页游的代表作品，运营13年后停服 开发商：苏州蜗牛游戏。 官方历史域名：https://hero.woniu.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-068",
+    "game_name": "帝国文明（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年6月",
+    "stop_time": "2023年12月",
+    "publisher": "蜗牛游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "蜗牛游戏开发的顶流策略页游，以四大古文明为背景，首创了全球大地图自由行军玩法，拥有城池建造、文明发展、万人国战等经典内容，运营13年半后停服 开发商：苏州蜗牛游戏。 官方历史域名：https://dg.woniu.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-069",
+    "game_name": "楚河汉界（页游原版）",
+    "game_cover": "",
+    "release_time": "2011年4月",
+    "stop_time": "2023年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "腾讯自研的经典回合制页游，QQ游戏大厅爆款游戏，以楚汉争霸为背景，拥有职业体系、军团战、副本冒险等玩法，是国内历史题材页游的代表作品，运营12年半后停服 开发商：腾讯游戏。 官方历史域名：https://ch.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-070",
+    "game_name": "英雄杀（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年8月",
+    "stop_time": "2023年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "策略"
+    ],
+    "game_intro": "腾讯自研的国民级卡牌桌游，QQ游戏大厅顶流游戏，以中国历史英雄为背景，完美还原了桌游的卡牌玩法和竞技体系，是国内桌游页游的标杆作品，运营13年后原版停服 开发商：腾讯游戏。 官方历史域名：https://yxs.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-071",
+    "game_name": "特战英雄（页游原版）",
+    "game_cover": "",
+    "release_time": "2015年1月",
+    "stop_time": "2024年12月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "4399旗下顶流FPS页游，与《生死狙击》《火线精英》并称4399射击三巨头，完美还原了端游FPS的竞技玩法，拥有海量地图、模式和枪械，运营9年后原版正式停服 开发商：4399游戏。 官方历史域名：https://tzxy.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-072",
+    "game_name": "火线精英（页游原版）",
+    "game_cover": "",
+    "release_time": "2014年3月",
+    "stop_time": "2024年12月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "4399旗下爆款FPS页游，凭借轻量化的操作、丰富的模式和枪械体系风靡全网，是当年中小学生最火的射击页游，运营10年半后原版正式停服 开发商：4399游戏。 官方历史域名：https://hxjy.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-073",
+    "game_name": "洪荒神话（页游原版）",
+    "game_cover": "",
+    "release_time": "2010年11月",
+    "stop_time": "2023年12月",
+    "publisher": "4399游戏",
+    "game_platform": [
+      "页游"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国内洪荒题材页游的开山鼻祖，以中国上古洪荒神话为背景，拥有职业体系、宠物养成、副本刷宝等经典玩法，是页游黄金时代的爆款作品，运营13年后停服 开发商：广州菲音信息。 官方历史域名：https://hhsh.4399.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-074",
+    "game_name": "梦幻诛仙（端游原版）",
+    "game_cover": "",
+    "release_time": "2009年10月",
+    "stop_time": "2024年12月",
+    "publisher": "完美世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "完美世界自研的旗舰级回合制网游，《诛仙》IP正统衍生作品，当年唯一能与《梦幻西游》分庭抗礼的回合制网游，拥有顶级的剧情、画面和回合制玩法，运营15年后正式停服 开发商：完美世界。 官方历史域名：https://mhzx.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-075",
+    "game_name": "神雕侠侣（端游原版）",
+    "game_cover": "",
+    "release_time": "2012年9月",
+    "stop_time": "2023年12月",
+    "publisher": "完美世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "金庸《神雕侠侣》正版授权回合制网游，完美还原了原著的剧情和武侠世界观，拥有丰富的门派职业、宠物养成和回合制玩法，是国产回合制网游的代表作品，运营11年后停服 开发商：完美世界。 官方历史域名：https://sdxl.wanmei.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-076",
+    "game_name": "仙剑奇侠传四（国服手游）",
+    "game_cover": "",
+    "release_time": "2019年6月",
+    "stop_time": "2022年6月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "国产顶级IP《仙剑奇侠传四》正版授权手游，完美还原了原著的经典剧情、角色和场景，由仙剑原作团队全程监修，是国内最还原仙剑四的手游作品，运营3年后正式停服 开发商：西山居。 官方历史域名：https://xj4.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-077",
+    "game_name": "古剑奇谭木语人",
+    "game_cover": "",
+    "release_time": "2021年7月",
+    "stop_time": "2023年6月",
+    "publisher": "网元圣唐",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "《古剑奇谭》系列正版授权手游，完美还原了古剑系列的世界观和剧情，以偃甲为核心题材，拥有经典的回合制玩法和顶级的美术表现，运营2年后正式停服 开发商：北京网元圣唐。 官方历史域名：https://game.bilibili.com/gjqtmyr/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-078",
+    "game_name": "崩坏学园（初代国服）",
+    "game_cover": "",
+    "release_time": "2012年10月",
+    "stop_time": "2014年1月",
+    "publisher": "米哈游",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "竞技"
+    ],
+    "game_intro": "米哈游的开山之作，《崩坏》系列IP的起点，国内早期二次元手游的代表作品，以横版动作射击为核心玩法，为后续崩坏2、崩坏3的成功奠定了基础，运营1年多后正式停服 开发商：上海米哈游。 官方历史域名：https://www.mihayou.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-079",
+    "game_name": "阴阳师：妖怪屋",
+    "game_cover": "",
+    "release_time": "2020年9月",
+    "stop_time": "2024年6月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "现象级手游《阴阳师》IP衍生作品，采用剪纸美术风格，以轻松的弹珠玩法为核心，完美还原了阴阳师的全系列角色和世界观，运营近4年后正式停服 开发商：网易游戏。 官方历史域名：https://yysygw.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-080",
+    "game_name": "阴阳师：妖怪小班",
+    "game_cover": "",
+    "release_time": "2021年7月",
+    "stop_time": "2023年4月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "《阴阳师》IP衍生休闲派对手游，以轻推理、社交玩法为核心，还原了阴阳师的Q版角色和世界观，是国内早期派对游戏赛道的代表作品，运营1年多后停服 开发商：网易游戏。 官方历史域名：https://yysygxb.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-081",
+    "game_name": "保卫萝卜3",
+    "game_cover": "",
+    "release_time": "2016年6月",
+    "stop_time": "2022年12月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "策略",
+      "休闲"
+    ],
+    "game_intro": "国民级塔防IP《保卫萝卜》正统续作，腾讯代理运营，完美还原了系列经典的塔防玩法，新增了角色养成、联机对战等内容，上线即成为爆款，运营6年半后正式停服 开发商：北京飞鱼科技。 官方历史域名：https://bwlb3.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-082",
+    "game_name": "糖果传奇（国服）",
+    "game_cover": "",
+    "release_time": "2014年8月",
+    "stop_time": "2020年6月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "全球销量最高的三消手游正版国服，腾讯代理运营，凭借轻松的三消玩法、海量的关卡内容风靡全球，是全球休闲手游的标杆作品，国服运营6年后正式停服 开发商：英国King公司。 官方历史域名：https://candy.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-083",
+    "game_name": "节奏大师（初代下架版本）",
+    "game_cover": "",
+    "release_time": "2012年5月",
+    "stop_time": "2021年2月",
+    "publisher": "腾讯游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "国内国民级音乐手游，开创了移动端下落式音游的先河，拥有海量正版曲库和成熟的竞技体系，是国内音游赛道的里程碑作品，初代版本运营9年后下架，2023年重启版本为全新迭代版 开发商：腾讯光速工作室。 官方历史域名：https://da.qq.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-084",
+    "game_name": "古树旋律（Deemo 国服原版）",
+    "game_cover": "",
+    "release_time": "2014年12月",
+    "stop_time": "2024年12月",
+    "publisher": "成都龙渊网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "全球顶级音游，雷亚游戏的旗舰级作品，凭借顶级的钢琴曲库、感人的剧情故事和精致的美术表现风靡全球，国服运营10年后正式停服 开发商：台湾雷亚游戏。 官方历史域名：https://deemo.longyuan.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-085",
+    "game_name": "Cytus（国服原版）",
     "game_cover": "",
     "release_time": "2015年10月",
-    "stop_time": "2025年10月",
-    "publisher": "Harmonix",
-    "game_platform": ["主机"],
-    "game_tags": ["休闲"],
-    "game_intro": "家用机上的乐队演奏类游戏，让玩家与好友一起敲鼓、弹吉他、飙歌。在线曲库与排行榜服务关闭后，客厅里的合奏只能留在旧时光里。",
+    "stop_time": "2023年12月",
+    "publisher": "成都龙渊网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "全球顶级音游，雷亚游戏的开山之作，首创了全屏点触式音游玩法，拥有顶级的电子曲库和精致的美术表现，是国内音游玩家的启蒙之作，国服运营8年后停服 开发商：台湾雷亚游戏。 官方历史域名：https://cytus.longyuan.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_dauntless",
-    "game_name": "Dauntless",
+    "_id": "game-cn-086",
+    "game_name": "兰空VOEZ（国服原版）",
     "game_cover": "",
-    "release_time": "2019年09月",
-    "stop_time": "2025年05月",
-    "publisher": "Phoenix Labs",
-    "game_platform": ["PC", "主机"],
-    "game_tags": ["竞技", "RPG"],
-    "game_intro": "共斗狩猎类的免费在线游戏，强调多人协作与装备成长。全平台服务器关闭后，猎人们与巨兽的故事在破碎群岛的风里慢慢安静。",
+    "release_time": "2016年5月",
+    "stop_time": "2023年12月",
+    "publisher": "成都龙渊网络",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "雷亚游戏开发的顶级音游，首创了动态轨道音游玩法，拥有海量正版曲库和全球同步的赛事体系，曾入选苹果全球年度最佳游戏，国服运营7年半后停服 开发商：台湾雷亚游戏。 官方历史域名：https://voez.longyuan.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_strife",
-    "game_name": "Strife",
+    "_id": "game-cn-087",
+    "game_name": "神庙逃亡2（国服原版）",
     "game_cover": "",
-    "release_time": "2015年05月",
-    "stop_time": "不详",
-    "publisher": "Strife",
-    "game_platform": ["PC"],
-    "game_tags": ["竞技", "策略"],
-    "game_intro": "一款强调团队与策略的多人在线竞技游戏，曾由社区长期维护。官方环境落幕之后，老玩家仍会在论坛与录像里翻看当年的团战瞬间。",
+    "release_time": "2013年1月",
+    "stop_time": "2024年12月",
+    "publisher": "深圳乐逗游戏",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "全球跑酷手游的开山鼻祖，国服上线后迅速成为国民级爆款，开创了移动端无尽跑酷玩法的先河，是国内早期手游赛道的里程碑作品，运营11年后原版正式停服 开发商：美国Imangi Studios。 官方历史域名：https://templerun.uu.cc/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_mhf",
-    "game_name": "Monster Hunter Frontier",
+    "_id": "game-cn-088",
+    "game_name": "滑雪大冒险（国服原版）",
     "game_cover": "",
-    "release_time": "2007年06月",
-    "stop_time": "2019年12月",
-    "publisher": "Capcom",
-    "game_platform": ["PC", "主机"],
-    "game_tags": ["MMORPG", "RPG"],
-    "game_intro": "怪物猎人系列面向网游形态的作品，拥有独特怪物与装备体系。多年运营后画上句点，猎人们转向其他作品，却仍会提起边境时代的传说。",
+    "release_time": "2012年12月",
+    "stop_time": "2023年12月",
+    "publisher": "北京游道易",
+    "game_platform": [
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "国民级休闲跑酷手游，凭借轻松搞笑的玩法、流畅的操作和丰富的场景内容风靡全网，是80、90、00后的集体手游记忆，运营11年后原版正式停服 开发商：澳大利亚Defiant Development。 官方历史域名：https://ski.youdao.com/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_star_wars_hunters",
-    "game_name": "Star Wars: Hunters",
+    "_id": "game-cn-089",
+    "game_name": "植物大战僵尸（初代国服）",
     "game_cover": "",
-    "release_time": "2024年05月",
-    "stop_time": "2025年10月",
-    "publisher": "Zynga",
-    "game_platform": ["移动端", "PC"],
-    "game_tags": ["竞技"],
-    "game_intro": "星球大战世界观下的团队竞技作品，角色风格鲜明。官方宣布关闭服务器后，韦斯帕拉竞技场的灯光在玩家记忆中渐渐柔和。",
+    "release_time": "2009年9月",
+    "stop_time": "2016年8月",
+    "publisher": "盛大游戏",
+    "game_platform": [
+      "PC",
+      "移动端"
+    ],
+    "game_tags": [
+      "策略",
+      "休闲"
+    ],
+    "game_intro": "全球顶级塔防游戏正版国服，开创了休闲塔防玩法的先河，是全球休闲游戏的标杆作品，是国内玩家的集体游戏记忆，初代国服运营7年后正式停服 开发商：美国宝开游戏。 官方历史域名：https://pvz.popcap.com.cn/",
     "game_screenshots": [],
     "view_count": 0
   },
   {
-    "_id": "game_xdefiant",
-    "game_name": "XDefiant",
+    "_id": "game-cn-090",
+    "game_name": "愤怒的小鸟（初代国服）",
     "game_cover": "",
-    "release_time": "2024年05月",
-    "stop_time": "2025年06月",
-    "publisher": "Ubisoft",
-    "game_platform": ["PC", "主机"],
-    "game_tags": ["竞技"],
-    "game_intro": "育碧推出的快节奏多人射击游戏，强调派系技能与街机式手感。免费运营周期结束后关服，短暂而热烈的赛场成为一段集体回忆。",
+    "release_time": "2011年1月",
+    "stop_time": "2020年12月",
+    "publisher": "湖南拓维信息",
+    "game_platform": [
+      "PC",
+      "移动端"
+    ],
+    "game_tags": [
+      "休闲"
+    ],
+    "game_intro": "全球现象级休闲游戏，开创了物理弹射玩法的先河，上线后迅速风靡全球，是全球手游行业的里程碑作品，初代国服运营9年后正式停服 开发商：芬兰Rovio娱乐。 官方历史域名：https://angrybirds.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-091",
+    "game_name": "信长之野望OL（国服）",
+    "game_cover": "",
+    "release_time": "2008年10月",
+    "stop_time": "2014年11月",
+    "publisher": "天戏互娱",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "光荣特库摩《信长之野望》系列正统网游，完美还原了日本战国时代的世界观和玩法，拥有丰富的职业体系、合战玩法和历史剧情，国服运营6年后正式停服 开发商：日本光荣特库摩。 官方历史域名：https://nobunaga.tciplay.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-092",
+    "game_name": "太阁立志传OL（国服）",
+    "game_cover": "",
+    "release_time": "2009年10月",
+    "stop_time": "2012年12月",
+    "publisher": "天戏互娱",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "RPG"
+    ],
+    "game_intro": "光荣特库摩《太阁立志传》系列正统网游，完美还原了系列经典的模拟经营、职业养成和历史剧情玩法，是日式RPG的代表作品，国服运营3年后正式停服 开发商：日本光荣特库摩。 官方历史域名：https://taiko.tciplay.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-093",
+    "game_name": "灵游记（初代国服）",
+    "game_cover": "",
+    "release_time": "2007年4月",
+    "stop_time": "2009年11月",
+    "publisher": "北京联众世界",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国经典横版动作网游，以东方鬼怪传说为背景，拥有流畅的连招战斗、可爱的画风和丰富的转职体系，是国内早期横版网游的代表作品，初代国服运营2年半后停服 开发商：韩国Mgame。 官方历史域名：https://lyj.ourgame.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-094",
+    "game_name": "挑战（初代国服）",
+    "game_cover": "",
+    "release_time": "2005年10月",
+    "stop_time": "2020年12月",
+    "publisher": "上海百海信息",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "韩国经典动作网游，凭借极致的连招战斗、华丽的技能特效和高难度的副本玩法风靡全网，是国内动作网游的启蒙之作，初代国服运营15年后正式停服 开发商：韩国Imazic。 官方历史域名：https://dk.woniu.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-095",
+    "game_name": "新飞飞",
+    "game_cover": "",
+    "release_time": "2008年12月",
+    "stop_time": "2024年6月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "网易自研的经典Q版网游，国内首款全3D飞行网游，凭借自由的飞行玩法、可爱的画风和丰富的休闲内容风靡全网，是95后、00后的网游集体记忆，运营15年半后正式停服 开发商：网易游戏。 官方历史域名：https://ff.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-096",
+    "game_name": "天下3（初代停服版本）",
+    "game_cover": "",
+    "release_time": "2008年6月",
+    "stop_time": "2021年10月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "网易自研的旗舰级国风网游，前身为《天下贰》，是国产国风网游的标杆作品，拥有宏大的世界观、丰富的门派职业和顶级的PVP玩法，初代版本运营13年后迭代停服 开发商：网易游戏。 官方历史域名：https://tx3.163.com/",
+    "game_screenshots": [],
+    "view_count": 0
+  },
+  {
+    "_id": "game-cn-097",
+    "game_name": "大唐无双（端游原版）",
+    "game_cover": "",
+    "release_time": "2010年4月",
+    "stop_time": "2023年12月",
+    "publisher": "网易游戏",
+    "game_platform": [
+      "PC"
+    ],
+    "game_tags": [
+      "MMORPG"
+    ],
+    "game_intro": "网易自研的经典武侠网游，以无锁定战斗、热血阵营战为核心，开创了国产网游“战斗网游”的先河，是国内PVP网游的代表作品，原版运营13年后正式停服 开发商：网易游戏。 官方历史域名：https://dtws.163.com/",
     "game_screenshots": [],
     "view_count": 0
   }

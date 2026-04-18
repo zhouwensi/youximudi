@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "游戏档案",
-  "usingComponents": {
-    "page-loading": "/components/page-loading/page-loading"
-  }
+  "usingComponents": {}
 }

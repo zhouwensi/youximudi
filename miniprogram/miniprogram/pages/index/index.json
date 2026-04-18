@@ -2,7 +2,6 @@
   "navigationBarTitleText": "被遗忘的游戏时光",
   "usingComponents": {
     "game-card": "/components/game-card/game-card",
-    "page-loading": "/components/page-loading/page-loading",
     "empty-state": "/components/empty-state/empty-state"
   }
 }

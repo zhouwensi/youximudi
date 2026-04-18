@@ -4,6 +4,27 @@ page {
   font-size: 28rpx;
   line-height: 1.6;
   box-sizing: border-box;
+  position: relative;
+}
+
+/* 轻微旧纸张纹理感（纯 CSS，无外链图） */
+page::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  opacity: 0.06;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.03),
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
 /* 全局卡片阴影（设计文档 6.3） */
@@ -18,6 +39,10 @@ page {
   border-radius: 12rpx !important;
   font-size: 28rpx;
   border: none !important;
+  min-height: 96rpx;
+  line-height: 96rpx;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .btn-primary::after {

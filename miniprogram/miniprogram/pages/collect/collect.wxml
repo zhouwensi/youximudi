@@ -1,18 +1,89 @@
-<page-loading show="{{loading}}" />
-<view class="page">
-  <game-card
-    wx:for="{{list}}"
-    wx:key="_id"
-    game="{{item}}"
-    show-remove="{{true}}"
-    bind:select="onCardSelect"
-    bind:remove="onRemove"
-  />
-  <empty-state
-    wx:if="{{!loading && list.length === 0}}"
-    message="还没有收藏的游戏，去邂逅那些被遗忘的时光吧"
-    show-button="{{true}}"
-    button-text="去看看全部游戏"
-    bind:go="goList"
-  />
-</view>
+<scroll-view scroll-y class="page-scroll" enhanced show-scrollbar="{{false}}">
+  <view wx:if="{{youthShow}}" class="stats card-shadow stats-gold">
+    <text class="stats-title">我的青春数据</text>
+    <text class="stats-body">{{youthLine}}</text>
+    <text wx:if="{{youthExtraLine}}" class="stats-extra">{{youthExtraLine}}</text>
+    <view class="poster-actions">
+      <button class="btn-outline poster-btn" bindtap="onGenAnnual">生成青春年度报告</button>
+      <button class="btn-outline poster-btn" bindtap="onGenAlbum">生成青春纪念册</button>
+    </view>
+  </view>
+
+  <view class="filter-block card-shadow" wx:if="{{youthShow}}">
+    <view class="sort-row">
+      <text class="filter-label">收藏时间</text>
+      <button class="btn-sort" size="mini" bindtap="onSortTap">
+        {{sortNewFirst ? '最新优先' : '最早优先'}}
+      </button>
+    </view>
+    <text class="filter-label">互动筛选</text>
+    <view class="chips chips-wrap">
+      <tag-chip
+        wx:for="{{extraOptions}}"
+        wx:key="label"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onExtraToggle"
+      />
+    </view>
+    <text class="filter-label">平台</text>
+    <view class="chips">
+      <tag-chip
+        wx:for="{{platformOptions}}"
+        wx:key="name"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onPlatformToggle"
+      />
+    </view>
+    <text class="filter-label">类型</text>
+    <view class="chips chips-wrap">
+      <tag-chip
+        wx:for="{{tagOptions}}"
+        wx:key="name"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onTagToggle"
+      />
+    </view>
+  </view>
+
+  <view wx:if="{{filteredEmpty}}" class="filter-empty card-shadow">
+    <text class="filter-empty-t">没有符合当前筛选的收藏，试试调整「互动筛选」或平台、类型标签。</text>
+  </view>
+
+  <view class="list-wrap">
+    <game-card
+      wx:for="{{list}}"
+      wx:key="_id"
+      game="{{item}}"
+      show-remove="{{true}}"
+      bind:select="onCardSelect"
+      bind:remove="onRemove"
+    />
+  </view>
+
+  <view wx:if="{{emptyShow}}" class="empty-wrap">
+    <text class="empty-msg">你的青春游戏库还是空的，快去翻翻那些陪你走过青春的经典游戏，标记属于你的回忆吧</text>
+    <text class="empty-sub">这里先为你翻开 3 页随机旧时光（数据均在本地档案包内）</text>
+    <view class="rec-list">
+      <game-card
+        wx:for="{{emptyRec}}"
+        wx:key="_id"
+        game="{{item}}"
+        bind:select="onCardSelect"
+      />
+    </view>
+    <button class="btn-primary empty-btn" bindtap="goList">去游戏档案库</button>
+  </view>
+
+  <view class="page-footer">
+    收藏与标记仅保存在本机缓存，不上传、不同步；海报无二维码，可自愿保存分享。
+  </view>
+  <view class="safe-bottom spacer" />
+</scroll-view>
+
+<canvas canvas-id="yxmCollectCanvas" class="poster-canvas-hidden" />

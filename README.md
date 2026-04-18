@@ -4,7 +4,7 @@
 
 **完整迁移记录、问题与对策、安全清单**：见 **[docs/迁移与部署全记录.md](./docs/迁移与部署全记录.md)**。微信小程序源码在本仓库 **`miniprogram/`** 目录。
 
-> **说明**：GitHub Pages **只提供静态文件**，没有 Node `/api`。地图与墓碑数据仍从 `data/games.json` 加载。若**不配 API**，献花、留言、足迹等会失败；前端已对「无 API」做了探测，不会反复刷屏请求。若要与 Pages **同域名**使用完整 `/api`，请用下面的 **Cloudflare Worker + KV**（实现见 `workers/api/`）。
+> **说明**：GitHub Pages **只提供静态文件**，没有 Node `/api`。墓园地图会**优先**请求 Worker 的 **`GET /api/games-full`**（数据在 **Cloudflare D1**，与小程序同源）；失败时回退到本地 **`data/games.json`**。献花、留言、足迹等仍用 **Worker + KV**。详见 **`workers/api/README-D1.md`**。
 
 ---
 
@@ -12,10 +12,11 @@
 
 1. 安装并登录 Wrangler：`cd workers/api && npm install && npx wrangler login`  
 2. 创建 KV：`npx wrangler kv namespace create YOUXIMUDI_KV`，把输出的 **id** 写入 `workers/api/wrangler.toml` 的 `[[kv_namespaces]]`（若 fork 本仓库，请改为**你自己**的命名空间 id，勿与他人共用）。  
-3. 部署：`npm run deploy`（或取消 `wrangler.toml` 里 `routes = [...]` 的注释，让路由随部署挂上）  
-4. 若未用 wrangler 写路由：Cloudflare 控制台 → 该 Worker → **Triggers → Routes** → 添加 **`youximudi.com/api/*`**（按你的域名改）。  
-5. 确保域名走 **Cloudflare 代理（橙云）**，且 **不要** 再用只会转发 GET 的旧 Worker 占住 `/api/*`，否则会出现 **405**。  
-6. **验证**：浏览器打开 `https://你的域名/api/health`，应看到 JSON 且含 `youximudi-api-worker`。  
+3. **D1 游戏库**：`npx wrangler d1 create youximudi-games`，将 `database_id` 写入 `wrangler.toml`，再按 **`workers/api/README-D1.md`** 执行 migrations 与种子 SQL。  
+4. 部署：`npm run deploy`（或取消 `wrangler.toml` 里 `routes = [...]` 的注释，让路由随部署挂上）  
+5. 若未用 wrangler 写路由：Cloudflare 控制台 → 该 Worker → **Triggers → Routes** → 添加 **`youximudi.com/api/*`**（按你的域名改）。  
+6. 确保域名走 **Cloudflare 代理（橙云）**，且 **不要** 再用只会转发 GET 的旧 Worker 占住 `/api/*`，否则会出现 **405**。  
+7. **验证**：浏览器打开 `https://你的域名/api/health`，应看到 JSON 且含 `youximudi-api-worker`，并含 **`d1": true`**（已绑定 D1 且可连上时）。  
 
 Worker 行为与自建 Node 的 `server/api-core.mjs` 对齐（献花、留言、留言墙、投稿、在线、足迹、幽灵轨迹等）。**逐步点哪、填哪**：见 **[docs/Cloudflare-Worker-部署步骤.md](./docs/Cloudflare-Worker-部署步骤.md)**（共八节）；概要见 **`workers/api/README.md`**。
 

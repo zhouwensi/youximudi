@@ -1,16 +1,65 @@
-<page-loading show="{{loading && page === 1}}" />
-<view class="page">
+<scroll-view
+  scroll-y
+  class="page-scroll"
+  enhanced
+  show-scrollbar="{{false}}"
+  scroll-into-view="{{scrollIntoId}}"
+>
+  <view id="list-top" />
   <view class="search-bar card-shadow">
-    <input
-      class="search-input"
-      placeholder="搜索你记忆里的那款游戏"
-      placeholder-class="ph"
-      confirm-type="search"
-      value="{{keyword}}"
-      bindinput="onKeywordInput"
-      bindconfirm="onSearchConfirm"
-    />
-    <text class="search-btn" bindtap="onSearchConfirm">搜索</text>
+    <view class="search-inner">
+      <input
+        class="search-input"
+        placeholder="找找你青春里的那款游戏"
+        placeholder-class="ph"
+        confirm-type="search"
+        value="{{keyword}}"
+        bindinput="onKeywordInput"
+        bindconfirm="onSearchConfirm"
+      />
+      <text class="search-btn" bindtap="onSearchConfirm">搜索</text>
+    </view>
+    <view wx:if="{{suggestList.length}}" class="suggest-box">
+      <view
+        wx:for="{{suggestList}}"
+        wx:key="_id"
+        class="suggest-item"
+        data-name="{{item.game_name}}"
+        bindtap="onPickSuggest"
+      >
+        {{item.game_name}}
+      </view>
+    </view>
+    <view wx:if="{{historyList.length}}" class="history-row">
+      <text class="history-label">历史</text>
+      <scroll-view scroll-x class="history-scroll" enhanced show-scrollbar="{{false}}">
+        <text
+          wx:for="{{historyList}}"
+          wx:key="*this"
+          class="history-chip"
+          data-kw="{{item}}"
+          bindtap="onHistoryTap"
+        >{{item}}</text>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view class="preset-block card-shadow">
+    <text class="filter-label">怀旧合集</text>
+    <scroll-view scroll-x class="preset-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="preset-scroll-inner">
+        <button
+          wx:for="{{presets}}"
+          wx:key="id"
+          class="preset-chip {{item.active ? 'active' : ''}}"
+          size="mini"
+          data-id="{{item.id}}"
+          bindtap="onPresetTap"
+        >
+          {{item.label}}
+        </button>
+      </view>
+    </scroll-view>
   </view>
 
   <view class="filter-block">
@@ -25,8 +74,19 @@
         bind:toggle="onPlatformToggle"
       />
     </view>
-    <text class="filter-label">类型</text>
+    <text class="filter-label">停服年份</text>
     <view class="chips">
+      <tag-chip
+        wx:for="{{yearOptions}}"
+        wx:key="name"
+        label="{{item.label}}"
+        name="{{item.name}}"
+        active="{{item.active}}"
+        bind:toggle="onYearToggle"
+      />
+    </view>
+    <text class="filter-label">类型</text>
+    <view class="chips chips-wrap">
       <tag-chip
         wx:for="{{tagOptions}}"
         wx:key="name"
@@ -38,18 +98,39 @@
     </view>
   </view>
 
-  <view class="list-wrap">
+  <view id="list-anchor" class="list-wrap">
+    <view wx:if="{{noResultRec.length}}" class="no-hit card-shadow">
+      <text class="no-hit-title">没能找到你记忆里的那款游戏？</text>
+      <text class="no-hit-sub">看看这些同样承载了青春的经典作品</text>
+      <game-card
+        wx:for="{{noResultRec}}"
+        wx:key="_id"
+        game="{{item}}"
+        show-petition-mini="{{true}}"
+        bind:select="onCardSelect"
+        bind:petition="onPetitionCard"
+      />
+    </view>
     <game-card
       wx:for="{{list}}"
       wx:key="_id"
       game="{{item}}"
+      show-quick-mark="{{true}}"
+      show-petition-mini="{{true}}"
       bind:select="onCardSelect"
+      bind:mark="onQuickMark"
+      bind:petition="onPetitionCard"
     />
     <empty-state
-      wx:if="{{!loading && list.length === 0}}"
-      message="没有找到对应的游戏，去看看其他被遗忘的时光吧"
+      wx:if="{{!loading && list.length === 0 && !noResultRec.length}}"
+      message="没有找到对应的游戏，试试其他筛选或怀旧合集吧"
     />
     <view wx:if="{{loadingMore}}" class="more">加载更多…</view>
     <view wx:if="{{!hasMore && list.length > 0}}" class="end">已经到底啦</view>
   </view>
-</view>
+  <navigator class="list-oa" url="/pages/about/about" open-type="switchTab">关注我们 · 小程序码与公众号</navigator>
+  <view class="list-footer">
+    本页数据均来自本机打包档案，无上传；不提供安装、下载与引流。
+  </view>
+  <view class="safe-bottom spacer" />
+</scroll-view>

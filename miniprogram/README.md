@@ -1,46 +1,33 @@
 # 被遗忘的游戏时光 · 微信小程序
 
-基于《小程序设计文档》实现的微信原生小程序 + 云开发（无自建服务器）。**本目录已纳入 [youximudi](https://github.com/zhouwensi/youximudi) 仓库**；用微信开发者工具打开时请选择 **`miniprogram` 文件夹**（内含 `project.config.json` 与 `cloudfunctions`）。
+基于《小程序设计文档》实现的微信原生小程序；**游戏列表与收藏已改为走 Cloudflare Worker + D1**（与本地项目 **xiyouce** 同栈：Wrangler、D1），不再依赖微信云开发数据库/云函数。用微信开发者工具打开时请选择 **`miniprogram` 文件夹**。
 
-配套静态展示站点与迁移说明见仓库根目录 **`README.md`** 与 **`docs/迁移与部署全记录.md`**。
+配套静态站点、Worker 部署与 D1 灌数见 **`workers/api/README-D1.md`**、仓库根 **`README.md`**。
 
 ## 你需要完成的少量操作
 
-1. **云环境 ID**  
-   已写入 `miniprogram/envList.js`（当前：`cloud1-2g7ynyw4e2a8177a`）。若更换环境请自行修改。
+1. **API 域名**  
+   编辑 `miniprogram/miniprogram/config.js` 中的 **`API_BASE`**（默认 `https://youximudi.com`），与已部署的 Worker 域名一致（须 **https**）。
 
-2. **AppID**  
-   根目录 `project.config.json` 中的 `appid` 若与你不一致，请改为你的小程序 AppID。
+2. **微信公众平台 → 服务器域名**  
+   在 **request 合法域名** 中加入上一步的域名（无路径、无尾斜杠）。
 
-3. **关于页邮箱**  
-   默认展示为站点域名邮箱（见 `miniprogram/pages/about/about.wxml`）。**公开 fork 时请勿写入个人私人邮箱**；可改为你的对外客服/运营邮箱。
+3. **Worker 与 D1**  
+   按 `workers/api/README-D1.md`：创建 D1、执行 migrations、生成并导入 `seed/games_seed.sql`、配置 **`wrangler secret put WECHAT_MINI_SECRET`**、`wrangler deploy`。
 
-4. **云函数依赖（本机已执行过可跳过）**  
-   每个云函数目录下需有 `node_modules`（本仓库已在各目录执行过 `npm install`）。若你换了电脑或删了依赖，在对应目录再执行一次 `npm install`。
+4. **AppID**  
+   `project.config.json` 中的 `appid` 须与你的小程序一致；`workers/api/wrangler.toml` 里 `[vars] WECHAT_MINI_APPID` 也应一致（或与 `wrangler secret` 分开管理时自行对齐）。
 
-5. **上传云函数（须在本机微信开发者工具里操作，无法由他人远程代传）**  
-   1. 用微信开发者工具打开项目根目录 **`miniprogram`**（与 `project.config.json` 同级，且内含 `cloudfunctions` 文件夹）。  
-   2. 确认已登录并关联你的小程序与云环境 `cloud1-2g7ynyw4e2a8177a`。  
-   3. 在左侧文件树展开 **`cloudfunctions`**，对下面 **每一个文件夹** 分别：  
-      - **右键** 该文件夹（如 `getGameList`）  
-      - 选择 **「上传并部署：云端安装依赖」**（首次或改过 `package.json` 时用这个）  
-      - 若仅改了 `index.js` 且依赖未变，可用 **「上传并部署：所有文件」**  
-   4. 需上传的 6 个名称：`getGameList`、`getGameDetail`、`updateViewCount`、`getRandomGame`、`userCollectOperate`、`getUserCollectList`。  
-   5. 等待控制台显示上传成功；可在 **云开发控制台 → 云函数** 列表里核对是否都有。  
+5. **关于页邮箱**  
+   见 `miniprogram/pages/about/about.wxml`；公开 fork 时勿写私人邮箱。
 
-   **说明**：上传依赖微信账号与开发者工具，任何 AI/脚本都无法代替你完成登录与部署；若以后要做 CI，需自行在公众平台配置 **小程序代码上传密钥** 并使用官方 `miniprogram-ci`，属于进阶配置。
+6. **封面与截图（可选）**  
+   在 D1 `games` 表更新 `game_cover`、`game_screenshots`（JSON 数组）；未填时小程序使用占位图。
 
-6. **数据库（你已建好集合并设权限后，还请确认）**  
-   - 集合名必须是 **`game_list`**、**`user_collect`**（与代码一致）。  
-   - 将 **`database/game_list.import.json`** 导入 **`game_list`**。微信控制台**只接受扩展名 `.json` 或 `.csv`**，且内容为 **JSON Lines**（一行一条记录，无 `[` `]` 数组外壳）。**不要用** `game_list.seed.array.json`（那是带 `[]` 的数组，仅供阅读）。**`user_collect` 可保持空集合**。  
-   - 未导入数据时，首页随机推荐、列表会为空或报错，属正常现象。  
-   - 可选：按 `database/数据库权限说明.txt` 为 `user_collect` 建 **`openid + create_time`** 索引以优化收藏列表排序。
+7. **隐私与审核**  
+   配置隐私说明；真机测列表、详情、收藏、随机推荐。
 
-7. **封面与截图（可选）**  
-   将图片传到云存储目录 `game-cover/`、`game-screenshots/`，把返回的 `cloud://` fileID 填入对应记录的 `game_cover`、`game_screenshots`。未填时使用小程序内占位图。
-
-8. **隐私与审核**  
-   在微信公众平台配置隐私说明，仅声明使用「用户信息（openid）」等与云开发一致的能力；提交前在真机完整测一遍列表、详情、收藏、随机推荐。
+> **旧版云开发**：`cloudfunctions/` 与 `database/*.import.json` 仍保留在仓库中作参考，当前小程序前端已不再调用云函数。
 
 ### 运行时报 `Error: timeout`（控制台 / WAServiceMainContext）
 
@@ -50,11 +37,11 @@
 
 其余常见原因：**云函数长时间无响应**（未上传、环境 ID 错误、冷启动过慢）或 **本机网络**（代理、防火墙）。请依次确认：
 
-1. **云开发控制台**里当前小程序已开通，**环境 ID** 与 `miniprogram/envList.js` 一致。  
-2. **6 个云函数均已上传**；在云开发控制台对某个函数点「云端测试」能否返回。  
-3. 项目已勾选 **使用云开发**（与 `project.config.json` 里 `cloudfunctionRoot` 一致）。  
+1. **`miniprogram/config.js` 的 `API_BASE`** 与 Worker 域名一致，且已在公众平台配置 **request 合法域名**。  
+2. **Worker 已部署**，`/api/health` 返回 `d1: true`；D1 已执行建表与种子 SQL。  
+3. **`WECHAT_MINI_SECRET`** 已配置，否则 `code2openid` 失败会导致收藏不可用。  
 4. 关闭 VPN/代理后再试；或 **真机预览** 对比模拟器。  
-5. 代码里已对 `wx.cloud.callFunction` 设置较长 **timeout**（见 `utils/cloud.js`）；若仍超时，到云开发控制台查看该云函数 **日志** 是否报错。
+5. 小程序使用 **`utils/http.js`** 的 `wx.request`（默认 60s 超时）。若仍超时，到 Cloudflare 控制台查看 Worker **日志**。
 
 ## 网站托管（无服务器）
 

@@ -1,5 +1,8 @@
-// API 配置
-var API_BASE = '/api';
+// API 配置：与 index.html 中 window.YXM_API_ORIGIN 一致时可跨域访问 Worker（末尾不要斜杠）
+var API_BASE =
+  typeof window !== 'undefined' && window.YXM_API_ORIGIN
+    ? String(window.YXM_API_ORIGIN).replace(/\/$/, '') + '/api'
+    : '/api';
 
 /** 世界同步（足迹/在线/幽灵）是否可用；null 表示尚未探测 */
 var _worldApiOk = null;

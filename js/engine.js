@@ -98,14 +98,37 @@ window.addEventListener('DOMContentLoaded', function() {
   };
   window.__yxmJoystickUsedThisTouch = false;
 
-  fetch('data/games.json').then(function(r) { return r.json(); }).then(function(data) {
+  var apiOrigin = (typeof window !== 'undefined' && window.YXM_API_ORIGIN) ? String(window.YXM_API_ORIGIN).replace(/\/$/, '') : '';
+  var GAMES_JSON_CACHE_BUST = 'games-md-2026-04-17';
+  function startWithGames(data) {
     games = data;
     buildMap(data);
     initParticles();
     document.getElementById('loading').classList.add('done');
     startWorldSync();
     loop();
-  });
+  }
+  function loadFail(err) {
+    console.error('games load', err);
+    var el = document.getElementById('loading');
+    if (el) el.textContent = '加载游戏列表失败，请强制刷新或稍后再试';
+  }
+  var remoteUrl = apiOrigin ? (apiOrigin + '/api/games-full') : '/api/games-full';
+  fetch(remoteUrl, { cache: 'no-store' })
+    .then(function(r) {
+      if (!r.ok) throw new Error('api ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (!Array.isArray(data) || !data.length) throw new Error('empty games');
+      startWithGames(data);
+    })
+    .catch(function() {
+      fetch('data/games.json?' + GAMES_JSON_CACHE_BUST, { cache: 'no-store' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) { startWithGames(data); })
+        .catch(loadFail);
+    });
 });
 
 function canvasPointFromClient(clientX, clientY) {

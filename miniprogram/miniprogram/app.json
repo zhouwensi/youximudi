@@ -33,7 +33,7 @@
       },
       {
         "pagePath": "pages/collect/collect",
-        "text": "收藏",
+        "text": "青春库",
         "iconPath": "images/tab/collect.png",
         "selectedIconPath": "images/tab/collect_cur.png"
       },

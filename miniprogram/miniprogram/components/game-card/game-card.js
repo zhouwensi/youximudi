@@ -10,6 +10,15 @@ Component({
       type: Boolean,
       value: false,
     },
+    showQuickMark: {
+      type: Boolean,
+      value: false,
+    },
+    /** 列表/首页：展示「我盼它回归」本地请愿（仅本机） */
+    showPetitionMini: {
+      type: Boolean,
+      value: false,
+    },
   },
   data: {
     coverSrc: PLACEHOLDER,
@@ -22,10 +31,17 @@ Component({
         return;
       }
       const cover = g.game_cover;
-      const src =
-        typeof cover === "string" && (cover.indexOf("cloud://") === 0 || cover.indexOf("http") === 0)
-          ? cover
-          : PLACEHOLDER;
+      let src = PLACEHOLDER;
+      if (typeof cover === "string" && cover) {
+        if (
+          cover.indexOf("cloud://") === 0 ||
+          cover.indexOf("http://") === 0 ||
+          cover.indexOf("https://") === 0 ||
+          cover.indexOf("/") === 0
+        ) {
+          src = cover;
+        }
+      }
       let intro = "";
       if (g.one_line) {
         intro = g.one_line;
@@ -46,6 +62,16 @@ Component({
       const id = this.data.game && this.data.game._id;
       if (!id) return;
       this.triggerEvent("remove", { gameId: id, game: this.data.game });
+    },
+    onMarkTap() {
+      const g = this.data.game;
+      if (!g || !g._id) return;
+      this.triggerEvent("mark", { game: g });
+    },
+    onPetitionTap() {
+      const g = this.data.game;
+      if (!g || !g._id) return;
+      this.triggerEvent("petition", { game: g });
     },
   },
 });

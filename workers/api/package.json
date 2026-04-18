@@ -1,6 +1,7 @@
 {
   "name": "youximudi-api-worker",
   "private": true,
+  "type": "module",
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev"

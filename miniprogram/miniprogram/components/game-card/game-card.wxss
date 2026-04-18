@@ -1,11 +1,31 @@
 .card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background: #ffffff;
   border-radius: 12rpx;
   overflow: hidden;
   margin-bottom: 24rpx;
   position: relative;
+  border: 1rpx solid #ece3d6;
+}
+
+.badge-anniv {
+  position: absolute;
+  left: 12rpx;
+  top: 12rpx;
+  z-index: 2;
+  font-size: 20rpx;
+  color: #ffffff;
+  background: #c45c26;
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  max-width: 200rpx;
+}
+
+.card-main {
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
 }
 
 .cover {
@@ -36,7 +56,27 @@
 .time {
   font-size: 24rpx;
   color: #888888;
-  margin-bottom: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.submeta {
+  font-size: 22rpx;
+  color: #a67c52;
+  margin-bottom: 8rpx;
+  line-height: 1.4;
+}
+
+.stat-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.stat-item {
+  font-size: 20rpx;
+  color: #777777;
 }
 
 .tags {
@@ -64,14 +104,45 @@
   overflow: hidden;
 }
 
+.action-bar {
+  padding: 0 24rpx 20rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.btn-mark,
+.btn-pet {
+  min-height: 72rpx;
+  min-width: 160rpx;
+  line-height: 72rpx;
+  font-size: 26rpx;
+  color: #8b5a2b;
+  background: #fff9f0;
+  border: 2rpx solid #d2b48c;
+  border-radius: 12rpx;
+  margin: 0;
+}
+
+.btn-pet {
+  color: #5c4033;
+  background: #fff5e6;
+}
+
 .remove {
   position: absolute;
   right: 16rpx;
-  bottom: 16rpx;
+  top: 16rpx;
   font-size: 22rpx;
   color: #888888;
-  padding: 8rpx 16rpx;
+  padding: 12rpx 20rpx;
+  min-height: 72rpx;
+  min-width: 72rpx;
+  line-height: 48rpx;
+  box-sizing: border-box;
   border: 1rpx solid #d2b48c;
   border-radius: 8rpx;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
 }

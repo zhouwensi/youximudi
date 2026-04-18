@@ -46,7 +46,7 @@
   },
   "appid": "wxbd05b0b4d1bde423",
   "projectname": "youximudi-miniprogram",
-  "libVersion": "2.20.1",
+  "libVersion": "3.4.10",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {},
   "compileType": "miniprogram",

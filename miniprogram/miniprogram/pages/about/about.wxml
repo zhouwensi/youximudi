@@ -1,29 +1,71 @@
 <scroll-view scroll-y class="page" enhanced show-scrollbar="{{false}}">
   <view class="block card-shadow">
     <text class="h1">被遗忘的游戏时光</text>
+    <text class="p quote">我们不生产游戏，我们只是青春游戏记忆的守档人，只为帮你留住那些回不去的游戏时光。</text>
     <text class="p">
-      本小程序是一款纯怀旧向的游戏档案存档工具，致力于收录那些已经停服、下架、绝版的经典老游戏，为玩家留存青春里的游戏回忆。本小程序不提供任何游戏安装包、充值或商业服务，仅做内容展示与记录。
+      本小程序是一款纯怀旧向的停服、下架、绝版经典游戏档案展示工具，仅在本地打包数据中检索与排版展示，不提供任何游戏安装包、下载链接、充值或商业变现服务。
     </text>
+    <text class="p heart">
+      每一款停服的游戏，都承载着无数人的青春。我们想给这些落幕的游戏一个存档的地方，给大家的青春一个可以安静回望的角落。
+    </text>
+  </view>
+
+  <view class="block card-shadow">
+    <text class="h2">功能与隐私说明</text>
+    <text class="p">收藏、献花、请愿、时光胶囊、搜索历史等数据，仅保存在您的手机本地缓存中，不上传、不与云端同步、不跨设备展示给其他用户。</text>
+    <text class="p">纪念图、证书、年报由您主动保存；海报底部可含小程序码与公众号二维码，便于你自愿分享。无「分享后解锁」等诱导逻辑。</text>
+  </view>
+
+  <view class="block card-shadow qr-block">
+    <text class="h2">关注我们</text>
+    <text class="p small">长按识别小程序码；关注公众号获取更新与收录说明（请替换为真实二维码图片）。</text>
+    <view class="qr-row">
+      <view class="qr-item">
+        <image class="qr-img" src="{{mpQrPath}}" mode="aspectFit" show-menu-by-longpress />
+        <text class="qr-cap">小程序</text>
+      </view>
+      <view class="qr-item">
+        <image class="qr-img" src="{{oaQrPath}}" mode="aspectFit" show-menu-by-longpress />
+        <text class="qr-cap">{{oaDisplayName}}</text>
+      </view>
+    </view>
+    <button wx:if="{{showOpenOaBtn}}" class="btn-open-oa" bindtap="onOpenOfficialAccount">打开公众号主页</button>
+    <view class="oa-plugin-wrap">
+      <official-account />
+    </view>
+    <text class="p small oa-tip">若未显示公众号卡片，请在公众平台将公众号与小程序关联，并升级基础库。</text>
+  </view>
+
+  <view class="block card-shadow">
+    <text class="h2">我想收录一款游戏</text>
+    <text class="p">若希望补充某款已停服 / 下架游戏的档案线索，请发送邮件至下方投诉邮箱（主题注明「收录线索」），我们会在能力范围内评估与整理。不提供任何下载与安装服务。</text>
+  </view>
+
+  <view class="block card-shadow email-block">
+    <text class="h2">侵权投诉（24 小时内处理）</text>
+    <text class="email">n11290mars@163.com</text>
+    <text class="p small">请邮件说明权利依据与需下线内容，我们承诺在 24 小时内完成核查与删除展示（个人主体能力范围内）。</text>
   </view>
 
   <view class="block card-shadow">
     <text class="h2">合规声明</text>
-    <text class="p">
-      1. 本小程序所有内容均来自公开网络，仅用于怀旧分享，不做任何商业用途，相关版权归原游戏发行方所有。
-    </text>
-    <text class="p">
-      2. 如有内容侵权、不实信息，请通过以下渠道联系我们，我们将在24小时内删除处理。
-    </text>
-    <text class="p">
-      3. 本小程序不提供任何游戏安装、引流服务，无任何违规内容。
-    </text>
+    <view class="rule-row"><text class="rule-num">1</text><text class="rule-t">所有档案内容仅用于合规怀旧展示，版权归原游戏发行方所有，本站不主张任何权利。</text></view>
+    <view class="rule-row"><text class="rule-num">2</text><text class="rule-t">不提供游戏安装、下载、引流跳转；无用户投稿、评论、社区、消息推送等个人主体无资质能力之功能。</text></view>
+    <view class="rule-row"><text class="rule-num">3</text><text class="rule-t">「我的青春游戏库」等记录仅写入您手机本地缓存，不上传、不同步、不跨设备。</text></view>
   </view>
 
   <view class="block card-shadow">
-    <text class="h2">联系与更新</text>
-    <text class="p">投诉联系邮箱：contact@youximudi.com</text>
-    <text class="p">小程序版本：V1.0.0</text>
-    <text class="p">更新时间：2026年04月02日</text>
+    <text class="h2">版本信息</text>
+    <text class="p">当前版本：1.2.1</text>
+    <text class="log-h">更新记录</text>
+    <text class="log-line">1.2.1 — 海报底部支持小程序码与公众号二维码；关于页支持打开公众号与官方关注组件。</text>
+    <text class="log-line">1.2.0 — 首页纪念日与时光机、档案搜索联想与历史、详情献花/请愿/时光胶囊与纪念图、青春库年报与纪念册；全程本机存储。</text>
+    <text class="log-line">1.1.0 — 本地档案包 + 本机缓存收藏，移除网络依赖。</text>
+    <text class="log-line">1.0.0 — 首版档案浏览与收藏框架。</text>
+  </view>
+
+  <view class="footer-fixed">
+    本小程序仅用于怀旧记录，不提供任何游戏安装、下载及引流服务。
   </view>
   <view class="safe-bottom bottom-space" />
 </scroll-view>

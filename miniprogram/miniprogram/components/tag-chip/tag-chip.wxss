@@ -2,6 +2,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 88rpx;
+  min-width: 72rpx;
   padding: 10rpx 24rpx;
   margin-right: 16rpx;
   margin-bottom: 16rpx;

@@ -11,16 +11,27 @@
 #    A) Dashboard → 本 Worker → Triggers → Routes → youximudi.com/api/*
 #    B) 取消下面 [[routes]] 注释并改成你的域名，deploy 时会自动挂路由
 #
-# account_id 可写在此或设环境变量 CLOUDFLARE_ACCOUNT_ID（GitHub Actions 已用后者）
-# account_id = "你的_Cloudflare_账户_ID"
+# 与 wrangler whoami 中 Account ID 一致（便于本地命令不写 --account-id）
+account_id = "bbf770c00d06b7e90cd2be56d981d67a"
 #
 name = "youximudi-api"
 main = "src/index.js"
 compatibility_date = "2024-11-01"
 
+# 小程序 code2openid：AppID 可写在此；AppSecret 务必用 `wrangler secret put WECHAT_MINI_SECRET`
+[vars]
+WECHAT_MINI_APPID = "wxbd05b0b4d1bde423"
+
 routes = [
   { pattern = "youximudi.com/api/*", zone_name = "youximudi.com" },
 ]
+
+# 创建库：npx wrangler d1 create youximudi-games
+# 把输出的 database_id 填到下面，并执行 migrations + 种子 SQL（见 workers/api/README-D1.md）
+[[d1_databases]]
+binding = "YOUXIMUDI_DB"
+database_name = "youximudi-games"
+database_id = "01afb602-650e-4993-9bac-9e0378b5b962"
 
 [[kv_namespaces]]
 binding = "YOUXIMUDI_KV"

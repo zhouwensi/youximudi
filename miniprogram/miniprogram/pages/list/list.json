@@ -4,7 +4,6 @@
   "usingComponents": {
     "game-card": "/components/game-card/game-card",
     "tag-chip": "/components/tag-chip/tag-chip",
-    "empty-state": "/components/empty-state/empty-state",
-    "page-loading": "/components/page-loading/page-loading"
+    "empty-state": "/components/empty-state/empty-state"
   }
 }

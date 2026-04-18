@@ -1,45 +1,100 @@
-<page-loading show="{{loading}}" />
 <scroll-view scroll-y class="page" enhanced show-scrollbar="{{false}}">
+  <view class="pixel-bar" aria-hidden="true">▦▦▦▦▦</view>
   <view class="hero">
     <view class="hero-inner card-shadow">
       <text class="hero-title">被遗忘的游戏时光</text>
-      <text class="hero-sub">存档那些陪我们走过青春，却已落幕的经典游戏</text>
+      <text class="hero-sub">存档那些陪我们走过青春，却已落幕的经典游戏 | 做你游戏青春的守档人</text>
     </view>
+  </view>
+
+  <view wx:if="{{todaySlides.length}}" class="section card-shadow today-block">
+    <text class="section-title">今日停服纪念日</text>
+    <swiper class="today-swiper" autoplay circular interval="5200" indicator-dots="{{todaySlides.length > 1}}">
+      <swiper-item wx:for="{{todaySlides}}" wx:key="gameId">
+        <view class="today-card" data-id="{{item.gameId}}" bindtap="onTodayTap">
+          <text class="today-line">{{item.line}}</text>
+          <text class="today-go">查看档案 →</text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view wx:else class="section card-shadow today-block muted-today">
+    <text class="section-title">今日停服纪念日</text>
+    <text class="today-empty">今日在本地档案中暂无「历史上的今天」停服条目，去档案页翻翻合集吧。</text>
   </view>
 
   <view class="section row2">
     <view class="entry card-shadow" bindtap="goList">
+      <text class="entry-icon" aria-hidden="true">📂</text>
       <text class="entry-title">全部游戏档案</text>
-      <text class="entry-desc">浏览停服与绝版游戏记录</text>
+      <text class="entry-count">共 {{totalCount}} 款库藏</text>
+      <text class="entry-desc">本地怀旧索引，随时翻阅</text>
     </view>
     <view class="entry card-shadow" bindtap="goCollect">
-      <text class="entry-title">我的收藏</text>
-      <text class="entry-desc">保存你重温过的回忆</text>
+      <text class="entry-icon" aria-hidden="true">📒</text>
+      <text class="entry-title">我的青春游戏库</text>
+      <text class="entry-count">已标记 {{collectCount}} 款</text>
+      <text class="entry-desc">仅保存在本机的回忆</text>
     </view>
   </view>
 
+  <view class="section card-shadow petition-entry" bindtap="goPetitionBoard">
+    <text class="pe-title">青春请愿榜</text>
+    <text class="pe-sub">看看大家都在盼哪些游戏回归（本地氛围排序）</text>
+    <text class="pe-go">前往档案页 →</text>
+  </view>
+
+  <view class="section card-shadow time-machine">
+    <text class="section-title">青春时光机</text>
+    <text class="tm-sub">你的青春停留在哪个年代？</text>
+    <scroll-view scroll-x class="tm-scroll" enhanced show-scrollbar="{{false}}">
+      <button
+        wx:for="{{timeEras}}"
+        wx:key="preset"
+        class="tm-chip"
+        size="mini"
+        data-preset="{{item.preset}}"
+        bindtap="goEra"
+      >{{item.label}}</button>
+    </scroll-view>
+  </view>
+
+  <view class="section card-shadow welfare" bindtap="goCollect">
+    <text class="welfare-title">守档人专属纪念</text>
+    <text class="welfare-desc">生成守档证书、年度报告与纪念海报，请先标记几款游戏进青春库吧。</text>
+    <text class="welfare-btn">立即进入青春库 →</text>
+  </view>
+
   <view class="section">
-    <text class="section-title">随机邂逅一款被遗忘的游戏</text>
+    <text class="section-title">随机翻开一页青春</text>
     <view wx:if="{{randomGame}}" class="random-wrap card-shadow">
-      <game-card game="{{randomGame}}" bind:select="onCardSelect" />
+      <game-card
+        game="{{randomGame}}"
+        show-quick-mark="{{true}}"
+        show-petition-mini="{{true}}"
+        bind:select="onCardSelect"
+        bind:mark="onQuickMark"
+        bind:petition="onPetitionFromCard"
+      />
+      <text wx:if="{{randomGame._heatLine}}" class="heat-line">{{randomGame._heatLine}}</text>
       <view class="random-btns">
         <button class="btn-outline" bindtap="shuffleRandom">换一款</button>
         <button class="btn-primary" bindtap="goRandomDetail">查看详情</button>
       </view>
     </view>
     <empty-state
-      wx:elif="{{!loading && loadErr}}"
-      message="暂时无法加载推荐，请检查网络与云开发配置"
+      wx:elif="{{loadErr}}"
+      message="本地游戏库未能加载，请重新编译小程序"
       show-button="{{true}}"
       button-text="重试"
       bind:go="shuffleRandom"
     />
-    <empty-state
-      wx:elif="{{!loading && !randomGame}}"
-      message="还没有游戏档案，请先在云数据库中录入数据"
-    />
+    <empty-state wx:elif="{{!randomGame}}" message="暂无游戏数据" />
   </view>
 
-  <view class="footer-note">本小程序仅用于怀旧记录，不提供任何游戏安装或分发服务</view>
+  <navigator class="oa-foot" url="/pages/about/about" open-type="switchTab">关注我们 · 小程序码与公众号</navigator>
+  <view class="footer-note">
+    本小程序仅用于怀旧记录，不提供任何游戏安装、下载及引流服务。所有内容版权归原发行方。
+  </view>
   <view class="safe-bottom spacer" />
 </scroll-view>
