@@ -343,12 +343,16 @@
   margin: 0;
 }
 
+/* 勿用 left:-9999px，部分机型 query 宽高为 0，导致 2d canvas 无法出图 */
 .poster-canvas-hidden {
   position: fixed;
-  left: -9999px;
-  top: 0;
+  right: 0;
+  bottom: 0;
   width: 375px;
   height: 640px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -10;
 }
 
 .modal-mask {

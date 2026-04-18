@@ -151,7 +151,7 @@
   <button class="btn-primary bar-btn" bindtap="toggleCollect">{{collectBtnText}}</button>
 </view>
 
-<canvas canvas-id="yxmPosterCanvas" class="poster-canvas-hidden" />
+<canvas type="2d" id="yxmPosterCanvas" class="poster-canvas-hidden" style="width: 375px; height: 640px; display: block" />
 
 <view wx:if="{{showAnnivModal}}" class="modal-mask">
   <view class="modal-box">

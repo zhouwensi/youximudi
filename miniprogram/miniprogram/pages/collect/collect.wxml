@@ -86,4 +86,4 @@
   <view class="safe-bottom spacer" />
 </scroll-view>
 
-<canvas canvas-id="yxmCollectCanvas" class="poster-canvas-hidden" />
+<canvas type="2d" id="yxmCollectCanvas" class="poster-canvas-hidden" style="width: 375px; height: 640px; display: block" />
