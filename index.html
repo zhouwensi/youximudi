@@ -13,6 +13,8 @@
   <canvas id="game"></canvas>
   <div id="hud-fabs" aria-label="快捷操作">
     <button type="button" id="fab-search" class="fab-btn">寻墓</button>
+    <button type="button" id="fab-redeem" class="fab-btn fab-secondary">兑换码核销</button>
+    <button type="button" id="fab-pack" class="fab-btn fab-secondary">我的背包</button>
     <button type="button" id="fab-map" class="fab-btn fab-secondary" onclick="toggleMinimap()">地图</button>
   </div>
 <!-- 手机虚拟控制：浮动摇杆在触点出现，全屏可拖移 -->
@@ -46,6 +48,7 @@
       <p class="epitaph" id="tb-epitaph"></p>
       <div class="mourn-section">
         <p class="offering-label">选择祭奠方式</p>
+        <p class="wall-post-hint" style="margin-bottom:8px;">更多祭奠道具与专属权益，可通过【游戏开发技术教程】官方公众号获取兑换码解锁。</p>
         <div class="offering-row">
           <button type="button" class="btn-offering selected" data-offering="daisy" onclick="selectOffering(this)" title="白花">🌼</button>
           <button type="button" class="btn-offering" data-offering="rose" onclick="selectOffering(this)" title="红玫瑰">🌹</button>
@@ -98,6 +101,10 @@
       <h2>📋 全站留言墙</h2>
       <p class="wall-intro">与整座墓园无关、只想说句话？贴在这里。与墓碑前的留言相互独立。</p>
       <div id="wall-messages" class="tb-messages-scroll"></div>
+      <div class="hub-tip-card wall-post-hint" style="margin:10px 0;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);">
+        <strong>留言置顶特权说明</strong>
+        <p style="margin:6px 0 0;line-height:1.5;">高级兑换码可解锁 30 天留言置顶特权。兑换码获取渠道：<strong>【游戏开发技术教程】官方公众号</strong></p>
+      </div>
       <div class="msg-form">
         <input type="text" id="wall-nick" placeholder="你的名字" maxlength="20" autocomplete="nickname">
         <textarea id="wall-text" placeholder="写点什么…" maxlength="200" rows="3"></textarea>
@@ -131,6 +138,35 @@
         <button type="submit" class="btn-submit">提交投稿</button>
       </form>
       <p id="submit-msg"></p>
+      <p class="wall-post-hint" style="margin-top:10px;">高级兑换码可解锁投稿优先审核特权，兑换码获取渠道：<strong>【游戏开发技术教程】官方公众号</strong></p>
+    </div>
+  </div>
+
+  <div id="modal-redeem" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button type="button" class="modal-close" onclick="closeRedeemPack()">✕</button>
+      <h2>兑换码核销</h2>
+      <p class="wall-post-hint">请输入从公众号获取的兑换码。</p>
+      <input id="yxm-redeem-input" class="wall-nick" style="width:100%;box-sizing:border-box;margin-top:8px;" maxlength="16" placeholder="兑换码" autocomplete="off">
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="btn-send" onclick="pasteYxmRedeem()">一键粘贴</button>
+        <button type="button" class="btn-send" onclick="submitYxmRedeem()">立即核销</button>
+      </div>
+      <p id="yxm-redeem-msg" class="wall-post-hint" style="margin-top:10px;"></p>
+      <p class="wall-post-hint">兑换码可通过【游戏开发技术教程】官方公众号获取。</p>
+    </div>
+  </div>
+
+  <div id="page-pack" class="modal-overlay hidden">
+    <div class="modal-box modal-wide">
+      <button type="button" class="modal-close" onclick="closeRedeemPack()">✕</button>
+      <h2>我的背包</h2>
+      <p class="wall-post-hint">三站通用「游戏人积分」与祭奠道具以中心服务为准。请先在创作主站个人中心生成「通行证密钥」，并粘贴到下方保存。</p>
+      <label class="wall-post-hint" style="display:block;margin-top:8px;">通行证密钥
+        <input id="yxm-link-token" class="wall-nick" style="width:100%;box-sizing:border-box;margin-top:4px;" placeholder="粘贴密钥后点击保存" autocomplete="off">
+      </label>
+      <button type="button" class="btn-send" style="margin-top:8px;" onclick="saveYxmLink()">保存通行证</button>
+      <div id="yxm-pack-body" class="wall-post-hint" style="margin-top:12px;line-height:1.6;">加载中…</div>
     </div>
   </div>
 
@@ -142,6 +178,82 @@
     document.getElementById('fab-search').addEventListener('click', function() {
       if (typeof showSearchModal === 'function') showSearchModal();
     });
+    document.getElementById('fab-redeem').addEventListener('click', function() {
+      var m = document.getElementById('modal-redeem');
+      if (m) { m.classList.remove('hidden'); }
+    });
+    document.getElementById('fab-pack').addEventListener('click', function() {
+      var m = document.getElementById('page-pack');
+      if (m) { m.classList.remove('hidden'); loadYxmPack(); }
+    });
+    function closeRedeemPack() {
+      ['modal-redeem','page-pack'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+    function apiBase() {
+      var o = (window.YXM_API_ORIGIN || '').trim();
+      if (o) return o.replace(/\/$/, '');
+      return '';
+    }
+    async function pasteYxmRedeem() {
+      var inp = document.getElementById('yxm-redeem-input');
+      if (!inp || !navigator.clipboard) return;
+      try { inp.value = (await navigator.clipboard.readText() || '').trim().slice(0, 16); } catch (e) {}
+    }
+    async function submitYxmRedeem() {
+      var msg = document.getElementById('yxm-redeem-msg');
+      var inp = document.getElementById('yxm-redeem-input');
+      var code = (inp && inp.value ? inp.value : '').trim().toUpperCase();
+      var link = (localStorage.getItem('yxm_yj_link_token') || '').trim();
+      if (!code) { if (msg) msg.textContent = '请输入兑换码'; return; }
+      if (!link) { if (msg) msg.textContent = '请先在「我的背包」保存通行证密钥'; return; }
+      if (msg) msg.textContent = '核销中…';
+      try {
+        var res = await fetch(apiBase() + '/api/hub/redeem-proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code, linkToken: link })
+        });
+        var data = await res.json();
+        if (msg) msg.textContent = data.success ? (data.message || '核销成功') : (data.error || '失败');
+        if (data.success) setTimeout(closeRedeemPack, 2500);
+      } catch (e) {
+        if (msg) msg.textContent = '网络异常';
+      }
+    }
+    function saveYxmLink() {
+      var v = (document.getElementById('yxm-link-token') && document.getElementById('yxm-link-token').value || '').trim();
+      if (!v) return;
+      localStorage.setItem('yxm_yj_link_token', v);
+      loadYxmPack();
+    }
+    async function loadYxmPack() {
+      var el = document.getElementById('yxm-pack-body');
+      var link = (localStorage.getItem('yxm_yj_link_token') || '').trim();
+      if (document.getElementById('yxm-link-token')) document.getElementById('yxm-link-token').value = link;
+      if (!link) { if (el) el.textContent = '请粘贴通行证密钥后保存。'; return; }
+      if (el) el.textContent = '加载中…';
+      try {
+        var u = 'https://api.yijuhuayouxi.com/api/hub/cross-entitlements?site=YOUXIMUDI&linkToken=' + encodeURIComponent(link);
+        var res = await fetch(u);
+        var data = await res.json();
+        if (!data.success) { if (el) el.textContent = data.error || '加载失败'; return; }
+        var p = data.payload || {};
+        var off = p.offerings || {};
+        var credits = data.credits != null ? data.credits : '';
+        var lines = [];
+        lines.push('三站通用积分余额：' + credits);
+        lines.push('白花：' + (off.flower || 0) + ' · 玫瑰：' + (off.rose || 0) + ' · 蜡烛：' + (off.candle || 0));
+        if (p.wallForever) lines.push('留言权限：全墓园永久（已解锁）');
+        if (p.messagePinUntil) lines.push('留言置顶至：' + p.messagePinUntil);
+        if (p.priorityReviewUntil) lines.push('投稿优先审核至：' + p.priorityReviewUntil);
+        if (el) el.innerHTML = lines.map(function(s) { return '<p>' + s + '</p>'; }).join('');
+      } catch (e) {
+        if (el) el.textContent = '网络异常';
+      }
+    }
   </script>
   <script src="js/engine.js"></script>
   <script src="js/mobile.js"></script>  <!-- ★ 新增 -->

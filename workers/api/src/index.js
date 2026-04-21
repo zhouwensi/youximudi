@@ -90,6 +90,33 @@ async function kvPut(kv, key, value) {
   await kv.put(key, value);
 }
 
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** 转发核销到 youxijia 中心库（需在双方配置同一密钥：wrangler secret put HUB_SITE_SECRET_YOUXIMUDI） */
+async function forwardHubRedeem(request, env) {
+  const secret = (env.HUB_SITE_SECRET_YOUXIMUDI || "").trim();
+  if (!secret) {
+    return json({ success: false, error: "服务器未配置通行证转发密钥" }, 503);
+  }
+  const bodyText = await request.text();
+  const sig = await sha256Hex(secret + ":" + bodyText);
+  const hubUrl = "https://api.yijuhuayouxi.com/api/internal/hub/redeem";
+  const fr = await fetch(hubUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Internal-Site": "youximudi",
+      "X-Internal-Signature": sig,
+    },
+    body: bodyText,
+  });
+  const text = await fr.text();
+  return new Response(text, { status: fr.status, headers: { "Content-Type": "application/json", ...corsHeaders } });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -111,6 +138,10 @@ export default {
           },
           200,
         );
+      }
+
+      if (pathname === "/api/hub/redeem-proxy" && method === "POST") {
+        return forwardHubRedeem(request, env);
       }
 
       const mpRes = await handleMpRequest(request, env, pathname, method);
